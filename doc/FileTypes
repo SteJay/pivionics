@@ -1,0 +1,57 @@
+Pivionics uses a series of classes derived from the Element class (see src/structure.h).
+
+In order to support the writing of multiple-level inherited classes out to and reading
+from files, we need a generic way to serialise this data within the classes.
+
+To this end, files are written out in a binary format which we will prefix with length
+and type information to enable the parser of the loading routines to correctly create
+and assign new elements from the data.
+
+*.pivionics.window:
+
+At the beginning of any .window file is the 8-byte identifier:
+
+0x70697669
+0x6f6e6963
+
+Let's try an example maybe?
+
+\x70\x69\x76\x69\x6f\x6e\x69\x63
+
+then for each frame
+
+<cx><cy><width><height><angle><arc><thickness><sections><subsections><color>
+<length><typename>
+<length><attrname>
+<length><attrvalue>
+
+repeat until:
+
+\x00\x00\x00\x00
+
+then repeat:
+
+<length><customname>
+<length><customdata>
+
+until:
+
+\x00\x00\x00\x00
+\x00\x00\x00\x00
+
+At this point the frame has been read and the element itself should have been made.
+
+In order for the element to encapsulate another, it needs {} around it in the form of:
+
+\x7b\x00\x00\x7b
+
+and closed with
+
+\x7d\x00\x00\x7d
+
+I'll mention at this point that although the length parameter looks at 4-byte integers only,
+it is assumed that any given data length will never get longer than can be stored in a 3-byte
+integer (very unlikely unless you have a supercomputer) and the most significant byte is used
+like this as a sort of "flag byte". Wasteful, I know, but it should be solid.
+
+

@@ -1,0 +1,24 @@
+CC := g++
+CCFLAGS := -std=c++11
+
+BINDIR := bin
+SRCDIR := src
+OBJDIR := obj
+
+all: $(BINDIR)/pivionics_main $(BINDIR)/simple_edit
+
+$(OBJDIR)/stringsplit.o: $(SRCDIR)/stringsplit.cpp $(SRCDIR)/stringsplit.h
+	$(CC) $(CCFLAGS) -c $< -o $@
+
+$(OBJDIR)/window_commands.o: $(SRCDIR)/window_commands.cpp $(SRCDIR)/structure.h $(SRCDIR)/structure.cpp
+	$(CC) $(CCFLAGS) -c $< -o $@
+
+$(OBJDIR)/structure.o: $(SRCDIR)/structure.cpp $(SRCDIR)/structure.h
+	$(CC) $(CCFLAGS) -c $< -o $@
+
+$(BINDIR)/pivionics_main: $(SRCDIR)/main.cpp $(OBJDIR)/structure.o $(OBJDIR)/window_commands.o $(OBJDIR)/stringsplit.o
+	$(CC) $(CCFLAGS) $^ -o $@
+
+$(BINDIR)/simple_edit: $(SRCDIR)/simple_edit.cpp $(OBJDIR)/structure.o $(OBJDIR)/window_commands.o $(OBJDIR)/stringsplit.o
+	$(CC) $(CCFLAGS) $^ -o $@
+
