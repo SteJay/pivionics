@@ -18,4 +18,6 @@ vector<string> &split(const string&, char, vector<string>&);
 vector<string> split(const string&, char);
 list<string> &split_to_list(const string&, char, list<string>&);
 list<string> split_to_list(const string&, char);
+list<string> get_arguments(const string);
+string replace_all(string,string,string);
 #endif

@@ -35,11 +35,10 @@ using namespace std;
 class Element {
 	private:
 		int id_store;
-		int* point_store;
-		int point_count;
 		string namestr;
 		string typestr;
 	protected:
+		vector<int> points;
 		double geometry[4];
 		long double angles[2];
 		double scale[2];
@@ -87,9 +86,10 @@ class Element {
 		string name(void);// You can get the name in the same way...
 		void name(string);// But you can also set it. No validation is done - this is just for human reference really
 		
-		bool construct(void); // Construct the point set according to the specified and parent geometry
-		signed int* points(void); // Get current point set
-		void points(signed int*,unsigned int); // Set current point set
+		virtual void construct(void); // Construct the point set according to the specified and parent geometry
+		//virtual void pre_construct(void);
+		//virtual void construct_loop(void);
+		//virtual void post_construct(void);
 };
 
 
@@ -103,11 +103,6 @@ class Window: public Element {
 */
 	private:
 		map<string,Element* (*)(void)> creators;
-		
-		void stdread(ifstream*); // An attempt to standardise the reading mechanism
-		void loader_main(ifstream*, streampos); // DON'T CALL OR OVERLOAD THIS. 
-		void loader_vital(ifstream*, streampos);// ... NOR THIS ...
-		void loader_attr(ifstream*, streampos); // ... NOR THIS ...
 	public:
 //		Window(void);
 		~Window();
@@ -119,7 +114,10 @@ class Window: public Element {
 		Element* parent(Element*);
 		Element* sibling(unsigned int, Element*);
 		Element* child(unsigned int, Element*);
+		
+		Element* find_name(string);
 		Element* find_name(string,int);
+		Element* find_name(string,int,Element*);
 		void remove(int);			// Remove the nth child of the current element
 		void insert(Element*);		// Insert an element of the given type between the given element and its parent
 
@@ -210,6 +208,12 @@ template <class T> T* element_creator(void) {
 	return t;
 };
 
+Element* create_element(void); 
+Element* create_container(void); 
+Element* create_rotation(void);
+Element* create_offset(void); 
+Element* create_offset_rotation(void); 
+Element* create_static_container(void); 
 
 
 #endif

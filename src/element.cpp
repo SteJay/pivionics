@@ -28,6 +28,7 @@ along with Pivionics.  If not, see <http://www.gnu.org/licenses/>.
 #include "stringsplit.h"
 
 using namespace std;
+Element* create_element(void) { return new Element; }
 
 Element::Element(void) {
 	geometry[0]=geometry[1]=0.0;
@@ -39,7 +40,7 @@ Element::Element(void) {
 	subsect=1;
 	col=0xFFFFFFFF;
 	txt="";
-	parent=NULL; id_store=0; point_store=NULL; point_count=0;
+	parent=NULL; id_store=0; 
 }
 
 string Element::get_attr(const char* key) {
@@ -73,4 +74,12 @@ Element* Window::add(string s,Element* el) {
 		return e;
 	}
 	return NULL;
+}
+
+void Element::construct(void) {
+	Element* el;
+	for(auto iter=contents.begin(); iter!=contents.end(); ++iter) {
+		el=*iter;
+		el->construct();
+	}
 }

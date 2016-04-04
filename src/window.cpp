@@ -36,16 +36,8 @@ using namespace std;
 
 string Window::command(string cmd, Element* base) {
 	string rs="";
-	for(auto iter=cmd.begin();iter!=cmd.end();++iter){
-		if( *iter == '\n' || *iter == L'\n') {
-			rs+=" \n ";
-		} else {
-			rs+=*iter;
-		}
-	}
-	cmd=rs;
-	//cout << "Command being processed:" << endl << rs << endl << "Here we go..." << endl;
-	list<string> args = split_to_list(cmd,L' ');
+	list<string> args = get_arguments(cmd);
+	//cout << "Got " << args.size() << " arguments, looking at " << args.front() << endl;
 	args = command(args,base);
 	rs="";
 	if(args.size()>0) {
@@ -134,12 +126,12 @@ list<string> Window::command(list<string> args,Element* base) {
 			args.push_front(" ");
 			break;
 		//} else if(cmd.compare("")==0||cmd.compare("")==0) {
-		} else if(cmd.compare("load")==0||cmd.compare("open")==0) {
+		} else if(cmd.compare("load")==0||cmd.compare("read")==0) {
 			if(args.size()>0) {
 				load(args.front() );
 				args.pop_front();
 			}
-		} else if(cmd.compare("save")==0||cmd.compare("save")==0) {
+		} else if(cmd.compare("save")==0||cmd.compare("write")==0) {
 			if(args.size()>0) {
 				save(args.front(),base);
 				args.pop_front();
@@ -223,16 +215,38 @@ Element* Window::child(unsigned int i, Element* el) {
 	return NULL;
 }
 
-Element* Window::find_name(string n,int ignore=0) {
+Element* Window::find_name(string n) { return find_name(n,0); }
+Element* Window::find_name(string n,int ignore) { return find_name(n,ignore,this); }
+
+Element* Window::find_name(string n,int ignore, Element* base) {
 	string t;
 	Element* e;
-	for(auto iter=contents.begin(); iter!=contents.end(); ++iter) {
-		
+	for(auto iter=base->contents.begin(); iter!=base->contents.end(); ++iter) {
 		e= *iter;
 		t=e->name();
-		if(n.compare(t)==0) if(ignore>0) --ignore; else return *iter;
+		//cout << "Comparing " << n << " with " << t << "..." << endl;
+		if(n.compare(t)==0) {
+		  if(ignore>0) {
+		    ignore--; 
+		  } else {
+		    return e;
+		  }
+		}
+		e = find_name(n,ignore,e);
+		if( e!=NULL) {
+			t=e->name();
+			if(n.compare(t)==0) {
+				if(ignore>0) {
+					ignore--; 
+				} else {
+			    	return e;
+				}
+			}
+		}
+		
 	}
-	return NULL;
+	e=NULL;
+	return e;
 }
 
 
@@ -270,22 +284,20 @@ void Window::save(ofstream* file,Element* el,string lvl) {
 	bool isntwindow=true;
 	if(t.compare("") != 0) {
 		*file << lvl << "add " + t;
-		*file << lvl << " {" << endl;
+		*file << " " << "{" << endl;
 		lvl+="  ";
 		t=el->name();
-		if(t.compare("") != 0) {
-			*file << lvl << " name " + t << endl;
-		}
-		*file << lvl << " set cx " + to_string(el->cx()) << endl;
-		*file << lvl << " set cy " + to_string(el->cy()) << endl;
-		*file << lvl << " set width " + to_string(el->width()) << endl;
-		*file << lvl << " set height " + to_string(el->height()) << endl;
-		*file << lvl << setprecision(16) << " set angle " + to_string(el->angle()) << endl;
-		*file << lvl << setprecision(16) << " set arc " + to_string(el->arc()) << endl;
-		*file << lvl << " set thickness " + to_string(el->thickness()) << endl;
-		*file << lvl << " set sections " + to_string(el->sections()) << endl;
-		*file << lvl << " set subsections " + to_string(el->subsections()) << endl;
-		*file << lvl << " set color " + to_string(el->color()) << endl;
+		if(t.compare("") != 0) { *file << lvl << "name \"" + replace_all(t,"\"","\\\"") + "\"" << endl; }
+		*file << lvl << "set cx " << el->cx() << endl;
+		*file << lvl << "set cy " << el->cy() << endl;
+		*file << lvl << "set width " << el->width() << endl;
+		*file << lvl << "set height " << el->height() << endl;
+		*file << lvl << "set angle " << setprecision(16) << el->angle() << endl;
+		*file << lvl << "set arc " << setprecision(16) << el->arc() << endl;
+		*file << lvl << "set thickness " << el->thickness() << endl;
+		*file << lvl << "set sections " << el->sections() << endl;
+		*file << lvl << "set subsections " << el->subsections() << endl;
+		*file << lvl << "set color " << el->color() << endl;
 	} else {
 	  isntwindow=false;
 	}

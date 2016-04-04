@@ -20,11 +20,15 @@ along with Pivionics.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include <iostream>
 #include "core_elements.h"
+#include "circle.h"
 
 using namespace std;
 
 int main(int argc, char* argv[]) {
-	Element e;
-	cout << e.cx() << " " << e.cy() << " " << e.width() << " " << e.height() << "." << endl;
+	Window w;
+	w.register_creator("Circle",&fn_create_circle);
+	w.command("add Circle { set cx 360 set cy 360 set width 200 set height 200 set thickness 50 } add Circle { set width 170 set height 170 set thickness 50 }",&w);
+	Element* p = &w;
+	p->construct();
 	return 0;
 };
