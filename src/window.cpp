@@ -263,27 +263,37 @@ void Window::save(string fn,Element* el) {
 }
 
 void Window::save(ofstream* file,Element* el) {
-	string cmd="add " + el->type();
-	cmd+=" set cx " + to_string(el->cx());
-	cmd+=" set cy " + to_string(el->cy());
-	cmd+=" set width " + to_string(el->width());
-	cmd+=" set height " + to_string(el->height());
-	cmd+=" set angle " + to_string(el->angle());
-	cmd+=" set arc " + to_string(el->arc());
-	cmd+=" set thickness " + to_string(el->thickness());
-	cmd+=" set sections " + to_string(el->sections());
-	cmd+=" set subsections " + to_string(el->subsections());
-	cmd+=" set color " + to_string(el->color());
-	char* buf;
-	buf=new char[sizeof(cmd)];
-	cmd.copy(buf,sizeof(buf));
-	cout << "c_str is " << sizeof(buf) << " long: " << buf;
-	file->write(buf,sizeof(buf));
-	file->sync();
-	delete buf;
-	for(auto iter=el->contents.begin();iter!=el->contents.end();++iter) {
-		save(file,*iter);
+	save(file,el,"");
+}
+void Window::save(ofstream* file,Element* el,string lvl) {
+	string t = el->type();
+	bool isntwindow=true;
+	if(t.compare("") != 0) {
+		*file << lvl << "add " + t;
+		*file << lvl << " {" << endl;
+		lvl+="  ";
+		t=el->name();
+		if(t.compare("") != 0) {
+			*file << lvl << " name " + t << endl;
+		}
+		*file << lvl << " set cx " + to_string(el->cx()) << endl;
+		*file << lvl << " set cy " + to_string(el->cy()) << endl;
+		*file << lvl << " set width " + to_string(el->width()) << endl;
+		*file << lvl << " set height " + to_string(el->height()) << endl;
+		*file << lvl << setprecision(16) << " set angle " + to_string(el->angle()) << endl;
+		*file << lvl << setprecision(16) << " set arc " + to_string(el->arc()) << endl;
+		*file << lvl << " set thickness " + to_string(el->thickness()) << endl;
+		*file << lvl << " set sections " + to_string(el->sections()) << endl;
+		*file << lvl << " set subsections " + to_string(el->subsections()) << endl;
+		*file << lvl << " set color " + to_string(el->color()) << endl;
+	} else {
+	  isntwindow=false;
 	}
+	for(auto iter=el->contents.begin();iter!=el->contents.end();++iter) {
+		save(file,*iter,lvl);
+	}
+	lvl.erase(0,2);
+	if(isntwindow) *file << lvl << "}" << endl;
 }
 
 void Window::save(string fn) { save(fn,this); }

@@ -129,6 +129,7 @@ class Window: public Element {
 		void save(string);			// Save the window.
 		void save(string,Element*);			// Save the window.
 		void save(ofstream*,Element*);			// Save the window.
+		void save(ofstream*,Element*,string);			// Save the window.
 		void load(string);
 		void load(string,Element*);
 
