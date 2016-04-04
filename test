@@ -1,0 +1,18 @@
+add Element {
+  name BaseElement
+  cx = 100
+  set cy 100
+  add Element {
+    name LowerElement
+	color 0xFF0000FF
+  }
+  add Element {
+    name MiddleElement
+	color 0x00FF00FF
+  }
+  add Element {
+    name UpperElement
+	color 0x0000FFFF
+  }
+} 
+

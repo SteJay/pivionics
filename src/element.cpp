@@ -24,7 +24,7 @@ along with Pivionics.  If not, see <http://www.gnu.org/licenses/>.
 #include <list>
 #include <map>
 #include <cstdio>
-#include "structure.h"
+#include "core_elements.h"
 #include "stringsplit.h"
 
 using namespace std;

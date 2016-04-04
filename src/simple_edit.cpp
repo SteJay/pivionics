@@ -1,5 +1,5 @@
 /*
-simple_edit.cpp - 
+simple_edit.cpp - Simple commandline Window editor.
 Copyright (C) 2016 Stephen J Sullivan
 
 This file is a part of Pivionics.
@@ -23,7 +23,7 @@ along with Pivionics.  If not, see <http://www.gnu.org/licenses/>.
 #include <fstream>
 #include <string>
 #include <vector>
-#include "structure.h"
+#include "core_elements.h"
 #include "stringsplit.h"
 
 using namespace std;

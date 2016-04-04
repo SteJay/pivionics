@@ -19,7 +19,7 @@ along with Pivionics.  If not, see <http://www.gnu.org/licenses/>.
 
 */
 #include <iostream>
-#include "structure.h"
+#include "core_elements.h"
 
 using namespace std;
 

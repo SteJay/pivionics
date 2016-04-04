@@ -1,5 +1,5 @@
 /*
-structure.h - Class declarations (Base Classes) for Pivionics
+core_elements.h - Class declarations (Base Classes) for Pivionics
 Copyright (C) 2016 Stephen J Sullivan
 
 This file is a part of Pivionics
@@ -59,29 +59,29 @@ class Element {
 	
 		// For these simple getters and setters I won't bother prototyping and defining in seperate files
 		double cx(void) {return geometry[0];}
-		void cx(double d) {geometry[0]=d;}
 		double cy(void) {return geometry[1];}
-		void cy(double d) {geometry[1]=d;}
 		double width(void) {return geometry[2];}
-		void width(double d) {geometry[2]=d;}
 		double height(void) {return geometry[3];}
-		void height(double d) {geometry[3]=d;}
 		long double angle(void) {return angles[0];}
-		void angle(long double d) {angles[0]=d;}
 		long double arc(void) {return angles[1];}
-		void arc(long double d) {angles[1]=d;}
 		signed int thickness(void) {return thick;}
-		void thickness(signed int d) {thick=d;}
 		unsigned int sections(void) {return sect;}
-		void sections(unsigned int d) {sect=d;}
 		unsigned int subsections(void) {return subsect;}
-		void subsections(unsigned int d) {subsect=d;}
 		unsigned int color(void) {return col;}
-		void color(unsigned int d) {col=d;}
 		string text(void) {return txt;}
+		
+		void cx(double d) {geometry[0]=d;}
+		void cy(double d) {geometry[1]=d;}
+		void width(double d) {geometry[2]=d;}
+		void height(double d) {geometry[3]=d;}
+		void angle(long double d) {angles[0]=d;}
+		void arc(long double d) {angles[1]=d;}
+		void thickness(signed int d) {thick=d;}
+		void sections(unsigned int d) {sect=d;}
+		void subsections(unsigned int d) {subsect=d;}
+		void color(unsigned int d) {col=d;}
 		void text(string d) {txt=d;}
 		
-		void pack(string*);		
 
 		string type(void);// There's no direct type setting function; that's because it is set by the Window containing it
 		string name(void);// You can get the name in the same way...
@@ -126,11 +126,11 @@ class Window: public Element {
 
 		virtual string command(string,Element*);
 		virtual list<string> command(list<string>,Element*);
-//		virtual void load_custom(*ifstream, streampos); // Overload this to load additional data to the Element spec
 		void save(string);			// Save the window.
+		void save(string,Element*);			// Save the window.
+		void save(ofstream*,Element*);			// Save the window.
 		void load(string);
-		void xport(Element*, string);
-		Element* import(string);
+		void load(string,Element*);
 
 };
 
