@@ -19,6 +19,9 @@ along with Pivionics.  If not, see <http://www.gnu.org/licenses/>.
 
 */
 #include <iostream>
+#include <SDL2/SDL.h>
+
+#include <SDL2/SDL2_gfxPrimitives.h>
 #include "core_elements.h"
 #include "circle.h"
 
@@ -27,8 +30,63 @@ using namespace std;
 int main(int argc, char* argv[]) {
 	Window w;
 	w.register_creator("Circle",&fn_create_circle);
-	w.command("add Circle { set cx 360 set cy 360 set width 200 set height 200 set thickness 50 } add Circle { set width 170 set height 170 set thickness 50 }",&w);
+	w.command("add Circle { set width 400 set height 400 set thickness 100 set sections 180  }",&w);
 	Element* p = &w;
 	p->construct();
+
+	// Here we go with the SDL and the segmentation faults and the headaches...
+
+	SDL_Window* sdlwindow=NULL;
+	SDL_Surface* screensurf=NULL;
+	SDL_Renderer* renderer=NULL;
+	if( SDL_Init( SDL_INIT_VIDEO < 0 )) {
+		cout << "Failure initialising SDL: " << SDL_GetError() << endl;
+	} else {
+		sdlwindow=SDL_CreateWindow("Pivionics Display", 0, 0,0,0,SDL_WINDOW_FULLSCREEN|SDL_WINDOW_OPENGL );
+		if(sdlwindow==NULL) {
+			cout << "Failure creating sdlwindow." << SDL_GetError() << endl;
+		} else {
+			screensurf=SDL_GetWindowSurface(sdlwindow);
+			renderer=SDL_CreateRenderer(sdlwindow,-1,SDL_RENDERER_ACCELERATED);
+			// Now we have a sdlwindow surface :)
+
+			//SDL_FillRect( screensurf, NULL, SDL_MapRGB( screensurf->format, 0xFF, 0xFF, 0xFF ) );
+			bool runme=true;
+			unsigned int lasttime=0,currenttime,fcount;
+		    while (runme) {
+		        SDL_Event e;
+		        if (SDL_PollEvent(&e)) {
+		            if (e.type == SDL_QUIT) {
+						runme=false;
+		                break;
+		            } else {
+						switch( e.type ) {
+							case SDL_KEYDOWN:
+								switch(e.key.keysym.sym) {
+									case SDLK_ESCAPE:
+										runme=false;
+										break;
+								}
+								break;
+						}
+					}
+
+		        }
+				SDL_SetRenderDrawColor(renderer,0,0,0,255);
+				SDL_RenderClear(renderer);
+				filledTrigonColor( renderer,10,10,500,100,500,500,0xFF0000FF);
+				SDL_RenderPresent(renderer);
+				currenttime=SDL_GetTicks();
+				fcount++;
+				if( currenttime>lasttime+1000) {
+					cout << fcount << "Frames in " << currenttime-lasttime << "usec, so " << fcount/((currenttime-lasttime)/1000) << " fps." << endl;
+					lasttime=currenttime;
+					fcount=0;
+				}
+			}
+		}
+	}
+	SDL_DestroyWindow(sdlwindow);
+	SDL_Quit();
 	return 0;
 };

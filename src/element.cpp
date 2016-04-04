@@ -30,6 +30,14 @@ along with Pivionics.  If not, see <http://www.gnu.org/licenses/>.
 using namespace std;
 Element* create_element(void) { return new Element; }
 
+vector<string> Element::get_attrs(void) {
+	vector<string> v;
+	for(auto iter=attrs.begin(); iter!=attrs.end(); ++iter) {
+		v.push_back(iter->first);
+	}
+	return v;
+}
+
 Element::Element(void) {
 	geometry[0]=geometry[1]=0.0;
 	geometry[2]=geometry[3]=1.0;
@@ -43,7 +51,7 @@ Element::Element(void) {
 	parent=NULL; id_store=0; 
 }
 
-string Element::get_attr(const char* key) {
+string Element::get_attr(string key) {
 	string s=""; int n; char c[32];
 	if( attrs.find(key) != attrs.end() ) {
 		return attrs[key];
@@ -52,7 +60,7 @@ string Element::get_attr(const char* key) {
 	}
 }
 
-void Element::set_attr(const char* key, const char* value) {
+void Element::set_attr(string key, string value) {
 	attrs[key]=value;
 }
 

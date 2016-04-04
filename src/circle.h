@@ -8,4 +8,15 @@ class Circle: public Element {
 	public:
 		Circle();
 		virtual void construct(void);	
+//		virtual double mod_r(unsigned int);
+};
+
+class CircleScale: public Circle {
+	public:
+		virtual void construct(void);
+};
+
+class Spiral: public Circle {
+	public:
+		virtual void construct(void);
 };

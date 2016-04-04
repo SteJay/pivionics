@@ -155,6 +155,12 @@ void command(Window* window,string cmd) {
 			cout << "cx: " << current->cx() << ", cy: " << current->cy() << ", width: " << current->width() << ", height: " << current->height() << endl;
 			cout << "angle: " << current->angle() << ", arc: " << current->arc() << ", thickness: " << current->thickness() << endl;
 			cout << "sections: " << current->sections() << ", subsections: " << current->subsections() << ", color: " << hex << current->color() << endl;
+			vector<string> a=current->get_attrs();
+			string s;
+			for(auto iter=a.begin(); iter!=a.end(); ++iter) {
+				s=*iter;
+				cout << "Attribute: " << s << " = " << current->get_attr(s) << "" << endl;
+			}
 		} else {
 			cout << "Current Element is a window named (" << window->name() << ")" << endl;
 			cout << "DO NOT MESS WITH ANY PROPERTIES OF THE WINDOW, THEY ARE SET AUTOMATICALLY" << endl;

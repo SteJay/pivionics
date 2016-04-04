@@ -1,9 +1,11 @@
 CC := g++
 CCFLAGS := -std=c++11
-
+SDLFLAGS := -lSDL2 -lSDL2_gfx
 BINDIR := bin
 SRCDIR := src
 OBJDIR := obj
+
+
 
 all: $(BINDIR)/pivionics_main $(BINDIR)/simple_edit
 
@@ -20,7 +22,7 @@ $(OBJDIR)/circle.o: $(SRCDIR)/circle.cpp $(SRCDIR)/circle.h $(SRCDIR)/core_eleme
 	$(CC) $(CCFLAGS) -c $< -o $@
 
 $(BINDIR)/pivionics_main: $(SRCDIR)/main.cpp $(OBJDIR)/window.o $(OBJDIR)/element.o $(OBJDIR)/circle.o $(OBJDIR)/stringsplit.o
-	$(CC) $(CCFLAGS) $^ -o $@
+	$(CC) $(CCFLAGS) $(SDLFLAGS) $^ -o $@
 
 $(BINDIR)/simple_edit: $(SRCDIR)/simple_edit.cpp $(OBJDIR)/element.o $(OBJDIR)/window.o $(OBJDIR)/circle.o $(OBJDIR)/stringsplit.o
 	$(CC) $(CCFLAGS) $^ -o $@

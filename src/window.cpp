@@ -114,6 +114,15 @@ list<string> Window::command(list<string> args,Element* base) {
 				else if( item.compare("color")      ==0 ) base->color(stoul(val,nullptr,0));
 			}
 		} else if(cmd.compare("attr")==0||cmd.compare("attribute")==0) {
+			if(args.size()>1) {
+				string s,t;
+				s=args.front();
+				args.pop_front();
+				t=args.front();
+				args.pop_front();
+				base->attrs[s]=t;
+				cout << "Attribute set " << s << " to " << t << endl;
+			}
 		} else if(cmd.compare("{")==0||cmd.compare("{")==0) {
 			// Go into the last added element and perform following commands on that
 			if( last_added!=NULL) {
@@ -298,6 +307,9 @@ void Window::save(ofstream* file,Element* el,string lvl) {
 		*file << lvl << "set sections " << el->sections() << endl;
 		*file << lvl << "set subsections " << el->subsections() << endl;
 		*file << lvl << "set color " << el->color() << endl;
+		for(auto iter=el->attrs.begin(); iter != el->attrs.end();++iter) {
+			*file << lvl << "attr " << "\"" << replace_all(iter->first,"\"","\\\"") << " \"" << replace_all(iter->second,"\"","\\\"") << "\"" << endl;
+		}
 	} else {
 	  isntwindow=false;
 	}

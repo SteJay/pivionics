@@ -47,14 +47,15 @@ class Element {
 		unsigned int subsect;
 		unsigned int col;
 		string txt;
-		map<const char*,string> attrs;
+		map<string,string> attrs;
 		list<Element*> contents;
 	public:
 		Element* parent;
 		friend class Window; // The element store will need to set up the element with appropriate pointers
 		Element(void);
-		string get_attr(const char*);
-		void set_attr(const char*,const char*);
+		vector<string> get_attrs(void);
+		string get_attr(string);
+		void set_attr(string, string);
 	
 		// For these simple getters and setters I won't bother prototyping and defining in seperate files
 		double cx(void) {return geometry[0];}
@@ -87,6 +88,9 @@ class Element {
 		void name(string);// But you can also set it. No validation is done - this is just for human reference really
 		
 		virtual void construct(void); // Construct the point set according to the specified and parent geometry
+//		virtual void add_point(int,int);
+//		virtual void add_line(int,int,int,int);
+//		virtual void add_triangle(int,int,int,int,int,int);
 		//virtual void pre_construct(void);
 		//virtual void construct_loop(void);
 		//virtual void post_construct(void);
