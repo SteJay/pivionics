@@ -35,6 +35,7 @@ along with Pivionics.  If not, see <http://www.gnu.org/licenses/>.
 using namespace std;
 
 string Window::command(string cmd, Element* base) {
+	access.lock();
 	string rs="";
 	list<string> args = get_arguments(cmd);
 	//cout << "Got " << args.size() << " arguments, looking at " << args.front() << endl;
@@ -45,6 +46,7 @@ string Window::command(string cmd, Element* base) {
 			rs += *iter + " ";
 		}
 	}
+	access.unlock();
 	return rs;
 }
 
@@ -153,74 +155,93 @@ list<string> Window::command(list<string> args,Element* base) {
 	//cout << "Reached the end - lets try and return!" << endl;
 	return args;
 }
-
+/*
 Window::~Window() {
+	access.lock();
 	Element* e;
 	while( !contents.empty()){
 		e=contents.back();
 		contents.pop_back();
 		delete e;
 	}
-}
+	access.unlock();
+}*/
 int Window::children(Element* el) {
+	access.lock();
 	if( el == NULL ) {
+		access.unlock();
 		return static_cast<int>(contents.size());
 	} else {
+		access.unlock();
 		return static_cast<int>(el->contents.size());
 	}
 }
 list<string> Window::list_creators(void) {
+	access.lock();
 	list<string> l;
 	for(auto iter=creators.begin();iter!=creators.end();++iter) {
 		l.push_back(iter->first);
 	}
+	access.unlock();
 	return l;
 }
 
 list<Element*> Window::list_elements(Element* pel) {
+	access.lock();
 	list<Element*> c;
 	if( pel != NULL) {
 		c=pel->contents;
 	} else {
 		c=this->contents;
 	}
+	access.unlock();
 	return c;
 }
 
 Element* Window::parent(Element* el) {
+	access.lock();
 	if( el != NULL ) {
+		access.unlock();
 		return el->parent;
 	}
+	access.unlock();
 	return NULL;
 }
 
 Element* Window::sibling(unsigned int i, Element* el) {
+	access.lock();
 	if( el != NULL) {
 		Element* p=el->parent;
 		if( p!=NULL) {
 			auto iter=p->contents.begin();
 			advance(iter,i);
+			access.unlock();
 			return *iter;
 		} else {
 			auto iter=this->contents.begin();
 			advance(iter,i);
+			access.unlock();
 			return *iter;
 		}
 	}
+	access.unlock();
 	return NULL;
 }
 
 Element* Window::child(unsigned int i, Element* el) {
-	
+	access.lock();	
 	if( el != NULL) {
 		auto iter=el->contents.begin();
 		advance(iter,i);
+		access.unlock();
 		return *iter;
 	} else {
 		auto iter=this->contents.begin();
 		advance(iter,i);
+		access.unlock();
 		return *iter;
 	}
+	access.unlock();
 	return NULL;
 }
 
@@ -265,6 +286,7 @@ Element* Window::find_name(string n,int ignore, Element* base) {
 
 
 void Window::load(string fn,Element *el) {
+	access.lock();
 	ifstream file(fn,ios::in|ios::binary|ios::ate);
 	char* buf;
 	if(file.is_open()) {
@@ -276,6 +298,7 @@ void Window::load(string fn,Element *el) {
 	}
 	command(buf,el);
 	delete buf;
+	access.unlock();
 }
 void Window::load(string fn) { load(fn,this); }
 

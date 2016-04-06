@@ -1,6 +1,6 @@
 add Element {
   name "BaseElement"
-  set cx 100
+  set cx -42
   set cy 100
   set width 1
   set height 1
@@ -10,7 +10,6 @@ add Element {
   set sections 1
   set subsections 1
   set color 4294967295
-  attr test "This is a \"test\". Attributes can store 'anything'."
   add Element {
     name "LowerElement"
     set cx 0

@@ -22,7 +22,10 @@ along with Pivionics.  If not, see <http://www.gnu.org/licenses/>.
 #include <vector>
 #include <list>
 #include <map>
-
+#include <thread>
+#include <mutex>
+// I'm going to have to take this out at some stage :(
+// It won't do any harm for now.
 using namespace std;
 
 #ifndef PI
@@ -32,13 +35,80 @@ using namespace std;
 #ifndef STRUCTURE_H
 #define STRUCTURE_H
 
+
+/* The constants below are used to control which sides are drawn
+   given a set of points. These are used by the Display class
+   and (if used) the Compositor. 
+   
+   to explain them, consider four points:
+
+                 1    3
+                  2  4  
+
+*/
+const unsigned int RENDER_SIDE_OUTLINE=1; // Draw a line from 1-3
+const unsigned int RENDER_SIDE_INLINE=2;  // Draw a line from 2-4
+const unsigned int RENDER_SIDE_RADIAL=4;  // Draw a line from 1-2
+const unsigned int RENDER_SIDE_DIAGONAL=8;// Draw a line from 2-3
+const unsigned int RENDER_SIDE_INNER=16;  // Used with the above, instead draws from 1-4
+const unsigned int RENDER_FILL=32;   // Draw a filled polygon rather than lines, filling in the missing side
+const unsigned int RENDER_ALPHA=64;  // Inform the compositor this is not a solid surface and so it should not clip points underneath
+
+
+/*
+   Now for the obligatory and ridiculously long list of error constants *cough*
+*/
+
+// Display class errors
+const int ERR_DISPLAY_NO_WINDOW=-1;
+const int ERR_DISPLAY_NO_RENDERER=-2;
+const int ERR_DISPLAY_RENDERER_NOT_READY=-3;
+const int ERR_DISPLAY_INCONGRUENT_POINTSET=-4;
+
+
+/* X and Y points packed into one */
+struct Point {
+	double x;
+	double y;
+};
+struct Scale {
+	double x;
+	double y;
+};
+
+struct Origin {
+	Point position;
+	Scale scale;
+	long double angle;
+};
+
+/* The following struct is used to pass points to the compositor */
+struct PointSet {
+    int render_flags;				// This is a combination of the above RENDER_ flags
+    vector<Point> points; // A set of point pairs
+    unsigned int color;				// The colour of this polygon
+};
+
+/* The following struct is used by the compositor to pass points to the renderer */
+struct Rendergon {
+	Point points[4];
+	unsigned int point_count;
+	unsigned int color;
+	bool is_surface;
+	void* surface;
+};
+
+
+/* The Element class.*/
 class Element {
 	private:
 		int id_store;
 		string namestr;
 		string typestr;
 	protected:
-		vector<int> points;
+		mutex access;
+		vector<PointSet> points;
+		vector<PointSet> composed_points;
 		double geometry[4];
 		long double angles[2];
 		double scale[2];
@@ -49,10 +119,15 @@ class Element {
 		string txt;
 		map<string,string> attrs;
 		list<Element*> contents;
+		bool inherit_position;
+		bool inherit_angle;
+		bool inherit_scale;
 	public:
 		Element* parent;
 		friend class Window; // The element store will need to set up the element with appropriate pointers
+		friend class Display;
 		Element(void);
+		~Element();
 		vector<string> get_attrs(void);
 		string get_attr(string);
 		void set_attr(string, string);
@@ -87,13 +162,9 @@ class Element {
 		string name(void);// You can get the name in the same way...
 		void name(string);// But you can also set it. No validation is done - this is just for human reference really
 		
-		virtual void construct(void); // Construct the point set according to the specified and parent geometry
-//		virtual void add_point(int,int);
-//		virtual void add_line(int,int,int,int);
-//		virtual void add_triangle(int,int,int,int,int,int);
-		//virtual void pre_construct(void);
-		//virtual void construct_loop(void);
-		//virtual void post_construct(void);
+		virtual void compose(Origin);
+		
+		virtual void construct(void); // Construct the point set according to the specified geometry.
 };
 
 
@@ -109,7 +180,8 @@ class Window: public Element {
 		map<string,Element* (*)(void)> creators;
 	public:
 //		Window(void);
-		~Window();
+//		~Window();
+		friend class Display;
 		void register_creator(string n,Element* (*c)(void)) { creators[n]=c; }
 		list<string> list_creators(void);		// Used for user interface and debugging
 		list<Element*> list_elements(Element*); 	// Used for user interface and debugging
@@ -137,10 +209,57 @@ class Window: public Element {
 
 };
 
+class Renderer {
+	private:
+		mutex access;
+		bool dirty;
+		unsigned int fps_cap;
+		vector<Rendergon> points;
+		bool run;
+		unsigned int fps;
+		thread* runthread;
+	public:
+		~Renderer();
+		bool ready(void);	
+		virtual bool set_rendergons(const vector<Rendergon>*); // Called by Display or Compositor
+		virtual bool render_frame(void); // Called by render_loop
+		virtual bool render_loop(void);	 // The main function, called into its own thread.
+		virtual void render_run(void);
+		virtual void render_stop(void);
+		virtual void display_set( void* ); // Called by Display/Compositor when initialising
+		virtual void draw_point(unsigned int, const Point*); // called by render_frame
+		virtual void draw_line(unsigned int,const Point*, const Point*); // Called by render_frame
+		virtual void draw_triangle(unsigned int, const Point*, const Point*, const Point*); // Called by render_frame
+		virtual void draw_quad(unsigned int, const Point*, const Point*, const Point*, const Point*); // called by render_frame
+		virtual void draw_surface(void*,const Point*);
+		virtual void flip(void);
+		unsigned int get_fps();
+
+};
 
 class Display {
+	/* 
+	The display is usually a base class for the Compositor which performs
+	the donkey work of figuring out what to actually display. As such this
+	class provides the basic features to interact with the Window and Element
+	classes.
+	*/
+	private:
+		mutex access;
+	protected:
+		Window* wind;
+		Renderer* rend;
+		vector<PointSet> pointsets;
+		vector<Rendergon> rendergons;
+		double width;
+		double height;
 	public:
-	int placeholder;
+		~Display();
+		virtual int link_renderer(Renderer*);
+		virtual int link_window(Window*);
+	
+		virtual int compose(void);
+		virtual int flashout(void);
 };
 
 /* In addition to the main Display, Window, Window and Element classes, the following
@@ -218,6 +337,5 @@ Element* create_rotation(void);
 Element* create_offset(void); 
 Element* create_offset_rotation(void); 
 Element* create_static_container(void); 
-
 
 #endif

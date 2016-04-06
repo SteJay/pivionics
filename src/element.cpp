@@ -29,12 +29,24 @@ along with Pivionics.  If not, see <http://www.gnu.org/licenses/>.
 
 using namespace std;
 Element* create_element(void) { return new Element; }
+Element::~Element() {
+	access.lock();
+    Element* e;
+	while( !contents.empty()){
+		e=contents.back();
+		contents.pop_back();
+		delete e;
+	}
+	access.unlock();
+}
 
 vector<string> Element::get_attrs(void) {
+	access.lock();
 	vector<string> v;
 	for(auto iter=attrs.begin(); iter!=attrs.end(); ++iter) {
 		v.push_back(iter->first);
 	}
+	access.unlock();
 	return v;
 }
 
@@ -51,23 +63,84 @@ Element::Element(void) {
 	parent=NULL; id_store=0; 
 }
 
+
+void Element::compose(Origin origin) {
+	access.lock();
+	composed_points.clear();
+	if(!inherit_position) { origin.position.x=0.0; origin.position.y=0.0; }
+	if(!inherit_scale) { origin.scale.x=1.0; origin.scale.y=1.0; }
+	if(!inherit_angle) { origin.angle=0.0; }
+	// We need to add our own geometry to the origin...
+	origin.position.x+=geometry[0];
+	origin.position.y+=geometry[1];
+	origin.scale.x *= scale[0];
+	origin.scale.y *= scale[1];
+	origin.angle += angles[0];
+	Element* el;
+	for(auto iter=contents.begin(); iter!=contents.end();++iter) {
+		// Now we compose each child element...
+		el=*iter;
+		el->compose(origin);
+	}
+	// Now we compose this element as a whole
+	PointSet tps,tps2;
+	Point tp,tp2;
+	vector<PointSet> tpsv;
+	for(auto iter=points.begin(); iter!=points.end(); ++iter) {
+		// Iterate through our pointsets
+		tps=*iter;
+		tps2=tps;
+		tps2.points.clear();
+		for(auto piter=tps.points.begin(); piter!=tps.points.end(); ++piter) {
+			tp=*piter;
+			// First we scale...
+			tp.x=tp.x*origin.scale.x;
+			tp.y=tp.y*origin.scale.y;
+			// Then we rotate...
+			tp2.x=tp.x*cos(origin.angle)-tp.y*sin(origin.angle);
+			tp2.x=tp.x*sin(origin.angle)-tp.y*cos(origin.angle);
+			tp=tp2;
+			// Finally we translate...
+			tp.x+=origin.position.x;
+			tp.y+=origin.position.y;
+			tps2.points.push_back(tp);
+		}
+		tpsv.push_back(tps2);
+	}
+	// Include these points in our final composed_points
+	composed_points=tpsv;
+	for(auto iter=contents.begin(); iter!=contents.end();++iter) {
+		// And add the composed_points of our children that we worked out earlier
+		el = *iter;
+		composed_points.insert(composed_points.end(),el->composed_points.cbegin(),el->composed_points.cend());
+	}
+	access.unlock();
+	// Composition is good to go!
+}
+
 string Element::get_attr(string key) {
+	access.lock();
 	string s=""; int n; char c[32];
 	if( attrs.find(key) != attrs.end() ) {
+		access.unlock();
 		return attrs[key];
 	} else {
+		access.unlock();
 		return "unknown";
 	}
 }
 
 void Element::set_attr(string key, string value) {
+	access.lock();
 	attrs[key]=value;
+	access.unlock();
 }
 
 string Element::type(void) { return typestr; }
 string Element::name(void) { return namestr; }
 void Element::name(string n) { namestr=n; }
 Element* Window::add(string s,Element* el) {
+	access.lock();
 	if( creators.find(s)!=creators.end() ) {
 		Element* (*fn)();
 		fn=creators[s];
@@ -79,15 +152,19 @@ Element* Window::add(string s,Element* el) {
 		} else {
 			this->contents.push_back(e);
 		}
+		access.unlock();
 		return e;
 	}
+	access.unlock();
 	return NULL;
 }
 
 void Element::construct(void) {
+	access.lock();
 	Element* el;
 	for(auto iter=contents.begin(); iter!=contents.end(); ++iter) {
 		el=*iter;
 		el->construct();
 	}
+	access.unlock();
 }
