@@ -18,6 +18,7 @@ You should have received a copy of the GNU General Public License
 along with Pivionics.  If not, see <http://www.gnu.org/licenses/>.
 
 */
+#include <iostream>
 #include <cmath>
 #include <string>
 #include <vector>
@@ -28,7 +29,7 @@ along with Pivionics.  If not, see <http://www.gnu.org/licenses/>.
 #include "stringsplit.h"
 
 using namespace std;
-Element* create_element(void) { return new Element; }
+Element* fn_create_element(void) { return new Element; }
 Element::~Element() {
 	access.lock();
     Element* e;
@@ -65,7 +66,9 @@ Element::Element(void) {
 
 
 void Element::compose(Origin origin) {
+	cout << "Element::compose called..." << endl;
 	access.lock();
+	cout << "Element lock obtained..." << endl; 
 	composed_points.clear();
 	if(!inherit_position) { origin.position.x=0.0; origin.position.y=0.0; }
 	if(!inherit_scale) { origin.scale.x=1.0; origin.scale.y=1.0; }
@@ -114,7 +117,9 @@ void Element::compose(Origin origin) {
 		el = *iter;
 		composed_points.insert(composed_points.end(),el->composed_points.cbegin(),el->composed_points.cend());
 	}
+	cout << "Unlocking Element..." << endl;
 	access.unlock();
+	cout << "Lock released. Element has " << composed_points.size() << " composed points." << endl;
 	// Composition is good to go!
 }
 

@@ -17,6 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 */
 
+#include <iostream>
 #include <thread>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL2_gfxPrimitives.h>
@@ -60,9 +61,13 @@ unsigned int Renderer::get_fps(void) { return fps; }
 bool Renderer::render_frame(void) {
 	Rendergon thisgon;
 	bool renderedall=true;
+	cout << "Rendering frame, " << points.size() << " Rendergons to process." << endl;
+	int i=0;
 	for(auto iter=points.begin();iter!=points.end(); ++iter) {
+		i++;
 		// Iterate through points
 		thisgon=*iter;
+		cout << "Rendergon " << i << " has " << thisgon.point_count << " points." << endl; 
 		if(thisgon.is_surface) {
 			// TODO: Surface rendering
 		} else {
@@ -81,9 +86,11 @@ bool Renderer::render_frame(void) {
 					break;
 				default:
 					renderedall=false;
+					cout << "Rendergon fail: <1 or >4 points in rendergon." << endl;
 			}
 		}
 	}
+	cout << "Rendergons drawn." << endl;
 	return renderedall;
 }
 bool Renderer::render_loop(void) {
@@ -95,6 +102,7 @@ bool Renderer::render_loop(void) {
 		while(run) {
 			framecount++;
 			renderedall=render_frame();
+			flip();
 			if( SDL_GetTicks()-fpstime>1000 ) {
 				fps=framecount;
 				fpstime=SDL_GetTicks();
@@ -117,6 +125,17 @@ void Renderer::render_stop(void) {
 	runthread->join(); // Wait for the thread to quit
 }
 
+bool Renderer::set_rendergons(const vector<Rendergon>* rgv) {
+	access.lock();
+	points = *rgv;
+	access.unlock();
+	return true;
+}
+
+
+void Renderer::flip(void) {
+	
+}
 void Renderer::draw_point(unsigned int c, const Point* p) {
 #ifdef ENABLE_RENDER_AA_POINT
 #else
@@ -136,4 +155,7 @@ void Renderer::draw_quad(unsigned int c, const Point* p1, const Point* p2, const
 #ifdef ENABLE_RENDER_AA_QUAD
 #else
 #endif
+}
+void Renderer::draw_surface(void* surf,const Point* p) {
+
 }

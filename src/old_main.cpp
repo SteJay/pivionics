@@ -42,7 +42,7 @@ int main(int argc, char* argv[]) {
 	if( SDL_Init( SDL_INIT_VIDEO < 0 )) {
 		cout << "Failure initialising SDL: " << SDL_GetError() << endl;
 	} else {
-		sdlwindow=SDL_CreateWindow("Pivionics Display", 0, 0,0,0,SDL_WINDOW_FULLSCREEN|SDL_WINDOW_OPENGL );
+		sdlwindow=SDL_CreateWindow("Pivionics Compositor", 0, 0,0,0,SDL_WINDOW_FULLSCREEN|SDL_WINDOW_OPENGL );
 		if(sdlwindow==NULL) {
 			cout << "Failure creating sdlwindow." << SDL_GetError() << endl;
 		} else {

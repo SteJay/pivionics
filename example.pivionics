@@ -1,0 +1,18 @@
+new Circle {
+  set width 100
+  set thickness 50
+  set color 0xFF0000FF
+  set sections 8
+}
+new Circle {
+  set width 150
+  set thickness 25
+  set color 0x00FF00FF
+  set sections 8
+}
+new Circle {
+  set width 200
+  set thickness 25
+  set color 0x0000FFFF
+  set sections 8
+}

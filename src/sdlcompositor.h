@@ -1,5 +1,5 @@
 /*
-compositor.h - Compositor Class Definitions 
+sdlcompositor.h - SdlCompositor Class Definitions 
 Copyright (C) 2016 Stephen J Sullivan
 
 This file is a part of Pivionics.
@@ -21,7 +21,7 @@ along with Pivionics.  If not, see <http://www.gnu.org/licenses/>.
 
 /* 
 
-The Compositor is probably the most time-critical component of
+The SdlCompositor is probably the most time-critical component of
 Pivionics. The compositor is responsible for taking all the
 individual geometries given to it by active Window and Element
 class instances and arranging them as efficiently as possible for
@@ -33,8 +33,8 @@ should be used to draw them.
 
 The compositor, therefore, needs not only to colourise and format
 its arrays of points (indeed much of this should be done by the
-individual elements before they get transferred to the Compositor),
-and speed is of the essence as the Compositor needs to keep up
+individual elements before they get transferred to the SdlCompositor),
+and speed is of the essence as the SdlCompositor needs to keep up
 with the rendering.
 
 This note is more for my benefit in getting my thoughts together as
@@ -51,9 +51,9 @@ it is for you!
 #include "stringsplit.h"
 
 
-class Compositor:public Display {
+class SdlCompositor:public Compositor {
 /*
-	The Compositor Class
+	The SdlCompositor Class
 */
 	private:
 		vector<Point> compositepoints;

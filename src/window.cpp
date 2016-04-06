@@ -35,7 +35,6 @@ along with Pivionics.  If not, see <http://www.gnu.org/licenses/>.
 using namespace std;
 
 string Window::command(string cmd, Element* base) {
-	access.lock();
 	string rs="";
 	list<string> args = get_arguments(cmd);
 	//cout << "Got " << args.size() << " arguments, looking at " << args.front() << endl;
@@ -46,7 +45,6 @@ string Window::command(string cmd, Element* base) {
 			rs += *iter + " ";
 		}
 	}
-	access.unlock();
 	return rs;
 }
 
@@ -286,7 +284,6 @@ Element* Window::find_name(string n,int ignore, Element* base) {
 
 
 void Window::load(string fn,Element *el) {
-	access.lock();
 	ifstream file(fn,ios::in|ios::binary|ios::ate);
 	char* buf;
 	if(file.is_open()) {
@@ -298,7 +295,6 @@ void Window::load(string fn,Element *el) {
 	}
 	command(buf,el);
 	delete buf;
-	access.unlock();
 }
 void Window::load(string fn) { load(fn,this); }
 

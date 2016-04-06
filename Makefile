@@ -30,7 +30,7 @@ $(OBJDIR)/element.o: $(SRCDIR)/element.cpp $(SRCDIR)/core_elements.h
 $(OBJDIR)/circle.o: $(SRCDIR)/circle.cpp $(SRCDIR)/circle.h $(SRCDIR)/core_elements.h
 	$(CC) $(CCFLAGS) $(CCOPTS) -c $< -o $@
 
-$(OBJDIR)/display.o: $(SRCDIR)/display.cpp $(SRCDIR)/core_elements.h
+$(OBJDIR)/compositor.o: $(SRCDIR)/compositor.cpp $(SRCDIR)/core_elements.h
 	$(CC) $(CCFLAGS) $(CCOPTS) -c $< -o $@
 
 $(OBJDIR)/renderer.o: $(SRCDIR)/renderer.cpp $(SRCDIR)/core_elements.h
@@ -39,10 +39,10 @@ $(OBJDIR)/renderer.o: $(SRCDIR)/renderer.cpp $(SRCDIR)/core_elements.h
 $(OBJDIR)/sdlrenderer.o: $(SRCDIR)/sdlrenderer.cpp $(SRCDIR)/sdlrenderer.h $(SRCDIR)/core_elements.h
 	$(CC) $(CCFLAGS) $(CCOPTS) -c $< -o $@
 
-$(OBJDIR)/compositor.o: $(SRCDIR)/compositor.cpp $(SRCDIR)/compositor.h $(SRCDIR)/core_elements.h
+$(OBJDIR)/sdlcompositor.o: $(SRCDIR)/sdlcompositor.cpp $(SRCDIR)/sdlcompositor.h $(SRCDIR)/core_elements.h
 	$(CC) $(CCFLAGS) $(CCOPTS) -c $< $(SDLFLAGS) -o $@
 
-$(LIBDIR)/libcore.a: $(OBJDIR)/stringsplit.o $(OBJDIR)/window.o $(OBJDIR)/element.o $(OBJDIR)/circle.o $(OBJDIR)/display.o $(OBJDIR)/renderer.o $(OBJDIR)/compositor.o $(OBJDIR)/sdlrenderer.o
+$(LIBDIR)/libcore.a: $(OBJDIR)/stringsplit.o $(OBJDIR)/window.o $(OBJDIR)/element.o $(OBJDIR)/circle.o $(OBJDIR)/compositor.o $(OBJDIR)/renderer.o $(OBJDIR)/sdlcompositor.o $(OBJDIR)/sdlrenderer.o
 	$(AR) $(ARFLAGS) $@ $^
 
 $(BINDIR)/pivionics_main: $(SRCDIR)/main.cpp $(LIBDIR)/libcore.a

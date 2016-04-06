@@ -37,7 +37,7 @@ using namespace std;
 
 
 /* The constants below are used to control which sides are drawn
-   given a set of points. These are used by the Display class
+   given a set of points. These are used by the Compositor class
    and (if used) the Compositor. 
    
    to explain them, consider four points:
@@ -59,11 +59,11 @@ const unsigned int RENDER_ALPHA=64;  // Inform the compositor this is not a soli
    Now for the obligatory and ridiculously long list of error constants *cough*
 */
 
-// Display class errors
+// Compositor class errors
 const int ERR_DISPLAY_NO_WINDOW=-1;	// No window set for display
 const int ERR_DISPLAY_NO_RENDERER=-2; // No renderer set for display
 const int ERR_DISPLAY_RENDERER_NOT_READY=-3; // Renderer is not running or is not ready
-const int ERR_DISPLAY_INCONGRUENT_POINTSET=-4; // Display came across a pointset that did not make sense
+const int ERR_DISPLAY_INCONGRUENT_POINTSET=-4; // Compositor came across a pointset that did not make sense
 const int ERR_RENDERER_CANNOT_INIT=-100;	// Initialisation of display driver failed
 const int ERR_RENDERER_CANNOT_CREATE_WINDOW=-101; // Initialisation of display driver failed
 const int ERR_RENDERER_CANNOT_CREATE_SCREEN=-102; // Initialisation of display driver failed
@@ -128,7 +128,7 @@ class Element {
 	public:
 		Element* parent;
 		friend class Window; // The element store will need to set up the element with appropriate pointers
-		friend class Display;
+		friend class Compositor;
 		Element(void);
 		~Element();
 		vector<string> get_attrs(void);
@@ -175,16 +175,16 @@ class Window: public Element {
 /*
 	The Window class probably has most of the functionality out of all the elements in this file.
 	Windows should not be treated as elements (although they technically are), they are the root
-	container for a set of elements to be visible at once. Display classes will contain one or 
+	container for a set of elements to be visible at once. Compositor classes will contain one or 
 	more Windows which the user can switch between. The renderer will only update for the currently
-	visible window in the Display.
+	visible window in the Compositor.
 */
 	private:
 		map<string,Element* (*)(void)> creators;
 	public:
 //		Window(void);
 //		~Window();
-		friend class Display;
+		friend class Compositor;
 		void register_creator(string n,Element* (*c)(void)) { creators[n]=c; }
 		list<string> list_creators(void);		// Used for user interface and debugging
 		list<Element*> list_elements(Element*); 	// Used for user interface and debugging
@@ -226,12 +226,11 @@ class Renderer {
 		bool ready(void);	
 		virtual int init(void);
 		virtual int shutdown(void);
-		virtual bool set_rendergons(const vector<Rendergon>*); // Called by Display or Compositor
+		virtual bool set_rendergons(const vector<Rendergon>*); // Called by Compositor or Compositor
 		virtual bool render_frame(void); // Called by render_loop
 		virtual bool render_loop(void);	 // The main function, called into its own thread.
 		virtual void render_run(void);
 		virtual void render_stop(void);
-		virtual void display_set( void* ); // Called by Display/Compositor when initialising
 		virtual void draw_point(unsigned int, const Point*); // called by render_frame
 		virtual void draw_line(unsigned int,const Point*, const Point*); // Called by render_frame
 		virtual void draw_triangle(unsigned int, const Point*, const Point*, const Point*); // Called by render_frame
@@ -242,7 +241,7 @@ class Renderer {
 
 };
 
-class Display {
+class Compositor {
 	/* 
 	The display is usually a base class for the Compositor which performs
 	the donkey work of figuring out what to actually display. As such this
@@ -259,7 +258,7 @@ class Display {
 		double width;
 		double height;
 	public:
-		~Display();
+		~Compositor();
 		virtual int link_renderer(Renderer*);
 		virtual int link_window(Window*);
 	
@@ -267,7 +266,7 @@ class Display {
 		virtual int flashout(void);
 };
 
-/* In addition to the main Display, Window, Window and Element classes, the following
+/* In addition to the main Compositor, Window, Window and Element classes, the following
 		void add(Element*);
 		void add(Element*);
    container elements are essential. These provide a method to group various elements into one */
@@ -336,11 +335,11 @@ template <class T> T* element_creator(void) {
 	return t;
 };
 
-Element* create_element(void); 
-Element* create_container(void); 
-Element* create_rotation(void);
-Element* create_offset(void); 
-Element* create_offset_rotation(void); 
-Element* create_static_container(void); 
+Element* fn_create_element(void); 
+Element* fn_create_container(void); 
+Element* fn_create_rotation(void);
+Element* fn_create_offset(void); 
+Element* fn_create_offset_rotation(void); 
+Element* fn_create_static_container(void); 
 
 #endif

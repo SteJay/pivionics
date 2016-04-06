@@ -24,6 +24,7 @@ along with Pivionics.  If not, see <http://www.gnu.org/licenses/>.
 #include <string>
 #include <vector>
 #include "core_elements.h"
+#include "circle.h"
 #include "stringsplit.h"
 
 using namespace std;
@@ -274,6 +275,7 @@ int main (int argc, char* argv[]) {
 	string in_str;
 	//window.register_creator("Element",&create_element);
 	window.register_creator("Element",&element_creator<Element>); // Some sort of class casting conflict doing this for other types... We'll come back to this later.
+	window.register_creator("Circle",&fn_create_circle);
 	window.register_creator("Container",&create_container);
 	window.register_creator("Rotation",&create_rotation);
 	window.register_creator("Offset",&create_offset);
