@@ -21,6 +21,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "core_elements.h"
 using namespace std;
 
+Display::~Display() {
+
+}
+
 int Display::link_renderer(Renderer* r) {
 	access.lock();
 	while(!r->ready());

@@ -9,13 +9,12 @@ AR := ar
 
 ARFLAGS := rcs
 SDLFLAGS := -lSDL2 -lSDL2_gfx
-
 BINDIR := bin
 SRCDIR := src
 OBJDIR := obj
 LIBDIR := lib
 
-COREFLAGS := -lcore
+COREFLAGS := -lcore -pthread
 
 all: $(BINDIR)/pivionics_main $(BINDIR)/simple_edit
 
@@ -37,10 +36,13 @@ $(OBJDIR)/display.o: $(SRCDIR)/display.cpp $(SRCDIR)/core_elements.h
 $(OBJDIR)/renderer.o: $(SRCDIR)/renderer.cpp $(SRCDIR)/core_elements.h
 	$(CC) $(CCFLAGS) $(CCOPTS) -c $< -o $@
 
+$(OBJDIR)/sdlrenderer.o: $(SRCDIR)/sdlrenderer.cpp $(SRCDIR)/sdlrenderer.h $(SRCDIR)/core_elements.h
+	$(CC) $(CCFLAGS) $(CCOPTS) -c $< -o $@
+
 $(OBJDIR)/compositor.o: $(SRCDIR)/compositor.cpp $(SRCDIR)/compositor.h $(SRCDIR)/core_elements.h
 	$(CC) $(CCFLAGS) $(CCOPTS) -c $< $(SDLFLAGS) -o $@
 
-$(LIBDIR)/libcore.a: $(OBJDIR)/stringsplit.o $(OBJDIR)/window.o $(OBJDIR)/element.o $(OBJDIR)/circle.o $(OBJDIR)/display.o $(OBJDIR)/renderer.o $(OBJDIR)/compositor.o
+$(LIBDIR)/libcore.a: $(OBJDIR)/stringsplit.o $(OBJDIR)/window.o $(OBJDIR)/element.o $(OBJDIR)/circle.o $(OBJDIR)/display.o $(OBJDIR)/renderer.o $(OBJDIR)/compositor.o $(OBJDIR)/sdlrenderer.o
 	$(AR) $(ARFLAGS) $@ $^
 
 $(BINDIR)/pivionics_main: $(SRCDIR)/main.cpp $(LIBDIR)/libcore.a
