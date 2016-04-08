@@ -34,10 +34,32 @@ along with Pivionics.  If not, see <http://www.gnu.org/licenses/>.
 
 using namespace std;
 
+Window::Window(void) {
+    id_store=0;
+    namestr="Default Window";
+    typestr="Window";
+    geometry[0]=0.0;
+    geometry[1]=0.0;
+    geometry[2]=1.0;
+    geometry[3]=1.0;
+    angles[0]=0;
+    angles[1]=PI*2;
+    scale[0]=1.0;scale[1]=1.0; // OBSOLETE
+    thick=1;
+    sect=4;
+    subsect=1;
+    col=0xFFFFFFFF;
+    txt="";
+    inherit_position=false;
+    inherit_scale=false;
+    inherit_angle=false;
+    this->parent=NULL;
+}
+
 string Window::command(string cmd, Element* base) {
 	string rs="";
 	list<string> args = get_arguments(cmd);
-	//cout << "Got " << args.size() << " arguments, looking at " << args.front() << endl;
+	/////cout << "Got " << args.size() << " arguments, looking at " << args.front() << endl;
 	args = command(args,base);
 	rs="";
 	if(args.size()>0) {
@@ -53,15 +75,17 @@ list<string> Window::command(list<string> args,Element* base) {
 	// First we split the command apart to extract the different parts
 	if( base==NULL ) base=this;
 	Element* last_added=NULL;
-	//cout << "We're starting out the command bit with " << args.size() << " arguments..." << endl;
+	/////cout << "We're starting out the command bit with " << args.size() << " arguments..." << endl;
 	while( args.size()>0 ) {
 		cmd=args.front();
 		args.pop_front();
 		// Here's the horrible if elseif elsif times inifinity bit:
-	//cout << "Command is " << cmd << " and there are " << args.size() << " arguments remaining..." << endl;
+	/////cout << "Command is " << cmd << " and there are " << args.size() << " arguments remaining..." << endl;
 		if(cmd.compare("add")==0||cmd.compare("new")==0) {
 			if( args.size()>0 ) {
-				last_added=add(args.front(),base);
+				if(args.front().compare("Window")!=0){
+					last_added=add(args.front(),base);
+				}
 				args.pop_front();
 			} else {
 				args.push_front("ERROR: No element type given for add/new");
@@ -101,7 +125,7 @@ list<string> Window::command(list<string> args,Element* base) {
 					val=args.front();
 					args.pop_front();
 				}
-				//cout << "Setting " << item << " to " << val << "..." << endl;
+				/////cout << "Setting " << item << " to " << val << "..." << endl;
 				if(      item.compare("cx")         ==0 ) base->cx(stod(val,nullptr));
 				else if( item.compare("cy")         ==0 ) base->cy(stod(val,nullptr));
 				else if( item.compare("width")      ==0 ) base->width(stod(val,nullptr));
@@ -121,19 +145,20 @@ list<string> Window::command(list<string> args,Element* base) {
 				t=args.front();
 				args.pop_front();
 				base->attrs[s]=t;
-				cout << "Attribute set " << s << " to " << t << endl;
+				///cout << "Attribute set " << s << " to " << t << endl;
 			}
 		} else if(cmd.compare("{")==0||cmd.compare("{")==0) {
 			// Go into the last added element and perform following commands on that
 			if( last_added!=NULL) {
 				args = command(args,last_added);
-				//cout << "We returned successfully!" << endl;
+				/////cout << "We returned successfully!" << endl;
 				last_added=NULL;
 			}
 		} else if(cmd.compare("}")==0||cmd.compare("}")==0) {
-		    // Go back out of our element.
+			// Go back out of our element.
 			args.push_front(" ");
 			break;
+			
 		//} else if(cmd.compare("")==0||cmd.compare("")==0) {
 		} else if(cmd.compare("load")==0||cmd.compare("read")==0) {
 			if(args.size()>0) {
@@ -150,7 +175,7 @@ list<string> Window::command(list<string> args,Element* base) {
 			//return args;
 		}
 	}
-	//cout << "Reached the end - lets try and return!" << endl;
+	/////cout << "Reached the end - lets try and return!" << endl;
 	return args;
 }
 /*
@@ -196,7 +221,7 @@ list<Element*> Window::list_elements(Element* pel) {
 	return c;
 }
 
-Element* Window::parent(Element* el) {
+Element* Window::get_parent(Element* el) {
 	access.lock();
 	if( el != NULL ) {
 		access.unlock();
@@ -252,7 +277,7 @@ Element* Window::find_name(string n,int ignore, Element* base) {
 	for(auto iter=base->contents.begin(); iter!=base->contents.end(); ++iter) {
 		e= *iter;
 		t=e->name();
-		//cout << "Comparing " << n << " with " << t << "..." << endl;
+		/////cout << "Comparing " << n << " with " << t << "..." << endl;
 		if(n.compare(t)==0) {
 		  if(ignore>0) {
 		    ignore--; 
@@ -310,7 +335,7 @@ void Window::save(ofstream* file,Element* el) {
 void Window::save(ofstream* file,Element* el,string lvl) {
 	string t = el->type();
 	bool isntwindow=true;
-	if(t.compare("") != 0) {
+	if(t.compare("Window") != 0) {
 		*file << lvl << "add " + t;
 		*file << " " << "{" << endl;
 		lvl+="  ";
@@ -327,7 +352,7 @@ void Window::save(ofstream* file,Element* el,string lvl) {
 		*file << lvl << "set subsections " << el->subsections() << endl;
 		*file << lvl << "set color " << el->color() << endl;
 		for(auto iter=el->attrs.begin(); iter != el->attrs.end();++iter) {
-			*file << lvl << "attr " << "\"" << replace_all(iter->first,"\"","\\\"") << " \"" << replace_all(iter->second,"\"","\\\"") << "\"" << endl;
+			*file << lvl << "attr " << "" << iter->first << " \"" << replace_all(iter->second,"\"","\\\"") << "\"" << endl;
 		}
 	} else {
 	  isntwindow=false;

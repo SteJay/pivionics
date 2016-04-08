@@ -49,10 +49,10 @@ class SdlRenderer: public Renderer {
 	public:
 		virtual int init(void);
 		virtual int shutdown(void);
-        virtual void draw_point(unsigned int, const Point*); // called by render_frame
-        virtual void draw_line(unsigned int,const Point*, const Point*); // Called by render_frame
-        virtual void draw_triangle(unsigned int, const Point*, const Point*, const Point*); // Called by render_frame
-        virtual void draw_quad(unsigned int, const Point*, const Point*, const Point*, const Point*); // called by render_frame
-        virtual void draw_surface(void*,const Point*);
+        virtual void draw_point(unsigned int, const IntPoint*); // called by render_frame
+        virtual void draw_line(unsigned int,const IntPoint*, const IntPoint*); // Called by render_frame
+        virtual void draw_triangle(unsigned int, const IntPoint*, const IntPoint*, const IntPoint*); // Called by render_frame
+        virtual void draw_quad(unsigned int, const IntPoint*, const IntPoint*, const IntPoint*, const IntPoint*); // called by render_frame
+        virtual void draw_surface(void*,const IntPoint*);
 		virtual void flip(void);
 };

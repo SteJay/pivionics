@@ -25,10 +25,36 @@ along with Pivionics.  If not, see <http://www.gnu.org/licenses/>.
 #include <list>
 #include <map>
 #include <cstdio>
+#include <sys/stat.h>
+#include <unistd.h>
 #include "core_elements.h"
 #include "stringsplit.h"
 
 using namespace std;
+double normalise_angle( double d ) { d=fmod(d,PI*2); if(d<0.0) d+=PI*2; return d; }
+
+Element::Element() {
+	id_store=0;
+	namestr="Base Element";
+	typestr="Element";
+	geometry[0]=0.0;
+	geometry[1]=0.0;
+	geometry[2]=1.0;
+	geometry[3]=1.0;
+	angles[0]=0;
+	angles[1]=PI*2;
+	scale[0]=1.0;scale[1]=1.0; // OBSOLETE
+	thick=1;
+	sect=4;
+	subsect=1;
+	col=0xFFFFFFFF;
+	txt="";
+	inherit_position=false;
+	inherit_scale=false;
+	inherit_angle=false;
+	parent=NULL;
+}
+
 Element* fn_create_element(void) { return new Element; }
 Element::~Element() {
 	access.lock();
@@ -51,24 +77,11 @@ vector<string> Element::get_attrs(void) {
 	return v;
 }
 
-Element::Element(void) {
-	geometry[0]=geometry[1]=0.0;
-	geometry[2]=geometry[3]=1.0;
-	angles[0]=0.0;
-	angles[1]=PI*2;
-	thick=1.0;
-	sect=1;
-	subsect=1;
-	col=0xFFFFFFFF;
-	txt="";
-	parent=NULL; id_store=0; 
-}
-
-
 void Element::compose(Origin origin) {
-	cout << "Element::compose called..." << endl;
+//cout << "--------------------------" << endl;
+//cout << "Element::compose called..." << endl;
 	access.lock();
-	cout << "Element lock obtained..." << endl; 
+//cout << "Element lock obtained..." << endl; 
 	composed_points.clear();
 	if(!inherit_position) { origin.position.x=0.0; origin.position.y=0.0; }
 	if(!inherit_scale) { origin.scale.x=1.0; origin.scale.y=1.0; }
@@ -80,9 +93,11 @@ void Element::compose(Origin origin) {
 	origin.scale.y *= scale[1];
 	origin.angle += angles[0];
 	Element* el;
+//cout << "Origin set for this element: p(" << origin.position.x << "," << origin.position.y << "), s(" << origin.scale.x << "," << origin.scale.y << "), a(" << origin.angle << ")" << endl;
 	for(auto iter=contents.begin(); iter!=contents.end();++iter) {
 		// Now we compose each child element...
 		el=*iter;
+	//cout << "Composing Child..." << endl;
 		el->compose(origin);
 	}
 	// Now we compose this element as a whole
@@ -101,7 +116,7 @@ void Element::compose(Origin origin) {
 			tp.y=tp.y*origin.scale.y;
 			// Then we rotate...
 			tp2.x=tp.x*cos(origin.angle)-tp.y*sin(origin.angle);
-			tp2.x=tp.x*sin(origin.angle)-tp.y*cos(origin.angle);
+			tp2.y=tp.x*sin(origin.angle)+tp.y*cos(origin.angle);
 			tp=tp2;
 			// Finally we translate...
 			tp.x+=origin.position.x;
@@ -117,9 +132,9 @@ void Element::compose(Origin origin) {
 		el = *iter;
 		composed_points.insert(composed_points.end(),el->composed_points.cbegin(),el->composed_points.cend());
 	}
-	cout << "Unlocking Element..." << endl;
+//cout << "Unlocking Element..." << endl;
 	access.unlock();
-	cout << "Lock released. Element has " << composed_points.size() << " composed points." << endl;
+//cout << "Lock released. Element has " << composed_points.size() << " composed points." << endl;
 	// Composition is good to go!
 }
 

@@ -24,6 +24,8 @@ along with Pivionics.  If not, see <http://www.gnu.org/licenses/>.
 #include <map>
 #include <thread>
 #include <mutex>
+#include <cmath>
+#include <sys/stat.h>
 // I'm going to have to take this out at some stage :(
 // It won't do any harm for now.
 using namespace std;
@@ -35,7 +37,7 @@ using namespace std;
 #ifndef STRUCTURE_H
 #define STRUCTURE_H
 
-
+double normalise_angle(double);
 /* The constants below are used to control which sides are drawn
    given a set of points. These are used by the Compositor class
    and (if used) the Compositor. 
@@ -74,6 +76,12 @@ struct Point {
 	double x;
 	double y;
 };
+
+struct IntPoint {
+	int x;
+	int y;
+};
+
 struct Scale {
 	double x;
 	double y;
@@ -87,19 +95,24 @@ struct Origin {
 
 /* The following struct is used to pass points to the compositor */
 struct PointSet {
-    int render_flags;				// This is a combination of the above RENDER_ flags
+    unsigned int render_flags;				// This is a combination of the above RENDER_ flags
     vector<Point> points; // A set of point pairs
     unsigned int color;				// The colour of this polygon
 };
 
 /* The following struct is used by the compositor to pass points to the renderer */
 struct Rendergon {
-	Point points[4];
+	IntPoint points[4];
 	unsigned int point_count;
 	unsigned int color;
 	bool is_surface;
 	void* surface;
 };
+
+
+
+
+
 
 
 /* The Element class.*/
@@ -182,7 +195,7 @@ class Window: public Element {
 	private:
 		map<string,Element* (*)(void)> creators;
 	public:
-//		Window(void);
+		Window(void);
 //		~Window();
 		friend class Compositor;
 		void register_creator(string n,Element* (*c)(void)) { creators[n]=c; }
@@ -190,7 +203,7 @@ class Window: public Element {
 		list<Element*> list_elements(Element*); 	// Used for user interface and debugging
 		int children(Element*);
 		Element* add(string,Element*);	// Add an element as the given type
-		Element* parent(Element*);
+		Element* get_parent(Element*);
 		Element* sibling(unsigned int, Element*);
 		Element* child(unsigned int, Element*);
 		
@@ -231,11 +244,11 @@ class Renderer {
 		virtual bool render_loop(void);	 // The main function, called into its own thread.
 		virtual void render_run(void);
 		virtual void render_stop(void);
-		virtual void draw_point(unsigned int, const Point*); // called by render_frame
-		virtual void draw_line(unsigned int,const Point*, const Point*); // Called by render_frame
-		virtual void draw_triangle(unsigned int, const Point*, const Point*, const Point*); // Called by render_frame
-		virtual void draw_quad(unsigned int, const Point*, const Point*, const Point*, const Point*); // called by render_frame
-		virtual void draw_surface(void*,const Point*);
+		virtual void draw_point(unsigned int, const IntPoint*); // called by render_frame
+		virtual void draw_line(unsigned int,const IntPoint*, const IntPoint*); // Called by render_frame
+		virtual void draw_triangle(unsigned int, const IntPoint*, const IntPoint*, const IntPoint*); // Called by render_frame
+		virtual void draw_quad(unsigned int, const IntPoint*, const IntPoint*, const IntPoint*, const IntPoint*); // called by render_frame
+		virtual void draw_surface(void*,const IntPoint*);
 		virtual void flip(void);
 		unsigned int get_fps();
 
@@ -261,7 +274,7 @@ class Compositor {
 		~Compositor();
 		virtual int link_renderer(Renderer*);
 		virtual int link_window(Window*);
-	
+		void p2p( IntPoint*,Point* );
 		virtual int compose(void);
 		virtual int flashout(void);
 };

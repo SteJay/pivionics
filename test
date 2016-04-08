@@ -1,18 +1,28 @@
-add Element {
-  name BaseElement
-  cx = 100
-  set cy 100
-  add Element {
-    name LowerElement
-	color 0xFF0000FF
-  }
-  add Element {
-    name MiddleElement
-	color 0x00FF00FF
-  }
-  add Element {
-    name UpperElement
-	color 0x0000FFFF
-  }
-} 
-
+add Circle {
+  set cx 360
+  set cy 360
+  set width 700
+  set height 1
+  set angle 0
+  set arc 6.283185307179586
+  set thickness 25
+  set sections 9
+  set subsections 1
+  set color 4278190335
+  attr drawmode "torus"
+  attr offset_inner "false"
+}
+add Circle {
+  set cx 360
+  set cy 360
+  set width 1
+  set height 1
+  set angle 0
+  set arc 6.283185307179586
+  set thickness 1
+  set sections 360
+  set subsections 0
+  set color 16711935
+  attr drawmode "torus"
+  attr offset_inner "false"
+}

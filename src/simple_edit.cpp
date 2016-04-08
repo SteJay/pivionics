@@ -55,6 +55,12 @@ string get_tree_text( Element* el, string sofar="" ) {
 	return sofar;
 }
 
+
+
+
+
+
+
 void command(Window* window,string cmd) {
 	vector<string> args = split(cmd,L' ');
 	string c=args[0];
@@ -66,6 +72,7 @@ void command(Window* window,string cmd) {
 			current = current->parent;
 			cout << "Exited to parent element." << endl << endl;
 		}
+	} else if(c.compare("preview")==0 || c.compare("view")==0) {
 	} else if(c.compare("find")==0 || c.compare("search")==0) {
 		if(args.size() == 2) {
 			string s=args[1];
@@ -122,7 +129,7 @@ void command(Window* window,string cmd) {
 		cout << endl;
 	} else if(c.compare("siblings")==0||c.compare("sibl")==0) {
 		if( current != NULL) {
-			list<Element*> pell = window->list_elements(window->parent(current));
+			list<Element*> pell = window->list_elements(window->get_parent(current));
 			int i=0;
 			cout << "Siblings of current element in \"tuid:Type(Name)\" format:" << endl;
 			while(!pell.empty()) {
@@ -135,8 +142,8 @@ void command(Window* window,string cmd) {
 		}
 		cout << endl;
 	} else if(c.compare("parents")==0) {
-		Element* pa=window->parent(current);
-		Element* pu=window->parent(pa);
+		Element* pa=window->get_parent(current);
+		Element* pu=window->get_parent(pa);
 		if( current != NULL) {
 			list<Element*> pell = window->list_elements(pu);
 			int i=0;
@@ -281,6 +288,10 @@ int main (int argc, char* argv[]) {
 	window.register_creator("Offset",&create_offset);
 	window.register_creator("OffsetRotation",&create_offset_rotation);
 	window.register_creator("StaticContainer",&create_static_container);
+	if( argc>1 && file_exists(argv[1])) {
+		string fn=argv[1];
+		window.command("load " + fn,NULL);
+	}
 	while( in_str.compare("quit") != 0) {
 		cout << window.children(current) << " Children";
 		cout << ":[" << get_tree_text(current) << "]> ";
