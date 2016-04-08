@@ -57,8 +57,15 @@ bool Renderer::ready(void) {
 	// No lock was obtained
 	return false;
 }
-unsigned int Renderer::get_fps(void) { return fps; }
+unsigned int Renderer::get_fps(void) { 
+	access.lock();
+	unsigned int f = fps;
+	access.unlock();
+	return f; 
+}
 bool Renderer::render_frame(void) {
+	access.lock();
+	clear();
 	Rendergon thisgon;
 	bool renderedall=true;
 //cout << "Rendering frame, " << points.size() << " Rendergons to process." << endl;
@@ -91,6 +98,7 @@ bool Renderer::render_frame(void) {
 		}
 	}
 //cout << "Rendergons drawn." << endl;
+	access.unlock();
 	return renderedall;
 }
 bool Renderer::render_loop(void) {
@@ -133,9 +141,8 @@ bool Renderer::set_rendergons(const vector<Rendergon>* rgv) {
 }
 
 
-void Renderer::flip(void) {
-	
-}
+void Renderer::flip(void) { }
+void Renderer::clear(void) { }
 void Renderer::draw_point(unsigned int c, const IntPoint* p) {
 #ifdef ENABLE_RENDER_AA_POINT
 #else

@@ -28,7 +28,7 @@ int SdlRenderer::init(void) {
 		access.unlock();
 		return ERR_RENDERER_CANNOT_INIT;
 	}
-	sdl_window = SDL_CreateWindow("Pivionics Compositor", 0,0,720,720,/*SDL_WINDOW_FULLSCREEN|*/SDL_WINDOW_OPENGL );
+	sdl_window = SDL_CreateWindow("Pivionics Compositor", 0,0,600,600,/*SDL_WINDOW_FULLSCREEN|*/SDL_WINDOW_OPENGL|SDL_WINDOW_BORDERLESS );
 	if( sdl_window==NULL) {
 	//cout << "Failure creating SDL window: " << SDL_GetError() << endl;
 		access.unlock();
@@ -53,12 +53,17 @@ int SdlRenderer::init(void) {
 int SdlRenderer::shutdown(void) {
 	access.lock();
 	if(run) render_stop();
+	//SDL_FreeSurface(sdl_screen);
 	SDL_DestroyRenderer(sdl_renderer);
-	SDL_FreeSurface(sdl_screen);
 	SDL_DestroyWindow(sdl_window);
 	SDL_Quit();
 	access.unlock();
 	return 0;
+}
+
+void SdlRenderer::clear(void) {
+	SDL_SetRenderDrawColor(sdl_renderer,0,0,0,255);
+	SDL_RenderClear(sdl_renderer);
 }
 
 void SdlRenderer::flip(void){

@@ -55,4 +55,5 @@ class SdlRenderer: public Renderer {
         virtual void draw_quad(unsigned int, const IntPoint*, const IntPoint*, const IntPoint*, const IntPoint*); // called by render_frame
         virtual void draw_surface(void*,const IntPoint*);
 		virtual void flip(void);
+		virtual void clear(void);
 };

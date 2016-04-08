@@ -1,10 +1,14 @@
 #include <thread>
 #include <iostream>
+#include <sys/stat.h>
 #include <unistd.h>
 #include "core_elements.h"
 #include "sdlrenderer.h"
 #include "sdlcompositor.h"
 #include "circle.h"
+inline bool file_exists(const string& name) { struct stat buffer; return (stat (name.c_str(), &buffer) == 0); }
+
+
 int main(int argc, char* argv[] ) {
 	
 	// First, lets set up our window:

@@ -31,18 +31,28 @@ void Circle::construct(void) {
 	// Clear our current point set
 	points.clear();
 	int w,h; w=geometry[2]/2; h=geometry[3]/2;
-	double angle_per_sect=normalise_angle(angles[1]/sect);
-	double angle_per_subsect=normalise_angle(angle_per_sect/subsect);
+	double angle_per_sect=angles[1]/sect;
+//	double angle_per_subsect=normalise_angle(angle_per_sect/subsect);
 	double outer_radius = sqrt(w*w+h*h); // Ah, pythagoras....
 	double inner_radius = outer_radius - thick;
 	double theta;
-	double outer_length = (2*outer_radius*sin(PI/sect))/subsect;
-	double inner_length = (2*inner_radius*sin(PI/sect))/subsect;
+//	double outer_length = (2*outer_radius*sin((PI/sect)*(angles[1]/sect))/subsect);
+//	double inner_length = (2*inner_radius*sin((PI/sect)*(angles[1]/sect))/subsect);
+//	double outer_length = (2*outer_radius*sin((PI/sect))/subsect)*(angles[1]/(2*PI));
+//	double outer_length = (2*outer_radius*sin((PI/sect))/subsect)*(angles[1]/(2*PI));
 	theta=0;
-	Point inner_sect_point;
-	Point outer_sect_point;
+	Point inner_sect_point={inner_radius,0};
+	Point outer_sect_point={outer_radius,0};
+	Point next_inner_sect_point = { inner_radius*cos( angle_per_sect*1), inner_radius*sin( angle_per_sect*1) };
+	Point next_outer_sect_point = { outer_radius*cos( angle_per_sect*1), outer_radius*sin( angle_per_sect*1) };
+	double outer_length = sqrt( pow(next_outer_sect_point.x-outer_sect_point.x,2)+pow(next_outer_sect_point.y-outer_sect_point.y,2));
+	double inner_length = sqrt( pow(next_inner_sect_point.x-inner_sect_point.x,2)+pow(next_inner_sect_point.y-inner_sect_point.y,2));
 	Point inner_point,outer_point;
 	Point tpoint;
+
+//	outer_length+=outer_length*0.3076923076923077;
+//	inner_length+=inner_length*0.3076923076923077;
+
 
 	// Now iterate through each section
 	for( unsigned int n=0; n<sect; ++n) {
@@ -72,10 +82,10 @@ void Circle::construct(void) {
 //			theta = normalise_angle((angle_per_sect*n) + (PI/2) + (angle_per_subsect*m));
 			theta= normalise_angle(PI+(angle_per_sect*n) - ((PI-angle_per_sect)/2));
 			// Now generate the points for this subsection...
-			inner_point.x = round(inner_sect_point.x + (m*inner_length) * cos( theta ));	
-			inner_point.y = round(inner_sect_point.y + (m*inner_length) * sin( theta ));
-			outer_point.x = round(outer_sect_point.x + (m*outer_length) * cos( theta ));
-			outer_point.y = round(outer_sect_point.y + (m*outer_length) * sin( theta ));
+			inner_point.x = (inner_sect_point.x + (m*inner_length) * cos( theta ));	
+			inner_point.y = (inner_sect_point.y + (m*inner_length) * sin( theta ));
+			outer_point.x = (outer_sect_point.x + (m*outer_length) * cos( theta ));
+			outer_point.y = (outer_sect_point.y + (m*outer_length) * sin( theta ));
 			// Push the points onto our temporary poly
 		//cout << "\tCircle part: Theta: " << theta << "\t, Points: " << outer_point.x << "\t" << outer_point.y << "\t\t" << inner_point.x << "\t" << inner_point.y << endl;
 			tpointset.points.push_back(outer_point);

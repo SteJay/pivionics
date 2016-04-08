@@ -20,9 +20,4 @@ list<string> &split_to_list(const string&, char, list<string>&);
 list<string> split_to_list(const string&, char);
 list<string> get_arguments(const string);
 string replace_all(string,string,string);
-inline bool file_exists(const string& name) {
-    struct stat buffer;
-	return (stat (name.c_str(), &buffer) == 0);
-}
-
 #endif
