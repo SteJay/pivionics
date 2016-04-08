@@ -16,7 +16,7 @@ LIBDIR := lib
 
 COREFLAGS := -lcore -pthread
 
-all: $(BINDIR)/pivionics $(BINDIR)/piv_edit
+all: $(BINDIR)/pivionics $(BINDIR)/pivedit
 
 .optional: $(BINDIR)/simple_edit
 
@@ -53,7 +53,7 @@ $(BINDIR)/pivionics: $(SRCDIR)/main.cpp $(LIBDIR)/libcore.a
 #$(BINDIR)/simple_edit: $(SRCDIR)/simple_edit.cpp $(LIBDIR)/libcore.a
 #	$(CC) $(CCFLAGS) $(CCOPTS) $< $(COREFLAGS) -o $@
 
-$(BINDIR)/piv_edit: $(SRCDIR)/editor.cpp $(LIBDIR)/libcore.a
+$(BINDIR)/pivedit: $(SRCDIR)/editor.cpp $(LIBDIR)/libcore.a
 	$(CC) $(CCFLAGS) $(CCOPTS) $< $(SDLFLAGS) $(COREFLAGS) -o $@
 
 clean:

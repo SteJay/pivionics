@@ -20,6 +20,7 @@ along with Pivionics.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include <iostream>
 #include <sys/stat.h>
+#include <unistd.h>
 #include <iomanip>
 #include <fstream>
 #include <string>
@@ -38,6 +39,8 @@ inline bool file_exists(const string& name) { struct stat buffer; return (stat (
 //Element* create_offset_rotation(void) { return new OffsetRotation; }
 //Element* create_static_container(void) { return new StaticContainer; }
 
+SdlCompositor compositor;
+SdlRenderer renderer;
 
 Element* current=NULL;
 string get_tree_text( Element* el, string sofar="" ) {
@@ -68,6 +71,20 @@ void command(Window* window,string cmd) {
 			current = current->parent;
 			cout << "Exited to parent element." << endl << endl;
 		}
+	} else if(c.compare("fps")==0 || c.compare("perf")==0) {
+		unsigned int fpstot=0;
+		unsigned int max=20;
+		struct timespec t,t2;
+		for(int  i=0;i<20;++i) {
+			cout << ".";
+			cout.flush();
+			fpstot+=renderer.get_fps();
+			t.tv_sec=0;
+			t.tv_nsec=500000000;
+			nanosleep(&t,&t2);
+		} 
+		cout << endl;
+		cout << "Approximate Frame Rate: " << to_string(fpstot/20) << " fps." << endl <<endl;
 	} else if(c.compare("find")==0 || c.compare("search")==0) {
 		if(args.size() == 2) {
 			string s=args[1];
@@ -289,8 +306,6 @@ int main (int argc, char* argv[]) {
 		string fn=argv[1];
 		window.command("load " + fn,NULL);
 	}
-	SdlCompositor compositor;
-	SdlRenderer renderer;
 	renderer.render_run();
 	compositor.link_window(&window);
 	compositor.link_renderer(&renderer);
@@ -298,7 +313,6 @@ int main (int argc, char* argv[]) {
 		window.construct();
 		compositor.compose();
 		//cout << current->type() << "(" << current->name() << "), " << window.children(current) << " Children. " << 
-		cout << to_string(renderer.get_fps()) << "fps" << endl;
 		cout << get_tree_text(current) << "> ";
 		cin.getline(chrbuf,sizeof(chrbuf));
 		in_str=chrbuf;

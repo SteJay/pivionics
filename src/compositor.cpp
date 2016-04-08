@@ -158,7 +158,7 @@ int Compositor::compose(void) {
 #endif
 				//cout << "Compositor completed conversion." << endl;
 					///cout << "Compositor now culling unneccesary points of " << rg.point_count << "..." << endl;
-/*					// Now we cull any points which are repeated, reducing a quad to a triangle or a triangle to a line:
+					// Now we cull any points which are repeated, reducing a quad to a triangle or a triangle to a line:
 					for(int i=0;i<rg.point_count-1;i++) {
 						///cout << "Testing point " << i << " for culling..." << endl;
 						if(rg.points[i].x==rg.points[i+1].x&&rg.points[i].y==rg.points[i+1].y) {
@@ -174,7 +174,7 @@ int Compositor::compose(void) {
 							///cout << "Point " << i << " doesn't need culling." << endl;
 						}
 					//cout << "Compositor reduced Rendergon to " << rg.point_count << " points." << endl;
-					}*/
+					}
 					if(rg.point_count>0) {
 						rgv.push_back(rg); // Add the Rendergon if it has more than one point
 					//cout << "\tCompositor pushed rendergon to vector, " << rg.point_count << " points starting at " << rg.points[0].x << ", "<<rg.points[0].y << endl;
