@@ -40,7 +40,7 @@ int SdlRenderer::init(void) {
 		access.unlock();
 		return ERR_RENDERER_CANNOT_CREATE_SCREEN;
 	}
-    sdl_renderer=SDL_CreateRenderer(sdl_window,-1,SDL_RENDERER_ACCELERATED);
+    sdl_renderer=SDL_CreateRenderer(sdl_window,-1,SDL_RENDERER_ACCELERATED|SDL_RENDERER_TARGETTEXTURE);
 	if(sdl_renderer==NULL) {
 	//cout << "Failure creating SDL renderer: " << SDL_GetError() << endl;
 		access.unlock();
@@ -70,32 +70,31 @@ void SdlRenderer::flip(void){
 	SDL_RenderPresent(sdl_renderer);
 }
 
-void SdlRenderer::draw_point(unsigned int c, const IntPoint* p) {
+void SdlRenderer::draw_point(unsigned int *c, const IntPoint* p) {
 #ifdef ENABLE_RENDER_AA_POINT
-	// NOT IMPLIMENTED YET!
-	lineColor(sdl_renderer,p->x,p->y,p->x,p->y,c);
+	aalineColor(sdl_renderer,p->x,p->y,p->x,p->y,*c);
 #else
-	// NOT IMPLIMENTED YET!
-	lineColor(sdl_renderer,p->x,p->y,p->x,p->y,c);
+	lineColor(sdl_renderer,p->x,p->y,p->x,p->y,*c);
 #endif
 }
-void SdlRenderer::draw_line(unsigned int c, const IntPoint* p1, const IntPoint* p2) {
+void SdlRenderer::draw_line(unsigned int *c, const IntPoint* p1, const IntPoint* p2) {
 #ifdef ENABLE_RENDER_AA_LINE
-	aalineColor(sdl_renderer,p1->x,p1->y,p2->x,p2->y,c);
+	aalineColor(sdl_renderer,p1->x,p1->y,p2->x,p2->y,*c);
 #else
-	lineColor(sdl_renderer,p1->x,p1->y,p2->x,p2->y,c);
+	lineColor(sdl_renderer,p1->x,p1->y,p2->x,p2->y,*c);
 #endif
 }
-void SdlRenderer::draw_triangle(unsigned int c, const IntPoint* p1, const IntPoint* p2, const IntPoint* p3) {
-	filledTrigonColor(sdl_renderer,p1->x,p1->y,p2->x,p2->y,p3->x,p3->y,c);
+void SdlRenderer::draw_triangle(unsigned int *c, const IntPoint* p1, const IntPoint* p2, const IntPoint* p3) {
+	filledTrigonColor(sdl_renderer,p1->x,p1->y,p2->x,p2->y,p3->x,p3->y,*c);
 #ifdef ENABLE_RENDER_AA_TRIANGLE
 	aatrigonColor(sdl_renderer,p1->x,p1->y,p2->x,p2->y,p3->x,p3->y,c);
 #endif
 }
-void SdlRenderer::draw_quad(unsigned int c, const IntPoint* p1, const IntPoint* p2, const IntPoint* p3, const IntPoint* p4) {
+void SdlRenderer::draw_quad(unsigned int *c, const IntPoint* p1, const IntPoint* p2, const IntPoint* p3, const IntPoint* p4) {
+//	filledTrigonColor(sdl_renderer,p1->x,p1->y,p2->x,p2->y,p3->x,p3->y,*c);
 	short vx[4]={p1->x,p2->x,p3->x,p4->x};
 	short vy[4]={p1->y,p2->y,p3->y,p4->y};
-	filledPolygonColor(sdl_renderer,vx,vy,4,c);
+	filledPolygonColor(sdl_renderer,vx,vy,4,*c);
 #ifdef ENABLE_RENDER_AA_QUAD
 	// NOT IMPLIMENTED YET!
 #endif

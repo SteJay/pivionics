@@ -100,7 +100,7 @@ int Compositor::compose(void) {
 				unsigned int render_flags=nowset.render_flags;
 				iino=0;
 				
-				auto piter=nowset.points.begin(); // Get Iterator
+			auto piter=nowset.points.begin(); // Get Iterator
 				// Below we get the first two points...
 				for(;piter!=nowset.points.end()&&iino<2; ++piter) { wpoints[iino+2]=*piter; ++iino; }
 				// Now we loop through our iterator...
@@ -111,44 +111,45 @@ int Compositor::compose(void) {
 					}
 				//cout << "\t\tTempQuad:\n"; for(int i=0;i<=3;i++) {//cout <<"\t\t" << wpoints[i].x-360 << ", " <<wpoints[i].y-360 << endl; }
 					rg.point_count=0;
-					if(render_flags&RENDER_SIDE_OUTLINE>0) {
-					//cout << "\t\tRENDER_SIDE_OUTLINE selected" << endl;
+				//cout << render_flags;
+					if((render_flags & RENDER_SIDE_OUTLINE) > 0) {
+				//cout << "\t\tRENDER_SIDE_OUTLINE selected" << endl;
 						p2p(&rg.points[0],&wpoints[0]);
 						p2p(&rg.points[1],&wpoints[2]);
-						if(render_flags&RENDER_FILL>0) {
-						//cout << "\t\tRENDER_FILL" << endl;
-							if( render_flags&RENDER_SIDE_INLINE>0) {
-							//cout << "\t\tRENDER_SIDE_INLINE" << endl;
+						if((render_flags&RENDER_FILL)>0) {
+					//cout << "\t\tRENDER_FILL" << endl;
+							if( (render_flags&RENDER_SIDE_INLINE)>0) {
+						//cout << "\t\tRENDER_SIDE_INLINE" << endl;
 								p2p(&rg.points[2],&wpoints[3]);
 								p2p(&rg.points[3],&wpoints[1]);
 								rg.point_count=4;
 								rg.is_surface=false;
-							} else if( render_flags&(RENDER_SIDE_DIAGONAL|RENDER_SIDE_INNER) >0 ) {
-							//cout << "\t\tRENDER_SIDE_DIAGONAL|RENDER_SIDE_INNER" << endl;
+							} else if( (render_flags&(RENDER_SIDE_DIAGONAL|RENDER_SIDE_INNER)) >0 ) {
+						//cout << "\t\tRENDER_SIDE_DIAGONAL|RENDER_SIDE_INNER" << endl;
 								p2p(&rg.points[2],&wpoints[3]);
 								rg.point_count=3;
 								rg.is_surface=false;
-							} else if( render_flags&(RENDER_SIDE_DIAGONAL) >0 ) {
-							//cout << "\t\tRENDER_SIDE_DIAGONAL" << endl;
+							} else if(( render_flags&(RENDER_SIDE_DIAGONAL)) >0 ) {
+						//cout << "\t\tRENDER_SIDE_DIAGONAL" << endl;
 								p2p(&rg.points[2],&wpoints[1]);
 								rg.point_count=3;
 								rg.is_surface=false;
 							}
 						} else { // unfilled
-						//cout << "\t\tUNFILLED" << endl;
+					//cout << "\t\tUNFILLED" << endl;
 							rg.point_count=2;
 							rg.is_surface=false;
 						}
-					} else if(render_flags&RENDER_SIDE_RADIAL>0) {
-					//cout << "\t\tRENDER_SIDE_RADIAL" << endl;
+					} else if((render_flags&RENDER_SIDE_RADIAL)>0) {
+				//cout << "\t\tRENDER_SIDE_RADIAL" << endl;
 						p2p(&rg.points[0],&wpoints[0]);
 						p2p(&rg.points[1],&wpoints[1]);
 						rg.point_count=2;
 						rg.is_surface=false;
 					} else {
-					//cout << "\t\tComposing a single zero Point!" << endl;
+				//cout << "\t\tComposing a single zero Point!" << endl;
 						p2p(&rg.points[0],&wpoints[0]);
-						rg.point_count=0;
+						rg.point_count=1;
 						rg.is_surface=false;
 					}
 #ifdef REVERSE_COLOR_ORDER
@@ -156,28 +157,18 @@ int Compositor::compose(void) {
 #else
 					rg.color=nowset.color;
 #endif
-				//cout << "Compositor completed conversion." << endl;
-					///cout << "Compositor now culling unneccesary points of " << rg.point_count << "..." << endl;
-					// Now we cull any points which are repeated, reducing a quad to a triangle or a triangle to a line:
-					for(int i=0;i<rg.point_count-1;i++) {
-						///cout << "Testing point " << i << " for culling..." << endl;
+/*					for(int i=0;i<rg.point_count-1;i++) {
 						if(rg.points[i].x==rg.points[i+1].x&&rg.points[i].y==rg.points[i+1].y) {
-						//cout << "Point " << i << " needs culling: " << rg.points[i].x << "==" << rg.points[i+1].x<<" && " << rg.points[i].y << "==" << rg.points[i+1].y<<"..." <<endl;
 							for(int j=i+1; j<=rg.point_count; j++) { // Shuffle all points forward
-								///cout << j << ">" << j-1 <<endl;
 								rg.points[j-1]=rg.points[j];
 							}
-							///cout << endl << "Points culled." << endl;
 							rg.point_count--;
 							i--;
 						} else {
-							///cout << "Point " << i << " doesn't need culling." << endl;
 						}
-					//cout << "Compositor reduced Rendergon to " << rg.point_count << " points." << endl;
-					}
+					}*/
 					if(rg.point_count>0) {
 						rgv.push_back(rg); // Add the Rendergon if it has more than one point
-					//cout << "\tCompositor pushed rendergon to vector, " << rg.point_count << " points starting at " << rg.points[0].x << ", "<<rg.points[0].y << endl;
 					}
 				} // end while loop through individual points
 				///cout << "Compositor completed culling process." << endl;

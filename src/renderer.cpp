@@ -19,6 +19,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <iostream>
 #include <thread>
+#include <chrono>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL2_gfxPrimitives.h>
 #include "core_elements.h"
@@ -80,16 +81,16 @@ bool Renderer::render_frame(void) {
 		} else {
 			switch(thisgon.point_count) {
 				case 1:
-					draw_point(thisgon.color,&thisgon.points[0]);
+					draw_point(&thisgon.color,&thisgon.points[0]);
 					break;
 				case 2:
-					draw_line(thisgon.color,&thisgon.points[0],&thisgon.points[1]);
+					draw_line(&thisgon.color,&thisgon.points[0],&thisgon.points[1]);
 					break;
 				case 3:
-					draw_triangle(thisgon.color,&thisgon.points[0], &thisgon.points[1], &thisgon.points[2]);
+					draw_triangle(&thisgon.color,&thisgon.points[0], &thisgon.points[1], &thisgon.points[2]);
 					break;
 				case 4:
-					draw_quad(thisgon.color,&thisgon.points[0], &thisgon.points[1], &thisgon.points[2], &thisgon.points[3]);
+					draw_quad(&thisgon.color,&thisgon.points[0], &thisgon.points[1], &thisgon.points[2], &thisgon.points[3]);
 					break;
 				default:
 					renderedall=false;
@@ -112,10 +113,13 @@ bool Renderer::render_loop(void) {
 			renderedall=render_frame();
 			flip();
 			if( SDL_GetTicks()-fpstime>1000 ) {
+				access.lock();
 				fps=framecount;
+				access.unlock();
 				fpstime=SDL_GetTicks();
 				framecount=0;
 			}
+				
 		}
 		return renderedall;
 	} else {
@@ -143,22 +147,22 @@ bool Renderer::set_rendergons(const vector<Rendergon>* rgv) {
 
 void Renderer::flip(void) { }
 void Renderer::clear(void) { }
-void Renderer::draw_point(unsigned int c, const IntPoint* p) {
+void Renderer::draw_point(unsigned int *c, const IntPoint* p) {
 #ifdef ENABLE_RENDER_AA_POINT
 #else
 #endif
 }
-void Renderer::draw_line(unsigned int c, const IntPoint* p1, const IntPoint* p2) {
+void Renderer::draw_line(unsigned int *c, const IntPoint* p1, const IntPoint* p2) {
 #ifdef ENABLE_RENDER_AA_LINE
 #else
 #endif
 }
-void Renderer::draw_triangle(unsigned int c, const IntPoint* p1, const IntPoint* p2, const IntPoint* p3) {
+void Renderer::draw_triangle(unsigned int  *c, const IntPoint* p1, const IntPoint* p2, const IntPoint* p3) {
 #ifdef ENABLE_RENDER_AA_TRIANGLE
 #else
 #endif
 }
-void Renderer::draw_quad(unsigned int c, const IntPoint* p1, const IntPoint* p2, const IntPoint* p3, const IntPoint* p4) {
+void Renderer::draw_quad(unsigned int *c, const IntPoint* p1, const IntPoint* p2, const IntPoint* p3, const IntPoint* p4) {
 #ifdef ENABLE_RENDER_AA_QUAD
 #else
 #endif

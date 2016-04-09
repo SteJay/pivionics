@@ -1,0 +1,15 @@
+add Circle {
+  name "Segment"
+  set cx 300
+  set cy 300
+  set width 580
+  set height 1
+  set angle 0.034907
+  set arc 0.977384
+  set thickness 90
+  set sections 8
+  set subsections 1
+  set color 4278190335
+  attr drawmode "torus"
+  attr offset_inner "false"
+}

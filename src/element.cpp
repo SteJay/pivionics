@@ -52,10 +52,53 @@ Element::Element() {
 	inherit_position=false;
 	inherit_scale=false;
 	inherit_angle=false;
+	compose_order=COMPOSE_ORDER_SRT; // Scale, Rotate, Translate
+	parent=NULL;
+}
+Container::Container() {
+	name("");
+	geometry[0]=0.0;
+	geometry[1]=0.0;
+	geometry[2]=1.0;
+	geometry[3]=1.0;
+	angles[0]=0;
+	angles[1]=PI*2;
+	scale[0]=1.0;scale[1]=1.0; // OBSOLETE
+	thick=1;
+	sect=4;
+	subsect=1;
+	col=0xFFFFFFFF;
+	txt="";
+	inherit_position=false;
+	inherit_scale=false;
+	inherit_angle=false;
+	compose_order=COMPOSE_ORDER_SRT; // Scale, Rotate, Translate
+	parent=NULL;
+}
+Rotation::Rotation() {
+	name("");
+	geometry[0]=0.0;
+	geometry[1]=0.0;
+	geometry[2]=1.0;
+	geometry[3]=1.0;
+	angles[0]=0;
+	angles[1]=PI*2;
+	scale[0]=1.0;scale[1]=1.0; // OBSOLETE
+	thick=1;
+	sect=4;
+	subsect=1;
+	col=0xFFFFFFFF;
+	txt="";
+	inherit_position=true;
+	inherit_scale=true;
+	inherit_angle=true;
+	compose_order=COMPOSE_ORDER_STR; // Scale, Translate, Rotate
 	parent=NULL;
 }
 
 Element* fn_create_element(void) { return new Element; }
+Element* fn_create_container(void) { return new Container; }
+Element* fn_create_rotation(void) { return new Rotation; }
 Element::~Element() {
 	access.lock();
     Element* e;
@@ -76,28 +119,21 @@ vector<string> Element::get_attrs(void) {
 	access.unlock();
 	return v;
 }
-
 void Element::compose(Origin origin) {
-//cout << "--------------------------" << endl;
-//cout << "Element::compose called..." << endl;
 	access.lock();
-//cout << "Element lock obtained..." << endl; 
 	composed_points.clear();
 	if(!inherit_position) { origin.position.x=0.0; origin.position.y=0.0; }
 	if(!inherit_scale) { origin.scale.x=1.0; origin.scale.y=1.0; }
 	if(!inherit_angle) { origin.angle=0.0; }
-	// We need to add our own geometry to the origin...
 	origin.position.x+=geometry[0];
 	origin.position.y+=geometry[1];
 	origin.scale.x *= scale[0];
 	origin.scale.y *= scale[1];
 	origin.angle += angles[0];
 	Element* el;
-//cout << "Origin set for this element: p(" << origin.position.x << "," << origin.position.y << "), s(" << origin.scale.x << "," << origin.scale.y << "), a(" << origin.angle << ")" << endl;
 	for(auto iter=contents.begin(); iter!=contents.end();++iter) {
 		// Now we compose each child element...
 		el=*iter;
-	//cout << "Composing Child..." << endl;
 		el->compose(origin);
 	}
 	// Now we compose this element as a whole
@@ -111,16 +147,29 @@ void Element::compose(Origin origin) {
 		tps2.points.clear();
 		for(auto piter=tps.points.begin(); piter!=tps.points.end(); ++piter) {
 			tp=*piter;
-			// First we scale...
-			tp.x=tp.x*origin.scale.x;
-			tp.y=tp.y*origin.scale.y;
-			// Then we rotate...
-			tp2.x=tp.x*cos(origin.angle)-tp.y*sin(origin.angle);
-			tp2.y=tp.x*sin(origin.angle)+tp.y*cos(origin.angle);
-			tp=tp2;
-			// Finally we translate...
-			tp.x+=origin.position.x;
-			tp.y+=origin.position.y;
+			for(int i=0;i<3;++i) {
+				cout << "trying " << i << " as " << ( (compose_order >> (i*2)) & 3) << endl;
+				switch( (compose_order >> (i*2)) & 3){
+				case 1:
+					// Scale...
+					tp.x=tp.x*origin.scale.x;
+					tp.y=tp.y*origin.scale.y;
+					break;
+				case 3:
+					// Translate...
+					tp.x+=origin.position.x;
+					tp.y+=origin.position.y;
+					break;
+				case 2:
+					// Rotate...
+					tp2.x=tp.x*cos(origin.angle)-tp.y*sin(origin.angle);
+					tp2.y=tp.x*sin(origin.angle)+tp.y*cos(origin.angle);
+					tp=tp2;
+					break;
+				default:
+					cout << "ARGH! " << ( (compose_order >> (i*2)) & 3) << "is not in range!" << endl;
+				}
+			}
 			tps2.points.push_back(tp);
 		}
 		tpsv.push_back(tps2);
@@ -132,9 +181,7 @@ void Element::compose(Origin origin) {
 		el = *iter;
 		composed_points.insert(composed_points.end(),el->composed_points.cbegin(),el->composed_points.cend());
 	}
-//cout << "Unlocking Element..." << endl;
 	access.unlock();
-//cout << "Lock released. Element has " << composed_points.size() << " composed points." << endl;
 	// Composition is good to go!
 }
 
@@ -188,3 +235,4 @@ void Element::construct(void) {
 	}
 	access.unlock();
 }
+

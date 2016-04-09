@@ -1,0 +1,90 @@
+add Circle {
+  name "Segment"
+  set cx 300
+  set cy 300
+  set width 580
+  set height 1
+  set angle 0.034907
+  set arc 0.977384
+  set thickness 90
+  set sections 8
+  set subsections 1
+  set color 4278190335
+  attr drawmode "torus"
+  attr offset_inner "false"
+}
+add Circle {
+  name "Segment"
+  set cx 300
+  set cy 300
+  set width 580
+  set height 1
+  set angle 1.082104
+  set arc 0.977384
+  set thickness 90
+  set sections 8
+  set subsections 1
+  set color 4294902015
+  attr drawmode "torus"
+  attr offset_inner "false"
+}
+add Circle {
+  name "Segment"
+  set cx 300
+  set cy 300
+  set width 580
+  set height 1
+  set angle 2.129302
+  set arc 0.977384
+  set thickness 90
+  set sections 8
+  set subsections 1
+  set color 16711935
+  attr drawmode "torus"
+  attr offset_inner "false"
+}
+add Circle {
+  name "Segment"
+  set cx 300
+  set cy 300
+  set width 580
+  set height 1
+  set angle 3.176499
+  set arc 0.977384
+  set thickness 90
+  set sections 8
+  set subsections 1
+  set color 16777215
+  attr drawmode "torus"
+  attr offset_inner "false"
+}
+add Circle {
+  name "Segment"
+  set cx 300
+  set cy 300
+  set width 580
+  set height 1
+  set angle 4.223697
+  set arc 0.977384
+  set thickness 90
+  set sections 8
+  set subsections 1
+  set color 65535
+  attr drawmode "torus"
+  attr offset_inner "false"
+}
+add Circle {
+  name "Segment"
+  set cx 300
+  set cy 300
+  set width 580
+  set height 1
+  set angle 5.270894
+  set arc 0.977384
+  set thickness 90
+  set sections 8
+  set subsections 1
+  set color 4278255615
+  attr drawmode "torus"
+  attr offset_inner "false"
+}

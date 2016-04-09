@@ -56,6 +56,16 @@ const unsigned int RENDER_SIDE_INNER=16;  // Used with the above, instead draws 
 const unsigned int RENDER_FILL=32;   // Draw a filled polygon rather than lines, filling in the missing side
 const unsigned int RENDER_ALPHA=64;  // Inform the compositor this is not a solid surface and so it should not clip points underneath
 
+/* Compose order constants. Use these to control how the element is composed */
+
+const unsigned int COMPOSE_ORDER_SRT = 57; // 11 10 01
+const unsigned int COMPOSE_ORDER_STR = 54; // 11 01 10
+const unsigned int COMPOSE_ORDER_TSR = 30; // 01 11 10
+const unsigned int COMPOSE_ORDER_TRS = 27; // 01 10 11
+const unsigned int COMPOSE_ORDER_RTS = 39; // 10 01 11
+const unsigned int COMPOSE_ORDER_RST = 45; // 10 11 01
+
+
 
 /*
    Now for the obligatory and ridiculously long list of error constants *cough*
@@ -123,8 +133,6 @@ class Element {
 		string typestr;
 	protected:
 		mutex access;
-		vector<PointSet> points;
-		vector<PointSet> composed_points;
 		double geometry[4];
 		long double angles[2];
 		double scale[2];
@@ -138,7 +146,10 @@ class Element {
 		bool inherit_position;
 		bool inherit_angle;
 		bool inherit_scale;
+		unsigned int compose_order;
 	public:
+		vector<PointSet> points;
+		vector<PointSet> composed_points;
 		Element* parent;
 		friend class Window; // The element store will need to set up the element with appropriate pointers
 		friend class Compositor;
@@ -244,10 +255,10 @@ class Renderer {
 		virtual bool render_loop(void);	 // The main function, called into its own thread.
 		virtual void render_run(void);
 		virtual void render_stop(void);
-		virtual void draw_point(unsigned int, const IntPoint*); // called by render_frame
-		virtual void draw_line(unsigned int,const IntPoint*, const IntPoint*); // Called by render_frame
-		virtual void draw_triangle(unsigned int, const IntPoint*, const IntPoint*, const IntPoint*); // Called by render_frame
-		virtual void draw_quad(unsigned int, const IntPoint*, const IntPoint*, const IntPoint*, const IntPoint*); // called by render_frame
+		virtual void draw_point(unsigned int*, const IntPoint*); // called by render_frame
+		virtual void draw_line(unsigned int*,const IntPoint*, const IntPoint*); // Called by render_frame
+		virtual void draw_triangle(unsigned int*, const IntPoint*, const IntPoint*, const IntPoint*); // Called by render_frame
+		virtual void draw_quad(unsigned int*, const IntPoint*, const IntPoint*, const IntPoint*, const IntPoint*); // called by render_frame
 		virtual void draw_surface(void*,const IntPoint*);
 		virtual void flip(void);
 		virtual void clear(void);
@@ -290,18 +301,16 @@ class Container:public Element {
 Basic container; Child elements inherit the container's position as their centre points, but their rotation remains unchanged.
 All child elements are still calculated recursively. 	   
 */
-
 	public:
-	int placeholder;
-
+		Container();
 };
 
-class Rotation:public Container {
+class Rotation:public Element {
 /*
 This is identical in concept to the Container, but child elements also inherit rotation from the container.
 */
 	public:
-	int placeholder;
+	        Rotation();
 };
 
 class Offset:public Container {

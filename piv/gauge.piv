@@ -1,0 +1,169 @@
+add Container {
+  name "Base Element"
+  set cx 300
+  set cy 300
+  set width 1
+  set height 1
+  set angle 0
+  set arc 6.283185307179586
+  set thickness 1
+  set sections 4
+  set subsections 1
+  set color 4294967295
+  add Circle {
+    set cx 0
+    set cy 0
+    set width 580
+    set height 1
+    set angle 0
+    set arc 6.283185307179586
+    set thickness 1
+    set sections 36
+    set subsections 1
+    set color 4294967295
+    attr drawmode "outline"
+    attr offset_inner "false"
+  }
+  add Circle {
+    set cx 0
+    set cy 0
+    set width 580
+    set height 1
+    set angle 0
+    set arc 6.283185307179586
+    set thickness 35
+    set sections 36
+    set subsections 5
+    set color 4294967295
+    attr drawmode "radius"
+    attr offset_inner "false"
+  }
+  add Circle {
+    set cx 0
+    set cy 0
+    set width 510
+    set height 1
+    set angle 0
+    set arc 6.283185307179586
+    set thickness 1
+    set sections 36
+    set subsections 1
+    set color 4294967295
+    attr drawmode "outline"
+    attr offset_inner "false"
+  }
+  add Circle {
+    set cx 0
+    set cy 0
+    set width 500
+    set height 1
+    set angle 0
+    set arc 6.283185307179586
+    set thickness 1
+    set sections 36
+    set subsections 1
+    set color 4294967295
+    attr drawmode "outline"
+    attr offset_inner "false"
+  }
+  add Circle {
+    set cx 0
+    set cy 0
+    set width 500
+    set height 1
+    set angle 0
+    set arc 6.283185307179586
+    set thickness 35
+    set sections 36
+    set subsections 1
+    set color 4294967295
+    attr drawmode "radius"
+    attr offset_inner "false"
+  }
+  add Circle {
+    name "090"
+    set cx 202
+    set cy 0
+    set width 25
+    set height 1
+    set angle 0
+    set arc 6.283185307179586
+    set thickness 1
+    set sections 3
+    set subsections 1
+    set color 4294967295
+    attr drawmode "outline"
+    attr offset_inner "false"
+  }
+  add Circle {
+    name "180"
+    set cx 0
+    set cy 202
+    set width 25
+    set height 1
+    set angle 1.570796
+    set arc 6.283185307179586
+    set thickness 1
+    set sections 3
+    set subsections 1
+    set color 4294967295
+    attr drawmode "outline"
+    attr offset_inner "false"
+  }
+  add Circle {
+    name "270"
+    set cx -202
+    set cy 0
+    set width 25
+    set height 1
+    set angle 3.141593
+    set arc 6.283185307179586
+    set thickness 1
+    set sections 3
+    set subsections 1
+    set color 4294967295
+    attr drawmode "outline"
+    attr offset_inner "false"
+  }
+  add Circle {
+    name "000"
+    set cx 0
+    set cy -202
+    set width 25
+    set height 1
+    set angle 4.712389
+    set arc 6.283185307179586
+    set thickness 1
+    set sections 3
+    set subsections 1
+    set color 4294967295
+    attr drawmode "outline"
+    attr offset_inner "false"
+  }
+}
+add Rotation {
+  set cx 300
+  set cy 300
+  set width 1
+  set height 1
+  set angle 1.570796
+  set arc 6.283185307179586
+  set thickness 1
+  set sections 4
+  set subsections 1
+  set color 4294967295
+  add Circle {
+    set cx 0
+    set cy 50
+    set width 100
+    set height 1
+    set angle 0
+    set arc 6.283185307179586
+    set thickness 1
+    set sections 360
+    set subsections 1
+    set color 4294967295
+    attr drawmode "outline"
+    attr offset_inner "false"
+  }
+}

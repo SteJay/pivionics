@@ -1,5 +1,26 @@
+/*
+circle.cpp - 
+Copyright (C) 2016 Stephen J Sullivan
+
+This file is a part of Pivionics.
+
+Pivionics is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Pivionics is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Pivionics.  If not, see <http://www.gnu.org/licenses/>.
+
+*/
 #include <iostream>
 #include <cmath>
+#include <string>
 #include "circle.h"
 
 Element* fn_create_circle(void) { return new Circle; }
@@ -18,9 +39,10 @@ Circle::Circle(void) {
     subsect=1;
     col=0xFFFFFFFF;
     txt="";
-    inherit_position=false;
-    inherit_scale=false;
-    inherit_angle=false;
+    inherit_position=true;
+    inherit_scale=true;
+    inherit_angle=true;
+	compose_order=COMPOSE_ORDER_SRT; // Scale, Rotate, Translate
     parent=NULL;
 	attrs["drawmode"]="torus"; // torus,filled,outline,radius|radial
 	attrs["offset_inner"]="false"; // Offset the inner circle by half a step (more efficient draw)
@@ -49,7 +71,8 @@ void Circle::construct(void) {
 	double inner_length = sqrt( pow(next_inner_sect_point.x-inner_sect_point.x,2)+pow(next_inner_sect_point.y-inner_sect_point.y,2));
 	Point inner_point,outer_point;
 	Point tpoint;
-
+	outer_length = outer_length/subsect;
+	inner_length = inner_length/subsect;
 //	outer_length+=outer_length*0.3076923076923077;
 //	inner_length+=inner_length*0.3076923076923077;
 
@@ -68,9 +91,9 @@ void Circle::construct(void) {
 		
 		// Set the render_flags according to the "drawmode" attribute:
 		if( attrs["drawmode"].compare("filled")==0 ) {
-			tpointset.render_flags=RENDER_SIDE_OUTLINE|RENDER_SIDE_RADIAL|RENDER_FILL;
+			tpointset.render_flags=RENDER_SIDE_OUTLINE|RENDER_SIDE_DIAGONAL|RENDER_FILL;
 		} else if( attrs["drawmode"].compare("torus")==0 ) {
-			tpointset.render_flags=RENDER_SIDE_OUTLINE|RENDER_SIDE_INLINE|RENDER_SIDE_RADIAL|RENDER_FILL;
+			tpointset.render_flags=RENDER_SIDE_OUTLINE|RENDER_SIDE_INLINE|RENDER_FILL;
 		} else if( attrs["drawmode"].compare("outline")==0 ) {
 			tpointset.render_flags=RENDER_SIDE_OUTLINE;
 		} else if( attrs["drawmode"].compare("radius")==0 ) {
