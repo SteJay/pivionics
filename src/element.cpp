@@ -148,7 +148,6 @@ void Element::compose(Origin origin) {
 		for(auto piter=tps.points.begin(); piter!=tps.points.end(); ++piter) {
 			tp=*piter;
 			for(int i=0;i<3;++i) {
-				cout << "trying " << i << " as " << ( (compose_order >> (i*2)) & 3) << endl;
 				switch( (compose_order >> (i*2)) & 3){
 				case 1:
 					// Scale...
@@ -166,8 +165,6 @@ void Element::compose(Origin origin) {
 					tp2.y=tp.x*sin(origin.angle)+tp.y*cos(origin.angle);
 					tp=tp2;
 					break;
-				default:
-					cout << "ARGH! " << ( (compose_order >> (i*2)) & 3) << "is not in range!" << endl;
 				}
 			}
 			tps2.points.push_back(tp);

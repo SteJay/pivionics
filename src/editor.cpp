@@ -107,8 +107,9 @@ void command(Window* window,string cmd) {
 			if( args[1].find("/") != string::npos) {
 				cout << "ERROR: Path access not supported yet. Watch this space." << endl;
 			} else {
-				Element *el;
-				unsigned int o = stoi(args[2],nullptr,0); // Attempt to guess the base from context ie prefix 0x for hexadecimal
+				Element *el = NULL;
+				unsigned int o = 0;
+				o=stoi(args[2],nullptr,0); // Attempt to guess the base from context ie prefix 0x for hexadecimal
 				if( args[1].compare("sibling") ==0 || args[1].compare("sibl")==0 || args[1].compare("s")==0) {
 					el = window->sibling(o,current);
 				} else if( args[1].compare("child") ==0 || args[1].compare("c")==0) {
@@ -278,8 +279,9 @@ void command(Window* window,string cmd) {
 		string cmdstr;
 		try {
 			cmdstr=window->command(cmd,current);
-		} catch (int e) {
-			cout << "ERROR: Caught exception " << e << ", your command may not have worked as you intended!" << endl;
+		} catch(exception& e){
+			cout << "ERROR: Caught exception { " << e.what() << "}, your command may not have worked as you intended!" << endl;
+			cout.flush();
 		}
 		//cout << "Command sent to window: " << cmd << endl;
 		//cout << "Response (usually blank): " << cmdstr << endl << endl;

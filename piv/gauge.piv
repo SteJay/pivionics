@@ -1,5 +1,5 @@
 add Container {
-  name "Base Element"
+  name "Main Container"
   set cx 300
   set cy 300
   set width 1

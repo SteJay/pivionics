@@ -70,7 +70,7 @@ string Window::command(string cmd, Element* base) {
 	return rs;
 }
 
-list<string> Window::command(list<string> args,Element* base) {
+list<string> Window::command(list<string> args,Element* base){
 	string cmd;
 	// First we split the command apart to extract the different parts
 	if( base==NULL ) base=this;
@@ -235,12 +235,12 @@ Element* Window::sibling(unsigned int i, Element* el) {
 	access.lock();
 	if( el != NULL) {
 		Element* p=el->parent;
-		if( p!=NULL) {
+		if( p!=NULL && p->contents.size()>i) {
 			auto iter=p->contents.begin();
 			advance(iter,i);
 			access.unlock();
 			return *iter;
-		} else {
+		} else if( this->contents.size()>i){
 			auto iter=this->contents.begin();
 			advance(iter,i);
 			access.unlock();
@@ -253,12 +253,12 @@ Element* Window::sibling(unsigned int i, Element* el) {
 
 Element* Window::child(unsigned int i, Element* el) {
 	access.lock();	
-	if( el != NULL) {
+	if( el != NULL && el->contents.size()>i) {
 		auto iter=el->contents.begin();
 		advance(iter,i);
 		access.unlock();
 		return *iter;
-	} else {
+	} else if(this->contents.size()>i){
 		auto iter=this->contents.begin();
 		advance(iter,i);
 		access.unlock();
