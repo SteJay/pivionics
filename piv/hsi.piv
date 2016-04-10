@@ -1,0 +1,300 @@
+add Container {
+  name "HSI"
+  set cx 300
+  set cy 300
+  set width 1
+  set height 1
+  set angle 0
+  set arc 6.283185307179586
+  set thickness 1
+  set sections 1
+  set subsections 1
+  set color 4294967295
+  set inherit position true
+  set inherit angle true
+  set inherit scale true
+  add Container {
+    name "CompassRing"
+    set cx 0
+    set cy 35
+    set width 1
+    set height 1
+    set angle 0
+    set arc 6.283185307179586
+    set thickness 1
+    set sections 1
+    set subsections 1
+    set color 4294967295
+    set inherit position true
+    set inherit angle true
+    set inherit scale true
+    add Circle {
+      name "OuterRing2"
+      set cx 0
+      set cy 0
+      set width 510
+      set height 1
+      set angle 0
+      set arc 6.283185307179586
+      set thickness 10
+      set sections 180
+      set subsections 1
+      set color 4294967295
+      set inherit position true
+      set inherit angle true
+      set inherit scale true
+      attr drawmode "radius"
+      attr offset_inner "false"
+    }
+    add Circle {
+      name "OuterRing10"
+      set cx 0
+      set cy 0
+      set width 490
+      set height 1
+      set angle 0
+      set arc 6.283185307179586
+      set thickness 15
+      set sections 36
+      set subsections 1
+      set color 4294967295
+      set inherit position true
+      set inherit angle true
+      set inherit scale true
+      attr drawmode "radius"
+      attr offset_inner "false"
+    }
+    add Circle {
+      name "MidRing"
+      set cx 0
+      set cy 0
+      set width 460
+      set height 1
+      set angle 0
+      set arc 6.283185307179586
+      set thickness 1
+      set sections 36
+      set subsections 1
+      set color 4294967295
+      set inherit position true
+      set inherit angle true
+      set inherit scale true
+      attr drawmode "outline"
+      attr offset_inner "false"
+    }
+    add Circle {
+      name "InnerRing0"
+      set cx 0
+      set cy 0
+      set width 460
+      set height 1
+      set angle 0
+      set arc 6.283185307179586
+      set thickness 30
+      set sections 4
+      set subsections 1
+      set color 4294967295
+      set inherit position true
+      set inherit angle true
+      set inherit scale true
+      attr drawmode "radius"
+      attr offset_inner "false"
+    }
+    add Circle {
+      name "InnerRing1"
+      set cx 0
+      set cy 0
+      set width 460
+      set height 1
+      set angle 0.174533
+      set arc 6.283185307179586
+      set thickness 10
+      set sections 4
+      set subsections 1
+      set color 4294967295
+      set inherit position true
+      set inherit angle true
+      set inherit scale true
+      attr drawmode "radius"
+      attr offset_inner "false"
+    }
+    add Circle {
+      name "InnerRing2"
+      set cx 0
+      set cy 0
+      set width 460
+      set height 1
+      set angle 0.349066
+      set arc 6.283185307179586
+      set thickness 10
+      set sections 4
+      set subsections 1
+      set color 4294967295
+      set inherit position true
+      set inherit angle true
+      set inherit scale true
+      attr drawmode "radius"
+      attr offset_inner "false"
+    }
+    add Circle {
+      name "InnerRing3"
+      set cx 0
+      set cy 0
+      set width 460
+      set height 1
+      set angle 0.523599
+      set arc 6.283185307179586
+      set thickness 20
+      set sections 4
+      set subsections 1
+      set color 4294967295
+      set inherit position true
+      set inherit angle true
+      set inherit scale true
+      attr drawmode "radius"
+      attr offset_inner "false"
+    }
+    add Circle {
+      name "InnerRing4"
+      set cx 0
+      set cy 0
+      set width 460
+      set height 1
+      set angle 0.698132
+      set arc 6.283185307179586
+      set thickness 10
+      set sections 4
+      set subsections 1
+      set color 4294967295
+      set inherit position true
+      set inherit angle true
+      set inherit scale true
+      attr drawmode "radius"
+      attr offset_inner "false"
+    }
+    add Circle {
+      name "InnerRing5"
+      set cx 0
+      set cy 0
+      set width 460
+      set height 1
+      set angle 0.872665
+      set arc 6.283185307179586
+      set thickness 10
+      set sections 4
+      set subsections 1
+      set color 4294967295
+      set inherit position true
+      set inherit angle true
+      set inherit scale true
+      attr drawmode "radius"
+      attr offset_inner "false"
+    }
+    add Circle {
+      name "InnerRing6"
+      set cx 0
+      set cy 0
+      set width 460
+      set height 1
+      set angle 1.047198
+      set arc 6.283185307179586
+      set thickness 20
+      set sections 4
+      set subsections 1
+      set color 4294967295
+      set inherit position true
+      set inherit angle true
+      set inherit scale true
+      attr drawmode "radius"
+      attr offset_inner "false"
+    }
+    add Circle {
+      name "InnerRing7"
+      set cx 0
+      set cy 0
+      set width 460
+      set height 1
+      set angle 1.22173
+      set arc 6.283185307179586
+      set thickness 10
+      set sections 4
+      set subsections 1
+      set color 4294967295
+      set inherit position true
+      set inherit angle true
+      set inherit scale true
+      attr drawmode "radius"
+      attr offset_inner "false"
+    }
+    add Circle {
+      name "InnerRing8"
+      set cx 0
+      set cy 0
+      set width 460
+      set height 1
+      set angle 1.396263
+      set arc 6.283185307179586
+      set thickness 10
+      set sections 4
+      set subsections 1
+      set color 4294967295
+      set inherit position true
+      set inherit angle true
+      set inherit scale true
+      attr drawmode "radius"
+      attr offset_inner "false"
+    }
+  }
+  add Container {
+    name "Overlay"
+    set cx 0
+    set cy 35
+    set width 1
+    set height 1
+    set angle 0
+    set arc 6.283185307179586
+    set thickness 1
+    set sections 1
+    set subsections 1
+    set color 4294967295
+    set inherit position true
+    set inherit angle true
+    set inherit scale true
+    add Circle {
+      name "UpperAbsMark"
+      set cx 0
+      set cy -270
+      set width 50
+      set height 1
+      set angle 1.570796
+      set arc 6.283185307179586
+      set thickness 25
+      set sections 3
+      set subsections 1
+      set color 4294967295
+      set inherit position true
+      set inherit angle true
+      set inherit scale true
+      attr drawmode "torus"
+      attr offset_inner "false"
+    }
+    add Circle {
+      name "LowerAbsMark"
+      set cx 0
+      set cy -210
+      set width 25
+      set height 1
+      set angle 0.523599
+      set arc 6.283185307179586
+      set thickness 10
+      set sections 3
+      set subsections 1
+      set color 4294967295
+      set inherit position true
+      set inherit angle true
+      set inherit scale true
+      attr drawmode "torus"
+      attr offset_inner "false"
+    }
+  }
+}

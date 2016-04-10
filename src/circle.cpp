@@ -27,26 +27,9 @@ Element* fn_create_circle(void) { return new Circle; }
 
 Circle::Circle(void) {
     name("");
-    geometry[0]=0.0;
-    geometry[1]=0.0;
-    geometry[2]=1.0;
-    geometry[3]=1.0;
-    angles[0]=0;
-    angles[1]=PI*2;
-    scale[0]=1.0;scale[1]=1.0; // OBSOLETE?
-    thick=1;
     sect=360;
-    subsect=1;
-    col=0xFFFFFFFF;
-    txt="";
-    inherit_position=true;
-    inherit_scale=true;
-    inherit_angle=true;
-	compose_order=COMPOSE_ORDER_SRT; // Scale, Rotate, Translate
-    parent=NULL;
 	attrs["drawmode"]="torus"; // torus,filled,outline,radius|radial
 	attrs["offset_inner"]="false"; // Offset the inner circle by half a step (more efficient draw)
-	cout << this << " : Circle Constructor." << endl;
 }
 
 void Circle::construct(void) {
@@ -63,6 +46,9 @@ void Circle::construct(void) {
 //	double inner_length = (2*inner_radius*sin((PI/sect)*(angles[1]/sect))/subsect);
 //	double outer_length = (2*outer_radius*sin((PI/sect))/subsect)*(angles[1]/(2*PI));
 //	double outer_length = (2*outer_radius*sin((PI/sect))/subsect)*(angles[1]/(2*PI));
+	if(attrs["drawmode"].compare("filled")==0) {
+	  inner_radius=0.0;
+	}
 	theta=0;
 	Point inner_sect_point={inner_radius,0};
 	Point outer_sect_point={outer_radius,0};
@@ -76,7 +62,6 @@ void Circle::construct(void) {
 	inner_length = inner_length/subsect;
 //	outer_length+=outer_length*0.3076923076923077;
 //	inner_length+=inner_length*0.3076923076923077;
-
 
 	// Now iterate through each section
 	for( unsigned int n=0; n<sect; ++n) {
@@ -92,11 +77,19 @@ void Circle::construct(void) {
 		
 		// Set the render_flags according to the "drawmode" attribute:
 		if( attrs["drawmode"].compare("filled")==0 ) {
-			tpointset.render_flags=RENDER_SIDE_OUTLINE|RENDER_SIDE_DIAGONAL|RENDER_FILL;
+			tpointset.render_flags=RENDER_SIDE_OUTLINE|RENDER_FILL;
 		} else if( attrs["drawmode"].compare("torus")==0 ) {
 			tpointset.render_flags=RENDER_SIDE_OUTLINE|RENDER_SIDE_INLINE|RENDER_FILL;
+		} else if( attrs["drawmode"].compare("triangle")==0 ) {
+			tpointset.render_flags=RENDER_SIDE_OUTLINE|RENDER_SIDE_DIAGONAL|RENDER_FILL;
+		} else if( attrs["drawmode"].compare("triangle2")==0 ) {
+			tpointset.render_flags=RENDER_SIDE_OUTLINE|RENDER_SIDE_DIAGONAL|RENDER_SIDE_INNER|RENDER_FILL;
 		} else if( attrs["drawmode"].compare("outline")==0 ) {
 			tpointset.render_flags=RENDER_SIDE_OUTLINE;
+		} else if( attrs["drawmode"].compare("outlinetriangle")==0 ) {
+			tpointset.render_flags=RENDER_SIDE_OUTLINE|RENDER_SIDE_DIAGONAL;
+		} else if( attrs["drawmode"].compare("outlinetriangle2")==0 ) {
+			tpointset.render_flags=RENDER_SIDE_OUTLINE|RENDER_SIDE_DIAGONAL|RENDER_SIDE_INNER;
 		} else if( attrs["drawmode"].compare("radius")==0 ) {
 			tpointset.render_flags=RENDER_SIDE_RADIAL;
 		}

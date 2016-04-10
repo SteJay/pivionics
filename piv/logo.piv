@@ -1,90 +1,123 @@
-add Circle {
-  name "Segment"
+add Container {
   set cx 300
   set cy 300
-  set width 580
+  set width 1
   set height 1
-  set angle 0.034907
-  set arc 0.977384
-  set thickness 90
-  set sections 8
+  set angle 0
+  set arc 6.283185307179586
+  set thickness 1
+  set sections 1
   set subsections 1
-  set color 4278190335
-  attr drawmode "torus"
-  attr offset_inner "false"
-}
-add Circle {
-  name "Segment"
-  set cx 300
-  set cy 300
-  set width 580
-  set height 1
-  set angle 1.082104
-  set arc 0.977384
-  set thickness 90
-  set sections 8
-  set subsections 1
-  set color 4294902015
-  attr drawmode "torus"
-  attr offset_inner "false"
-}
-add Circle {
-  name "Segment"
-  set cx 300
-  set cy 300
-  set width 580
-  set height 1
-  set angle 2.129302
-  set arc 0.977384
-  set thickness 90
-  set sections 8
-  set subsections 1
-  set color 16711935
-  attr drawmode "torus"
-  attr offset_inner "false"
-}
-add Circle {
-  name "Segment"
-  set cx 300
-  set cy 300
-  set width 580
-  set height 1
-  set angle 3.176499
-  set arc 0.977384
-  set thickness 90
-  set sections 8
-  set subsections 1
-  set color 16777215
-  attr drawmode "torus"
-  attr offset_inner "false"
-}
-add Circle {
-  name "Segment"
-  set cx 300
-  set cy 300
-  set width 580
-  set height 1
-  set angle 4.223697
-  set arc 0.977384
-  set thickness 90
-  set sections 8
-  set subsections 1
-  set color 65535
-  attr drawmode "torus"
-  attr offset_inner "false"
-}
-add Circle {
-  name "Segment"
-  set cx 300
-  set cy 300
-  set width 580
-  set height 1
-  set angle 5.270894
-  set arc 0.977384
-  set thickness 90
-  set sections 8
-  set subsections 1
-  set color 4278255615
-  attr drawmode "torus"
-  attr offset_inner "false"
+  set color 4294967295
+  set inherit position true
+  set inherit angle true
+  set inherit scale true
+  add Circle {
+    name "red"
+    set cx 0
+    set cy 0
+    set width 580
+    set height 1
+    set angle 0.034907
+    set arc 0.977384
+    set thickness 90
+    set sections 8
+    set subsections 1
+    set color 4278190335
+    set inherit position true
+    set inherit angle true
+    set inherit scale true
+    attr drawmode "torus"
+    attr offset_inner "false"
+  }
+  add Circle {
+    name "yellow"
+    set cx 0
+    set cy 0
+    set width 580
+    set height 1
+    set angle 1.082104
+    set arc 0.977384
+    set thickness 90
+    set sections 8
+    set subsections 1
+    set color 4294902015
+    set inherit position true
+    set inherit angle true
+    set inherit scale true
+    attr drawmode "torus"
+    attr offset_inner "false"
+  }
+  add Circle {
+    name "green"
+    set cx 0
+    set cy 0
+    set width 580
+    set height 1
+    set angle 2.129302
+    set arc 0.977384
+    set thickness 90
+    set sections 8
+    set subsections 1
+    set color 16711935
+    set inherit position true
+    set inherit angle true
+    set inherit scale true
+    attr drawmode "torus"
+    attr offset_inner "false"
+  }
+  add Circle {
+    name "cyan"
+    set cx 0
+    set cy 0
+    set width 580
+    set height 1
+    set angle 3.176499
+    set arc 0.977384
+    set thickness 90
+    set sections 8
+    set subsections 1
+    set color 16777215
+    set inherit position true
+    set inherit angle true
+    set inherit scale true
+    attr drawmode "torus"
+    attr offset_inner "false"
+  }
+  add Circle {
+    name "blue"
+    set cx 0
+    set cy 0
+    set width 580
+    set height 1
+    set angle 4.223697
+    set arc 0.977384
+    set thickness 90
+    set sections 8
+    set subsections 1
+    set color 65535
+    set inherit position true
+    set inherit angle true
+    set inherit scale true
+    attr drawmode "torus"
+    attr offset_inner "false"
+  }
+  add Circle {
+    name "magenta"
+    set cx 0
+    set cy 0
+    set width 580
+    set height 1
+    set angle 5.270894
+    set arc 0.977384
+    set thickness 90
+    set sections 8
+    set subsections 1
+    set color 4278255615
+    set inherit position true
+    set inherit angle true
+    set inherit scale true
+    attr drawmode "torus"
+    attr offset_inner "false"
+  }
 }

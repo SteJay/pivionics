@@ -32,6 +32,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define ENABLE_RENDER_AA_SURFACE
 #endif
 
+Renderer::Renderer() {
+	dirty=false;
+	fps_cap=60;
+	run=false;
+	fps=0;
+	width=800;
+	height=600;
+}
 
 Renderer::~Renderer() {
 	if(run) {

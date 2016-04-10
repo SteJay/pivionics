@@ -28,7 +28,7 @@ int SdlRenderer::init(void) {
 		access.unlock();
 		return ERR_RENDERER_CANNOT_INIT;
 	}
-	sdl_window = SDL_CreateWindow("Pivionics Compositor", 0,0,600,600,/*SDL_WINDOW_FULLSCREEN|*/SDL_WINDOW_OPENGL|SDL_WINDOW_BORDERLESS );
+	sdl_window = SDL_CreateWindow("Pivionics Renderer", 0,0,width,height,/*SDL_WINDOW_FULLSCREEN|*/SDL_WINDOW_OPENGL/*|SDL_WINDOW_BORDERLESS*/ );
 	if( sdl_window==NULL) {
 	//cout << "Failure creating SDL window: " << SDL_GetError() << endl;
 		access.unlock();
@@ -92,11 +92,11 @@ void SdlRenderer::draw_triangle(unsigned int *c, const IntPoint* p1, const IntPo
 }
 void SdlRenderer::draw_quad(unsigned int *c, const IntPoint* p1, const IntPoint* p2, const IntPoint* p3, const IntPoint* p4) {
 //	filledTrigonColor(sdl_renderer,p1->x,p1->y,p2->x,p2->y,p3->x,p3->y,*c);
+//	filledTrigonColor(sdl_renderer,p1->x,p1->y,p3->x,p3->y,p4->x,p4->y,*c);
 	short vx[4]={p1->x,p2->x,p3->x,p4->x};
 	short vy[4]={p1->y,p2->y,p3->y,p4->y};
 	filledPolygonColor(sdl_renderer,vx,vy,4,*c);
 #ifdef ENABLE_RENDER_AA_QUAD
-	// NOT IMPLIMENTED YET!
 #endif
 }
 void SdlRenderer::draw_surface(void* surf,const IntPoint* p) {

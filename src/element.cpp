@@ -45,7 +45,7 @@ Element::Element() {
 	angles[1]=PI*2;
 	scale[0]=1.0;scale[1]=1.0; // OBSOLETE
 	thick=1;
-	sect=4;
+	sect=1;
 	subsect=1;
 	col=0xFFFFFFFF;
 	txt="";
@@ -54,28 +54,9 @@ Element::Element() {
 	inherit_angle=true;
 	compose_order=COMPOSE_ORDER_SRT; // Scale, Rotate, Translate
 	parent=NULL;
-	cout << this << " : Element Constructor" << endl;
 }
 Container::Container() {
 	name("");
-	geometry[0]=0.0;
-	geometry[1]=0.0;
-	geometry[2]=1.0;
-	geometry[3]=1.0;
-	angles[0]=0;
-	angles[1]=PI*2;
-	scale[0]=1.0;scale[1]=1.0; // OBSOLETE
-	thick=1;
-	sect=4;
-	subsect=1;
-	col=0xFFFFFFFF;
-	txt="";
-	inherit_position=true;
-	inherit_scale=true;
-	inherit_angle=true;
-	compose_order=COMPOSE_ORDER_SRT; // Scale, Rotate, Translate
-	parent=NULL;
-	cout << this << " : Container Constructor." << endl;
 }
 Element* fn_create_element(void) { return new Element; }
 Element* fn_create_container(void) { return new Container; }

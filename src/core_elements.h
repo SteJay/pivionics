@@ -250,6 +250,9 @@ class Renderer {
 		unsigned int fps;
 		thread* runthread;
 	public:
+		int width;
+		int height;
+		Renderer();
 		~Renderer();
 		bool ready(void);	
 		virtual int init(void);

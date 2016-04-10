@@ -134,6 +134,11 @@ int Compositor::compose(void) {
 								p2p(&rg.points[2],&wpoints[1]);
 								rg.point_count=3;
 								rg.is_surface=false;
+							} else {
+								p2p(&rg.points[2],&wpoints[3]);
+								rg.point_count=3;
+								rg.is_surface=false;
+
 							}
 						} else { // unfilled
 					//cout << "\t\tUNFILLED" << endl;
@@ -157,17 +162,20 @@ int Compositor::compose(void) {
 #else
 					rg.color=nowset.color;
 #endif
-/*					for(int i=0;i<rg.point_count-1;i++) {
-						if(rg.points[i].x==rg.points[i+1].x&&rg.points[i].y==rg.points[i+1].y) {
+					// cull any points which point to a previous point in the set, or if all of the points in the rendergon are beyond visible range
+					bool insideof=false;
+					for(int i=0;i<rg.point_count;i++) {
+						if(rg.points[i].x>=0 && rg.points[i].x<rend->width && rg.points[i].y>=0 && rg.points[i].y<rend->height) insideof=true;
+						if(i<rg.point_count-1 && rg.points[i].x==rg.points[i+1].x&&rg.points[i].y==rg.points[i+1].y) {
 							for(int j=i+1; j<=rg.point_count; j++) { // Shuffle all points forward
 								rg.points[j-1]=rg.points[j];
 							}
 							rg.point_count--;
 							i--;
-						} else {
 						}
-					}*/
-					if(rg.point_count>0) {
+					}
+					// cull any rendergons which are entirely outside of the viewing area
+					if(rg.point_count>0&&insideof) {
 						rgv.push_back(rg); // Add the Rendergon if it has more than one point
 					}
 				} // end while loop through individual points

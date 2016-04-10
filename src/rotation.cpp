@@ -34,7 +34,6 @@ using namespace std;
 Rotation::Rotation(void) {
 	name("Rot");
 	compose_order=COMPOSE_ORDER_STR; // Scale, Translate, Rotate
-	cout << this << " : Rotation Constructor." << endl;
 }
 
 Element* fn_create_rotation(void) { return new Rotation; }
