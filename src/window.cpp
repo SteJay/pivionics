@@ -136,6 +136,20 @@ list<string> Window::command(list<string> args,Element* base){
 				else if( item.compare("sections")   ==0 ) base->sections(stoi(val,nullptr,0));
 				else if( item.compare("subsections")==0 ) base->subsections(stoi(val,nullptr,0));
 				else if( item.compare("color")      ==0 ) base->color(stoul(val,nullptr,0));
+				else if( item.compare("inherit")   ==0 ) {
+					if(args.size()>0) {
+						item=val;
+						val=args.front();
+						args.pop_front();
+						if(item.compare("angle") ==0 || item.compare("r") ==0 ) {
+							if(val.compare("true")==0) base->inherit_angle=true; else base->inherit_angle=false;
+						} else if(item.compare("position") ==0 || item.compare("p") ==0 ) {
+							if(val.compare("true")==0) base->inherit_position=true; else base->inherit_position=false;
+						} else if(item.compare("scale") ==0 || item.compare("s") ==0 ) {
+							if(val.compare("true")==0) base->inherit_scale=true; else base->inherit_scale=false;
+						}
+					}
+				}
 			}
 		} else if(cmd.compare("attr")==0||cmd.compare("attribute")==0) {
 			if(args.size()>1) {
@@ -351,6 +365,11 @@ void Window::save(ofstream* file,Element* el,string lvl) {
 		*file << lvl << "set sections " << el->sections() << endl;
 		*file << lvl << "set subsections " << el->subsections() << endl;
 		*file << lvl << "set color " << el->color() << endl;
+		
+		*file << lvl << "set inherit position "; if(el->inherit_position) *file << "true"; else *file << "false"; *file << endl;
+		*file << lvl << "set inherit angle "; if(el->inherit_angle) *file << "true"; else *file << "false"; *file << endl;
+		*file << lvl << "set inherit scale "; if(el->inherit_scale) *file << "true"; else *file << "false"; *file << endl;
+
 		for(auto iter=el->attrs.begin(); iter != el->attrs.end();++iter) {
 			*file << lvl << "attr " << "" << iter->first << " \"" << replace_all(iter->second,"\"","\\\"") << "\"" << endl;
 		}

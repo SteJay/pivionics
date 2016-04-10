@@ -29,6 +29,9 @@ $(OBJDIR)/window.o: $(SRCDIR)/window.cpp $(SRCDIR)/core_elements.h
 $(OBJDIR)/element.o: $(SRCDIR)/element.cpp $(SRCDIR)/core_elements.h
 	$(CC) $(CCFLAGS) $(CCOPTS) -c $< -o $@
 
+$(OBJDIR)/rotation.o: $(SRCDIR)/rotation.cpp $(SRCDIR)/core_elements.h
+	$(CC) $(CCFLAGS) $(CCOPTS) -c $< -o $@
+
 $(OBJDIR)/circle.o: $(SRCDIR)/circle.cpp $(SRCDIR)/circle.h $(SRCDIR)/core_elements.h
 	$(CC) $(CCFLAGS) $(CCOPTS) -c $< -o $@
 
@@ -44,7 +47,7 @@ $(OBJDIR)/sdlrenderer.o: $(SRCDIR)/sdlrenderer.cpp $(SRCDIR)/sdlrenderer.h $(SRC
 $(OBJDIR)/sdlcompositor.o: $(SRCDIR)/sdlcompositor.cpp $(SRCDIR)/sdlcompositor.h $(SRCDIR)/core_elements.h
 	$(CC) $(CCFLAGS) $(CCOPTS) -c $< $(SDLFLAGS) -o $@
 
-$(LIBDIR)/libcore.a: $(OBJDIR)/stringsplit.o $(OBJDIR)/window.o $(OBJDIR)/element.o $(OBJDIR)/circle.o $(OBJDIR)/compositor.o $(OBJDIR)/renderer.o $(OBJDIR)/sdlcompositor.o $(OBJDIR)/sdlrenderer.o
+$(LIBDIR)/libcore.a: $(OBJDIR)/stringsplit.o $(OBJDIR)/rotation.o $(OBJDIR)/circle.o $(OBJDIR)/compositor.o $(OBJDIR)/renderer.o $(OBJDIR)/sdlcompositor.o $(OBJDIR)/sdlrenderer.o $(OBJDIR)/window.o $(OBJDIR)/element.o
 	$(AR) $(ARFLAGS) $@ $^
 
 $(BINDIR)/pivionics: $(SRCDIR)/main.cpp $(LIBDIR)/libcore.a

@@ -49,33 +49,14 @@ Element::Element() {
 	subsect=1;
 	col=0xFFFFFFFF;
 	txt="";
-	inherit_position=false;
-	inherit_scale=false;
-	inherit_angle=false;
+	inherit_position=true;
+	inherit_scale=true;
+	inherit_angle=true;
 	compose_order=COMPOSE_ORDER_SRT; // Scale, Rotate, Translate
 	parent=NULL;
+	cout << this << " : Element Constructor" << endl;
 }
 Container::Container() {
-	name("");
-	geometry[0]=0.0;
-	geometry[1]=0.0;
-	geometry[2]=1.0;
-	geometry[3]=1.0;
-	angles[0]=0;
-	angles[1]=PI*2;
-	scale[0]=1.0;scale[1]=1.0; // OBSOLETE
-	thick=1;
-	sect=4;
-	subsect=1;
-	col=0xFFFFFFFF;
-	txt="";
-	inherit_position=false;
-	inherit_scale=false;
-	inherit_angle=false;
-	compose_order=COMPOSE_ORDER_SRT; // Scale, Rotate, Translate
-	parent=NULL;
-}
-Rotation::Rotation() {
 	name("");
 	geometry[0]=0.0;
 	geometry[1]=0.0;
@@ -92,13 +73,12 @@ Rotation::Rotation() {
 	inherit_position=true;
 	inherit_scale=true;
 	inherit_angle=true;
-	compose_order=COMPOSE_ORDER_STR; // Scale, Translate, Rotate
+	compose_order=COMPOSE_ORDER_SRT; // Scale, Rotate, Translate
 	parent=NULL;
+	cout << this << " : Container Constructor." << endl;
 }
-
 Element* fn_create_element(void) { return new Element; }
 Element* fn_create_container(void) { return new Container; }
-Element* fn_create_rotation(void) { return new Rotation; }
 Element::~Element() {
 	access.lock();
     Element* e;
@@ -109,7 +89,10 @@ Element::~Element() {
 	}
 	access.unlock();
 }
-
+bool Element::pre_compose(Origin o) { return true; }
+bool Element::post_compose(Origin o) { return true; }
+bool Element::pre_construct(void) { return true; }
+bool Element::post_construct(void) { return true; }
 vector<string> Element::get_attrs(void) {
 	access.lock();
 	vector<string> v;
@@ -119,8 +102,10 @@ vector<string> Element::get_attrs(void) {
 	access.unlock();
 	return v;
 }
+
 void Element::compose(Origin origin) {
-	access.lock();
+  access.lock();
+  if(this->pre_compose(origin)) {
 	composed_points.clear();
 	if(!inherit_position) { origin.position.x=0.0; origin.position.y=0.0; }
 	if(!inherit_scale) { origin.scale.x=1.0; origin.scale.y=1.0; }
@@ -133,8 +118,8 @@ void Element::compose(Origin origin) {
 	Element* el;
 	for(auto iter=contents.begin(); iter!=contents.end();++iter) {
 		// Now we compose each child element...
-		el=*iter;
-		el->compose(origin);
+		auto el2=*iter;
+		el2->compose(origin);
 	}
 	// Now we compose this element as a whole
 	PointSet tps,tps2;
@@ -175,11 +160,15 @@ void Element::compose(Origin origin) {
 	composed_points=tpsv;
 	for(auto iter=contents.begin(); iter!=contents.end();++iter) {
 		// And add the composed_points of our children that we worked out earlier
-		el = *iter;
+		auto el = *iter;
 		composed_points.insert(composed_points.end(),el->composed_points.cbegin(),el->composed_points.cend());
+		el->composed_points.clear();
 	}
-	access.unlock();
-	// Composition is good to go!
+  }
+  if(this->post_compose(origin)) {
+  }
+  access.unlock();
+  // Composition is good to go!
 }
 
 string Element::get_attr(string key) {
@@ -202,7 +191,9 @@ void Element::set_attr(string key, string value) {
 
 string Element::type(void) { return typestr; }
 string Element::name(void) { return namestr; }
+
 void Element::name(string n) { namestr=n; }
+
 Element* Window::add(string s,Element* el) {
 	access.lock();
 	if( creators.find(s)!=creators.end() ) {
@@ -232,4 +223,5 @@ void Element::construct(void) {
 	}
 	access.unlock();
 }
+
 

@@ -71,6 +71,7 @@ void command(Window* window,string cmd) {
 			current = current->parent;
 			cout << "Exited to parent element." << endl << endl;
 		}
+		if(current==window) { current=NULL; }
 	} else if(c.compare("fps")==0 || c.compare("perf")==0) {
 		unsigned int fpstot=0;
 		unsigned int max=20;
@@ -176,6 +177,9 @@ void command(Window* window,string cmd) {
 			cout << "cx: " << current->cx() << ", cy: " << current->cy() << ", width: " << current->width() << ", height: " << current->height() << endl;
 			cout << "angle: " << current->angle() << ", arc: " << current->arc() << ", thickness: " << current->thickness() << endl;
 			cout << "sections: " << current->sections() << ", subsections: " << current->subsections() << ", color: " << hex << current->color() << endl;
+			cout << "Inherit Position: "; if(current->inherit_position) cout << "true"; else cout << "false";
+			cout << ", Inherit Angle: "; if(current->inherit_angle) cout << "true"; else cout << "false";
+			cout << ", Inherit Scale: "; if(current->inherit_scale) cout << "true"; else cout << "false";
 			vector<string> a=current->get_attrs();
 			string s;
 			for(auto iter=a.begin(); iter!=a.end(); ++iter) {
@@ -298,7 +302,7 @@ int main (int argc, char* argv[]) {
 	//window.register_creator("Element",&create_element);
 	//window.register_creator("Element",&element_creator<Element>); // Some sort of class casting conflict doing this for other types... We'll come back to this later.
 	window.register_creator("Container",&fn_create_container);
-	window.register_creator("Rotation",&fn_create_container);
+	window.register_creator("Rotation",&fn_create_rotation);
 	window.register_creator("Circle",&fn_create_circle);
 	//window.register_creator("Container",&create_container);
 	//window.register_creator("Rotation",&create_rotation);

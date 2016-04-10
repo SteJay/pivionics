@@ -143,11 +143,12 @@ class Element {
 		string txt;
 		map<string,string> attrs;
 		list<Element*> contents;
+		
+	public:
 		bool inherit_position;
 		bool inherit_angle;
 		bool inherit_scale;
 		unsigned int compose_order;
-	public:
 		vector<PointSet> points;
 		vector<PointSet> composed_points;
 		Element* parent;
@@ -190,8 +191,11 @@ class Element {
 		void name(string);// But you can also set it. No validation is done - this is just for human reference really
 		
 		virtual void compose(Origin);
-		
+		virtual bool pre_compose(Origin);
+		virtual bool post_compose(Origin);
 		virtual void construct(void); // Construct the point set according to the specified geometry.
+		virtual bool pre_construct(void);
+		virtual bool post_construct(void);
 };
 
 
@@ -310,7 +314,9 @@ class Rotation:public Element {
 This is identical in concept to the Container, but child elements also inherit rotation from the container.
 */
 	public:
-	        Rotation();
+	    Rotation();
+		bool post_compose(Origin);
+		bool pre_compose(Origin);
 };
 
 class Offset:public Container {

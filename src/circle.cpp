@@ -46,6 +46,7 @@ Circle::Circle(void) {
     parent=NULL;
 	attrs["drawmode"]="torus"; // torus,filled,outline,radius|radial
 	attrs["offset_inner"]="false"; // Offset the inner circle by half a step (more efficient draw)
+	cout << this << " : Circle Constructor." << endl;
 }
 
 void Circle::construct(void) {
