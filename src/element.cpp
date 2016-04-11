@@ -192,6 +192,64 @@ Element* Window::add(string s,Element* el) {
 	return NULL;
 }
 
+Element* Window::del(Element* el) {
+	el=del_children(el);
+	Element* par=this;
+	if(el->parent!=NULL) par=el->parent;
+	par->contents.remove(el);
+	delete el;
+}
+Element* Window::del_children(Element* el) {
+	if(el==NULL) el=this;
+	// First we delete all children
+	for(auto iter=el->contents.begin(); iter!=el->contents.end(); ++iter) {
+		del_children(*iter);
+		cout << "Deleting " << *iter << endl;
+		delete *iter;
+	}
+	// Now we remove them from the contents
+	while(!el->contents.empty()) el->contents.pop_front();
+	return el;
+}
+
+
+Element* Window::move(Element* subject,Element* target) {
+	if( subject->parent!=NULL ) {
+		if( target==NULL ) target=this;
+		subject->access.lock();
+		target->access.lock();
+		subject->parent->contents.remove(subject);
+		target->contents.push_back(subject);
+		subject->parent=target;
+		target->access.unlock();
+		subject->access.unlock();
+	}
+	return subject->parent;
+}
+
+Element* Window::encap(string s,Element* el) {
+	if(el==NULL) el=this;
+	Element* e=add(s,el);
+	list<Element*> tc = el->contents;
+	for(auto iter=tc.begin(); iter!=tc.end(); ++iter) {
+		if(*iter!=e) {
+			move( *iter,e );	
+		}
+	}
+	return e;
+}
+
+Element* Window::decap(Element* el) {
+	if(el!=NULL) {
+		if(el->parent!=NULL) {
+			list<Element*> tc = el->contents;
+			for(auto iter=tc.begin(); iter!=tc.end(); ++iter) {
+				move( *iter, el->parent );
+			}
+		}
+	}
+}
+
 void Element::construct(void) {
 	access.lock();
 	Element* el;
@@ -201,5 +259,3 @@ void Element::construct(void) {
 	}
 	access.unlock();
 }
-
-

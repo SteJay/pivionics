@@ -223,6 +223,11 @@ class Window: public Element {
 		list<Element*> list_elements(Element*); 	// Used for user interface and debugging
 		int children(Element*);
 		Element* add(string,Element*);	// Add an element as the given type
+		Element* del(Element*);
+		Element* del_children(Element*);
+		Element* move(Element*,Element*);
+		Element* encap(string,Element*);
+		Element* decap(Element*);
 		Element* get_parent(Element*);
 		Element* sibling(unsigned int, Element*);
 		Element* child(unsigned int, Element*);

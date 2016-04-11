@@ -4,9 +4,9 @@ add Container {
   set cy 0
   set width 1
   set height 1
-  set xscale 1
+  set xscale 0.5
   set yscale 1
-  set angle 0
+  set angle 0.785398
   set arc 6.283185307179586
   set thickness 1
   set sections 1
@@ -16,9 +16,9 @@ add Container {
   set inherit angle true
   set inherit scale true
   add Container {
-    name "container"
-    set cx 0
-    set cy 0
+    name "rotation_rescale"
+    set cx -200
+    set cy -150
     set width 1
     set height 1
     set xscale 1
@@ -32,31 +32,102 @@ add Container {
     set inherit position true
     set inherit angle true
     set inherit scale true
-    add Circle {
-      name "cpoint"
-      set cx 200
+    add Rotation {
+      set cx 0
       set cy 0
-      set width 15
-      set height 15
+      set width 1
+      set height 1
       set xscale 1
       set yscale 1
       set angle 0
       set arc 6.283185307179586
-      set thickness 0
-      set sections 3
+      set thickness 1
+      set sections 1
       set subsections 1
-      set color 4278190335
+      set color 4294967295
       set inherit position true
       set inherit angle true
       set inherit scale true
-      attr dirtyfix "attr"
-      attr drawmode "outline"
+      add Rescale {
+        set cx 0
+        set cy 0
+        set width 1
+        set height 1
+        set xscale 1
+        set yscale 1
+        set angle 0
+        set arc 6.283185307179586
+        set thickness 1
+        set sections 1
+        set subsections 1
+        set color 4294967295
+        set inherit position true
+        set inherit angle true
+        set inherit scale true
+        add Circle {
+          set cx 0
+          set cy -50
+          set width 100
+          set height 25
+          set xscale 1
+          set yscale 0.2
+          set angle 1.570796
+          set arc 6.283185307179586
+          set thickness 1
+          set sections 3
+          set subsections 1
+          set color 4294967295
+          set inherit position true
+          set inherit angle true
+          set inherit scale true
+          attr dirtyfix "attr"
+          attr drawmode "filled"
+        }
+        add Circle {
+          set cx 0
+          set cy 0
+          set width 10
+          set height 0
+          set xscale 1
+          set yscale 1
+          set angle 0
+          set arc 6.283185307179586
+          set thickness 1
+          set sections 5
+          set subsections 1
+          set color 4294967295
+          set inherit position true
+          set inherit angle true
+          set inherit scale true
+          attr dirtyfix "attr"
+          attr drawmode "filled"
+        }
+        add Circle {
+          set cx 0
+          set cy -100
+          set width 25
+          set height 25
+          set xscale 1
+          set yscale 1
+          set angle 0
+          set arc 4.712389
+          set thickness 1
+          set sections 8
+          set subsections 1
+          set color 4294967295
+          set inherit position true
+          set inherit angle false
+          set inherit scale true
+          attr dirtyfix ""
+          attr drawmode "filled"
+        }
+      }
     }
   }
-  add Rotation {
-    name "rotation"
-    set cx 0
-    set cy 0
+  add Container {
+    name "rescale_rotation"
+    set cx 200
+    set cy -150
     set width 1
     set height 1
     set xscale 1
@@ -70,31 +141,102 @@ add Container {
     set inherit position true
     set inherit angle true
     set inherit scale true
-    add Circle {
-      name "rpoint"
-      set cx 150
+    add Rescale {
+      set cx 0
       set cy 0
-      set width 15
-      set height 15
+      set width 1
+      set height 1
       set xscale 1
       set yscale 1
       set angle 0
       set arc 6.283185307179586
-      set thickness 0
-      set sections 3
+      set thickness 1
+      set sections 1
       set subsections 1
-      set color 16711935
+      set color 4294967295
       set inherit position true
       set inherit angle true
       set inherit scale true
-      attr dirtyfix "attr"
-      attr drawmode "outline"
+      add Rotation {
+        set cx 0
+        set cy 0
+        set width 1
+        set height 1
+        set xscale 1
+        set yscale 1
+        set angle 0
+        set arc 6.283185307179586
+        set thickness 1
+        set sections 1
+        set subsections 1
+        set color 4294967295
+        set inherit position true
+        set inherit angle true
+        set inherit scale true
+        add Circle {
+          set cx 0
+          set cy -50
+          set width 100
+          set height 25
+          set xscale 1
+          set yscale 0.2
+          set angle 1.570796
+          set arc 6.283185307179586
+          set thickness 1
+          set sections 3
+          set subsections 1
+          set color 4294967295
+          set inherit position true
+          set inherit angle true
+          set inherit scale true
+          attr dirtyfix "attr"
+          attr drawmode "filled"
+        }
+        add Circle {
+          set cx 0
+          set cy 0
+          set width 10
+          set height 0
+          set xscale 1
+          set yscale 1
+          set angle 0
+          set arc 6.283185307179586
+          set thickness 1
+          set sections 5
+          set subsections 1
+          set color 4294967295
+          set inherit position true
+          set inherit angle true
+          set inherit scale true
+          attr dirtyfix "attr"
+          attr drawmode "filled"
+        }
+        add Circle {
+          set cx 0
+          set cy -100
+          set width 25
+          set height 25
+          set xscale 1
+          set yscale 1
+          set angle 0
+          set arc 4.712389
+          set thickness 1
+          set sections 8
+          set subsections 1
+          set color 4294967295
+          set inherit position true
+          set inherit angle false
+          set inherit scale true
+          attr dirtyfix ""
+          attr drawmode "filled"
+        }
+      }
     }
   }
-  add Rescale {
-    name "rescale"
-    set cx 0
-    set cy 0
+  add Container {
+    name "container_rotation_rescale"
+    set cx -200
+    set cy 150
     set width 1
     set height 1
     set xscale 1
@@ -108,25 +250,239 @@ add Container {
     set inherit position true
     set inherit angle true
     set inherit scale true
-    add Circle {
-      name "spoint"
-      set cx 100
+    add Container {
+      set cx 0
       set cy 0
-      set width 15
-      set height 15
+      set width 1
+      set height 1
       set xscale 1
       set yscale 1
       set angle 0
       set arc 6.283185307179586
-      set thickness 0
-      set sections 3
+      set thickness 1
+      set sections 1
       set subsections 1
-      set color 4294902015
+      set color 4294967295
       set inherit position true
       set inherit angle true
       set inherit scale true
-      attr dirtyfix "attr"
-      attr drawmode "outline"
+      add Rotation {
+        set cx 0
+        set cy 0
+        set width 1
+        set height 1
+        set xscale 1
+        set yscale 1
+        set angle 0
+        set arc 6.283185307179586
+        set thickness 1
+        set sections 1
+        set subsections 1
+        set color 4294967295
+        set inherit position true
+        set inherit angle true
+        set inherit scale true
+        add Rescale {
+          set cx 0
+          set cy 0
+          set width 1
+          set height 1
+          set xscale 1
+          set yscale 1
+          set angle 0
+          set arc 6.283185307179586
+          set thickness 1
+          set sections 1
+          set subsections 1
+          set color 4294967295
+          set inherit position true
+          set inherit angle true
+          set inherit scale true
+        add Circle {
+          set cx 0
+          set cy -50
+          set width 100
+          set height 25
+          set xscale 1
+          set yscale 0.2
+          set angle 1.570796
+          set arc 6.283185307179586
+          set thickness 1
+          set sections 3
+          set subsections 1
+          set color 4294967295
+          set inherit position true
+          set inherit angle true
+          set inherit scale true
+          attr dirtyfix "attr"
+          attr drawmode "filled"
+        }
+        add Circle {
+          set cx 0
+          set cy 0
+          set width 10
+          set height 0
+          set xscale 1
+          set yscale 1
+          set angle 0
+          set arc 6.283185307179586
+          set thickness 1
+          set sections 5
+          set subsections 1
+          set color 4294967295
+          set inherit position true
+          set inherit angle true
+          set inherit scale true
+          attr dirtyfix "attr"
+          attr drawmode "filled"
+        }
+        add Circle {
+          set cx 0
+          set cy -100
+          set width 25
+          set height 25
+          set xscale 1
+          set yscale 1
+          set angle 0
+          set arc 4.712389
+          set thickness 1
+          set sections 8
+          set subsections 1
+          set color 4294967295
+          set inherit position true
+          set inherit angle false
+          set inherit scale true
+          attr dirtyfix ""
+          attr drawmode "filled"
+        }
+        }
+      }
+    }
+  }
+  add Container {
+    name "container_rescale_rotation"
+    set cx 200
+    set cy 150
+    set width 1
+    set height 1
+    set xscale 1
+    set yscale 1
+    set angle 0
+    set arc 6.283185307179586
+    set thickness 1
+    set sections 1
+    set subsections 1
+    set color 4294967295
+    set inherit position true
+    set inherit angle true
+    set inherit scale true
+    add Container {
+      set cx 0
+      set cy 0
+      set width 1
+      set height 1
+      set xscale 1
+      set yscale 1
+      set angle 0
+      set arc 6.283185307179586
+      set thickness 1
+      set sections 1
+      set subsections 1
+      set color 4294967295
+      set inherit position true
+      set inherit angle true
+      set inherit scale true
+      add Rescale {
+        set cx 0
+        set cy 0
+        set width 1
+        set height 1
+        set xscale 1
+        set yscale 1
+        set angle 0
+        set arc 6.283185307179586
+        set thickness 1
+        set sections 1
+        set subsections 1
+        set color 4294967295
+        set inherit position true
+        set inherit angle true
+        set inherit scale true
+        add Rotation {
+          set cx 0
+          set cy 0
+          set width 1
+          set height 1
+          set xscale 1
+          set yscale 1
+          set angle 0
+          set arc 6.283185307179586
+          set thickness 1
+          set sections 1
+          set subsections 1
+          set color 4294967295
+          set inherit position true
+          set inherit angle true
+          set inherit scale true
+        add Circle {
+          set cx 0
+          set cy -50
+          set width 100
+          set height 25
+          set xscale 1
+          set yscale 0.2
+          set angle 1.570796
+          set arc 6.283185307179586
+          set thickness 1
+          set sections 3
+          set subsections 1
+          set color 4294967295
+          set inherit position true
+          set inherit angle true
+          set inherit scale true
+          attr dirtyfix "attr"
+          attr drawmode "filled"
+        }
+        add Circle {
+          set cx 0
+          set cy 0
+          set width 10
+          set height 0
+          set xscale 1
+          set yscale 1
+          set angle 0
+          set arc 6.283185307179586
+          set thickness 1
+          set sections 5
+          set subsections 1
+          set color 4294967295
+          set inherit position true
+          set inherit angle true
+          set inherit scale true
+          attr dirtyfix "attr"
+          attr drawmode "filled"
+        }
+        add Circle {
+          set cx 0
+          set cy -100
+          set width 25
+          set height 25
+          set xscale 1
+          set yscale 1
+          set angle 0
+          set arc 4.712389
+          set thickness 1
+          set sections 8
+          set subsections 1
+          set color 4294967295
+          set inherit position true
+          set inherit angle false
+          set inherit scale true
+          attr dirtyfix ""
+          attr drawmode "filled"
+        }
+        }
+      }
     }
   }
 }

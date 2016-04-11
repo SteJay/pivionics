@@ -38,23 +38,14 @@ Window::Window(void) {
     id_store=0;
     namestr="Default Window";
     typestr="Window";
-    geometry[0]=0.0;
-    geometry[1]=0.0;
-    geometry[2]=1.0;
-    geometry[3]=1.0;
-    angles[0]=0;
-    angles[1]=PI*2;
-    scale[0]=1.0;scale[1]=1.0; // OBSOLETE
-    thick=1;
-    sect=4;
-    subsect=1;
-    col=0xFFFFFFFF;
-    txt="";
     inherit_position=false;
     inherit_scale=false;
     inherit_angle=false;
     this->parent=NULL;
 }
+
+
+
 
 string Window::command(string cmd, Element* base) {
 	string rs="";
@@ -100,9 +91,14 @@ list<string> Window::command(list<string> args,Element* base){
 				return args;
 			}
 		} else if(cmd.compare("remove")==0||cmd.compare("delete")==0) {
-			if( args.size() > 0 ) {
-				
+			Element* dummy=del(base);
+		} else if(cmd.compare("encap")==0||cmd.compare("encapsulate")==0) {
+			if( args.size()>0 ) {
+				last_added=encap(args.front(),base);
 			}
+			args.pop_front();
+		} else if(cmd.compare("decap")==0||cmd.compare("decapsulate")==0) {
+				last_added=decap(base);
 		} else if(cmd.compare("set")==0||(args.size()>0 && args.front().compare("=")==0)) {
 			if(args.size()>=2) {
 				string item,val;

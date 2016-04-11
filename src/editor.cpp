@@ -74,7 +74,7 @@ void command(Window* window,string cmd) {
 		if(current==window) { current=NULL; }
 	} else if(c.compare("fps")==0 || c.compare("perf")==0) {
 		unsigned int fpstot=0;
-		unsigned int max=20;
+		unsigned int max=10;
 		struct timespec t,t2;
 		for(int  i=0;i<20;++i) {
 			cout << ".";
@@ -198,8 +198,8 @@ void command(Window* window,string cmd) {
 		if(args.size() < 2 ) {
 			cout << "Commands available:" << endl;
 			cout << "Listing:       types examine ex list ls children child siblings sibl parents" << endl;
-			cout << "Navigation:    enter exit find" << endl;
-			cout << "Creation:      add new name rename set = " << endl;
+			cout << "Navigation:    enter cd exit cu find" << endl;
+			cout << "Creation:      add new delete remove encapsulate encap decapsulate decap name rename set = " << endl;
 			cout << "Files:			save load" << endl;
 			cout << "Type \"help <command>\" for more information (where <command> is one of the above)." << endl;
 		} else {
@@ -272,6 +272,19 @@ void command(Window* window,string cmd) {
 				cout << "Usage: new <element type>" << endl;
 				cout << "Adds a new element of the given type as a child of the current element." << endl;
 				cout << "Use the \"types\" command to see what elements are available for use." << endl;
+			} else if(c.compare("delete")==0||c.compare("remove")==0) {
+				cout << "Usage: remove" << endl;
+				cout << "Usage: delete" << endl;
+				cout << "Deletes the current element and any children and exits to its parents." << endl;
+			} else if(c.compare("encap")==0||c.compare("encapsulate")==0) {
+				cout << "Usage: encap <element type>" << endl;
+				cout << "Usage: encapsulate <element type>" << endl;
+				cout << "Wraps all children of the current element in a new element of the given type." << endl;
+				cout << "Use the \"types\" command to see what elements are available for use." << endl;
+			} else if(c.compare("decap")==0||c.compare("decapsulate")==0) {
+				cout << "Usage: decap" << endl;
+				cout << "Usage: decapsulate" << endl;
+				cout << "The opposite of the encapsulate command. This takes all children of the current element and moves them to the parent." << endl;
 			} else if(c.compare("{")==0||c.compare("}")==0) {
 				cout << "Curly brackets (braces to our USA friends) are used to allow one command set (line or file)" << endl;
 				cout << "to encapsulate more than one element. This is used mainly for loading files, but" << endl;
@@ -285,7 +298,13 @@ void command(Window* window,string cmd) {
 	} else {
 		string cmdstr;
 		try {
+			Element* returnto=current;
+			if(cmd.compare("delete")==0 || cmd.compare("remove")==0 ) {
+				if(current!=NULL) returnto=current->parent;
+			}
 			cmdstr=window->command(cmd,current);
+			current=returnto;
+				
 		} catch(exception& e){
 			cout << "ERROR: Caught exception { " << e.what() << "}, your command may not have worked as you intended!" << endl;
 			cout.flush();
