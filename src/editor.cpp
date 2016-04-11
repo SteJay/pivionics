@@ -29,6 +29,7 @@ along with Pivionics.  If not, see <http://www.gnu.org/licenses/>.
 #include "sdlrenderer.h"
 #include "sdlcompositor.h"
 #include "circle.h"
+#include "box.h"
 using namespace std;
 inline bool file_exists(const string& name) { struct stat buffer; return (stat (name.c_str(), &buffer) == 0); }
 
@@ -327,6 +328,7 @@ int main (int argc, char* argv[]) {
 	window.register_creator("Rescale",&fn_create_rescale);
 	window.register_creator("Circle",&fn_create_circle);
 	window.register_creator("Spiral",&fn_create_spiral);
+	window.register_creator("Box",&fn_create_box);
 
 	if( argc>1 && file_exists(argv[1])) {
 		string fn=argv[1];

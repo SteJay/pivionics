@@ -1,9 +1,11 @@
 add Container {
   name "HSI"
-  set cx 300
-  set cy 300
+  set cx 0
+  set cy 0
   set width 1
   set height 0
+  set xscale 1
+  set yscale 1
   set angle 0
   set arc 6.283185307179586
   set thickness 1
@@ -19,6 +21,8 @@ add Container {
     set cy 35
     set width 1
     set height 0
+    set xscale 1
+    set yscale 1
     set angle 0
     set arc 6.283185307179586
     set thickness 1
@@ -34,6 +38,8 @@ add Container {
       set cy 0
       set width 510
       set height 0
+      set xscale 1
+      set yscale 1
       set angle 0
       set arc 6.283185307179586
       set thickness 10
@@ -43,6 +49,7 @@ add Container {
       set inherit position true
       set inherit angle true
       set inherit scale true
+      attr dirtyfix ""
       attr drawmode "radius"
       attr offset_inner "false"
     }
@@ -52,6 +59,8 @@ add Container {
       set cy 0
       set width 490
       set height 0
+      set xscale 1
+      set yscale 1
       set angle 0
       set arc 6.283185307179586
       set thickness 15
@@ -61,6 +70,7 @@ add Container {
       set inherit position true
       set inherit angle true
       set inherit scale true
+      attr dirtyfix ""
       attr drawmode "radius"
       attr offset_inner "false"
     }
@@ -70,6 +80,8 @@ add Container {
       set cy 0
       set width 460
       set height 0
+      set xscale 1
+      set yscale 1
       set angle 0
       set arc 6.283185307179586
       set thickness 1
@@ -79,6 +91,7 @@ add Container {
       set inherit position true
       set inherit angle true
       set inherit scale true
+      attr dirtyfix ""
       attr drawmode "outline"
       attr offset_inner "false"
     }
@@ -88,6 +101,8 @@ add Container {
       set cy 0
       set width 460
       set height 0
+      set xscale 1
+      set yscale 1
       set angle 0
       set arc 6.283185307179586
       set thickness 30
@@ -97,6 +112,7 @@ add Container {
       set inherit position true
       set inherit angle true
       set inherit scale true
+      attr dirtyfix ""
       attr drawmode "radius"
       attr offset_inner "false"
     }
@@ -106,6 +122,8 @@ add Container {
       set cy 0
       set width 460
       set height 0
+      set xscale 1
+      set yscale 1
       set angle 0.174533
       set arc 6.283185307179586
       set thickness 10
@@ -115,6 +133,7 @@ add Container {
       set inherit position true
       set inherit angle true
       set inherit scale true
+      attr dirtyfix ""
       attr drawmode "radius"
       attr offset_inner "false"
     }
@@ -124,6 +143,8 @@ add Container {
       set cy 0
       set width 460
       set height 0
+      set xscale 1
+      set yscale 1
       set angle 0.349066
       set arc 6.283185307179586
       set thickness 10
@@ -133,6 +154,7 @@ add Container {
       set inherit position true
       set inherit angle true
       set inherit scale true
+      attr dirtyfix ""
       attr drawmode "radius"
       attr offset_inner "false"
     }
@@ -142,6 +164,8 @@ add Container {
       set cy 0
       set width 460
       set height 0
+      set xscale 1
+      set yscale 1
       set angle 0.523599
       set arc 6.283185307179586
       set thickness 20
@@ -151,6 +175,7 @@ add Container {
       set inherit position true
       set inherit angle true
       set inherit scale true
+      attr dirtyfix ""
       attr drawmode "radius"
       attr offset_inner "false"
     }
@@ -160,6 +185,8 @@ add Container {
       set cy 0
       set width 460
       set height 0
+      set xscale 1
+      set yscale 1
       set angle 0.698132
       set arc 6.283185307179586
       set thickness 10
@@ -169,6 +196,7 @@ add Container {
       set inherit position true
       set inherit angle true
       set inherit scale true
+      attr dirtyfix ""
       attr drawmode "radius"
       attr offset_inner "false"
     }
@@ -178,6 +206,8 @@ add Container {
       set cy 0
       set width 460
       set height 0
+      set xscale 1
+      set yscale 1
       set angle 0.872665
       set arc 6.283185307179586
       set thickness 10
@@ -187,6 +217,7 @@ add Container {
       set inherit position true
       set inherit angle true
       set inherit scale true
+      attr dirtyfix ""
       attr drawmode "radius"
       attr offset_inner "false"
     }
@@ -196,6 +227,8 @@ add Container {
       set cy 0
       set width 460
       set height 0
+      set xscale 1
+      set yscale 1
       set angle 1.047198
       set arc 6.283185307179586
       set thickness 20
@@ -205,6 +238,7 @@ add Container {
       set inherit position true
       set inherit angle true
       set inherit scale true
+      attr dirtyfix ""
       attr drawmode "radius"
       attr offset_inner "false"
     }
@@ -214,6 +248,8 @@ add Container {
       set cy 0
       set width 460
       set height 0
+      set xscale 1
+      set yscale 1
       set angle 1.22173
       set arc 6.283185307179586
       set thickness 10
@@ -223,6 +259,7 @@ add Container {
       set inherit position true
       set inherit angle true
       set inherit scale true
+      attr dirtyfix ""
       attr drawmode "radius"
       attr offset_inner "false"
     }
@@ -232,6 +269,8 @@ add Container {
       set cy 0
       set width 460
       set height 0
+      set xscale 1
+      set yscale 1
       set angle 1.396263
       set arc 6.283185307179586
       set thickness 10
@@ -241,6 +280,7 @@ add Container {
       set inherit position true
       set inherit angle true
       set inherit scale true
+      attr dirtyfix ""
       attr drawmode "radius"
       attr offset_inner "false"
     }
@@ -251,6 +291,8 @@ add Container {
     set cy 35
     set width 1
     set height 0
+    set xscale 1
+    set yscale 1
     set angle 0
     set arc 6.283185307179586
     set thickness 1
@@ -266,6 +308,8 @@ add Container {
       set cy -270
       set width 50
       set height 0
+      set xscale 1
+      set yscale 1
       set angle 1.570796
       set arc 6.283185307179586
       set thickness 25
@@ -275,6 +319,7 @@ add Container {
       set inherit position true
       set inherit angle true
       set inherit scale true
+      attr dirtyfix ""
       attr drawmode "torus"
       attr offset_inner "false"
     }
@@ -284,6 +329,8 @@ add Container {
       set cy -210
       set width 25
       set height 0
+      set xscale 1
+      set yscale 1
       set angle 0.523599
       set arc 6.283185307179586
       set thickness 10
@@ -293,6 +340,7 @@ add Container {
       set inherit position true
       set inherit angle true
       set inherit scale true
+      attr dirtyfix ""
       attr drawmode "torus"
       attr offset_inner "false"
     }

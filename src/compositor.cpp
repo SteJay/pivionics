@@ -60,6 +60,7 @@ int Compositor::link_window(Window* w) {
 int Compositor::flashout(void) {
 	
 }
+
 int Compositor::compose(void) {
 	///cout << "Compositor::compose called" << endl;
 	if( wind==NULL ) {
@@ -122,6 +123,11 @@ int Compositor::compose(void) {
 						wpoints[0]=wpoints[1]; wpoints[1]=wpoints[2]; wpoints[2]=wpoints[3];
 						wpoints[3]=*piter; ++ijuju; ++iino;
 					}
+#ifdef REVERSE_COLOR_ORDER
+					rg.color= __builtin_bswap32(nowset.color);
+#else
+					rg.color=nowset.color;
+#endif
 				//cout << "\t\tTempQuad:\n"; for(int i=0;i<=3;i++) {//cout <<"\t\t" << wpoints[i].x-360 << ", " <<wpoints[i].y-360 << endl; }
 					rg.point_count=0;
 				//cout << render_flags;
@@ -157,6 +163,46 @@ int Compositor::compose(void) {
 					//cout << "\t\tUNFILLED" << endl;
 							rg.point_count=2;
 							rg.is_surface=false;
+							if( (render_flags&RENDER_SIDE_INLINE)>0) {
+								rg=cull_rendergon(rg);
+								if(rg.point_count>0) { rgv.push_back(rg); }
+						//cout << "\t\tRENDER_SIDE_INLINE" << endl;
+								p2p(&rg.points[0],&wpoints[3]);
+								p2p(&rg.points[1],&wpoints[1]);
+							    rg.point_count=2;
+							}
+							if( (render_flags&(RENDER_SIDE_INNER)) >0 ) {
+						//cout << "\t\tRENDER_SIDE_DIAGONAL|RENDER_SIDE_INNER" << endl;
+								rg=cull_rendergon(rg);
+								if(rg.point_count>0) rgv.push_back(rg);
+								p2p(&rg.points[0],&wpoints[1]);
+								p2p(&rg.points[1],&wpoints[2]);
+								rg.point_count=2;
+								rg.is_surface=false;
+							} 
+							if(( render_flags&(RENDER_SIDE_DIAGONAL)) >0 ) {
+						//cout << "\t\tRENDER_SIDE_DIAGONAL" << endl;
+								rg=cull_rendergon(rg);
+								if(rg.point_count>0) rgv.push_back(rg);
+								p2p(&rg.points[0],&wpoints[0]);
+								p2p(&rg.points[1],&wpoints[3]);
+								rg.point_count=2;
+								rg.is_surface=false;
+							}
+							if(( render_flags&RENDER_SIDE_RADIAL)>0) {
+								rg=cull_rendergon(rg);
+								if(rg.point_count>0) rgv.push_back(rg);
+								p2p(&rg.points[0],&wpoints[0]);
+								p2p(&rg.points[1],&wpoints[1]);
+								rg.point_count=2;
+								rg=cull_rendergon(rg);
+								if(rg.point_count>0) rgv.push_back(rg);
+								p2p(&rg.points[0],&wpoints[2]);
+								p2p(&rg.points[1],&wpoints[3]);
+								rg.point_count=2;
+								rg.is_surface=false;
+							}
+							//rg.point_count=0;
 						}
 					} else if((render_flags&RENDER_SIDE_RADIAL)>0) {
 				//cout << "\t\tRENDER_SIDE_RADIAL" << endl;
@@ -170,25 +216,9 @@ int Compositor::compose(void) {
 						rg.point_count=1;
 						rg.is_surface=false;
 					}
-#ifdef REVERSE_COLOR_ORDER
-					rg.color= __builtin_bswap32(nowset.color);
-#else
-					rg.color=nowset.color;
-#endif
 					// cull any points which point to a previous point in the set, or if all of the points in the rendergon are beyond visible range
-					bool insideof=false;
-					for(int i=0;i<rg.point_count;i++) {
-						if(rg.points[i].x>=0 && rg.points[i].x<rend->width && rg.points[i].y>=0 && rg.points[i].y<rend->height) insideof=true;
-						if(i<rg.point_count-1 && rg.points[i].x==rg.points[i+1].x&&rg.points[i].y==rg.points[i+1].y) {
-							for(int j=i+1; j<=rg.point_count; j++) { // Shuffle all points forward
-								rg.points[j-1]=rg.points[j];
-							}
-							rg.point_count--;
-							i--;
-						}
-					}
-					// cull any rendergons which are entirely outside of the viewing area
-					if(rg.point_count>0&&insideof) {
+					rg=cull_rendergon(rg);
+					if(rg.point_count>0) {
 						rgv.push_back(rg); // Add the Rendergon if it has more than one point
 					}
 				} // end while loop through individual points
@@ -204,4 +234,21 @@ int Compositor::compose(void) {
 		rend->set_rendergons(&rendergons);
 		///cout << "Compositor sent " << rendergons.size() << " Rendergons to renderer." << endl;
 	}
+}
+
+Rendergon Compositor::cull_rendergon(Rendergon rg) {
+    bool insideof=false;
+   	for(int i=0;i<rg.point_count;i++) {
+       	if(rg.points[i].x>=0 && rg.points[i].x<rend->width && rg.points[i].y>=0 && rg.points[i].y<rend->height) insideof=true;
+           	if(i<rg.point_count-1 && rg.points[i].x==rg.points[i+1].x&&rg.points[i].y==rg.points[i+1].y) {
+               	for(int j=i+1; j<=rg.point_count; j++) { // Shuffle all points forward
+                   	rg.points[j-1]=rg.points[j];
+               	}
+           	rg.point_count--;
+           	i--;
+       	}
+   	}
+    // cull any rendergons which are entirely outside of the viewing area
+   	if(!insideof) rg.point_count=0;
+	return rg;
 }

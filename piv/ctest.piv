@@ -234,7 +234,7 @@ add Container {
     }
   }
   add Container {
-    name "container_rotation_rescale"
+    name "rotation_rescale_container"
     set cx -200
     set cy 150
     set width 1
@@ -250,7 +250,7 @@ add Container {
     set inherit position true
     set inherit angle true
     set inherit scale true
-    add Container {
+    add Rotation {
       set cx 0
       set cy 0
       set width 1
@@ -266,7 +266,7 @@ add Container {
       set inherit position true
       set inherit angle true
       set inherit scale true
-      add Rotation {
+      add Rescale {
         set cx 0
         set cy 0
         set width 1
@@ -282,7 +282,7 @@ add Container {
         set inherit position true
         set inherit angle true
         set inherit scale true
-        add Rescale {
+        add Container {
           set cx 0
           set cy 0
           set width 1
@@ -360,7 +360,7 @@ add Container {
     }
   }
   add Container {
-    name "container_rescale_rotation"
+    name "rescale_rotation_container"
     set cx 200
     set cy 150
     set width 1
@@ -376,7 +376,7 @@ add Container {
     set inherit position true
     set inherit angle true
     set inherit scale true
-    add Container {
+    add Rescale {
       set cx 0
       set cy 0
       set width 1
@@ -392,7 +392,7 @@ add Container {
       set inherit position true
       set inherit angle true
       set inherit scale true
-      add Rescale {
+      add Rotation {
         set cx 0
         set cy 0
         set width 1
@@ -408,7 +408,7 @@ add Container {
         set inherit position true
         set inherit angle true
         set inherit scale true
-        add Rotation {
+        add Container {
           set cx 0
           set cy 0
           set width 1

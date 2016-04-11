@@ -306,6 +306,7 @@ class Compositor {
 		void p2p( IntPoint*,Point* );
 		virtual int compose(void);
 		virtual int flashout(void);
+		virtual Rendergon cull_rendergon(Rendergon);
 };
 
 /* In addition to the main Compositor, Window, Window and Element classes, the following
