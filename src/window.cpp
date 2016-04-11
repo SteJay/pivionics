@@ -100,6 +100,9 @@ list<string> Window::command(list<string> args,Element* base){
 				return args;
 			}
 		} else if(cmd.compare("remove")==0||cmd.compare("delete")==0) {
+			if( args.size() > 0 ) {
+				
+			}
 		} else if(cmd.compare("set")==0||(args.size()>0 && args.front().compare("=")==0)) {
 			if(args.size()>=2) {
 				string item,val;
@@ -130,6 +133,8 @@ list<string> Window::command(list<string> args,Element* base){
 				else if( item.compare("cy")         ==0 ) base->cy(stod(val,nullptr));
 				else if( item.compare("width")      ==0 ) base->width(stod(val,nullptr));
 				else if( item.compare("height")     ==0 ) base->height(stod(val,nullptr));
+				else if( item.compare("xscale")     ==0 ) base->scale_x(stod(val,nullptr));
+				else if( item.compare("yscale")     ==0 ) base->scale_y(stod(val,nullptr));
 				else if( item.compare("angle")      ==0 ) base->angle(stold(val,nullptr));
 				else if( item.compare("arc")        ==0 ) base->arc(stold(val,nullptr));
 				else if( item.compare("thickness")  ==0 ) base->thickness(stoi(val,nullptr,0));
@@ -359,6 +364,8 @@ void Window::save(ofstream* file,Element* el,string lvl) {
 		*file << lvl << "set cy " << el->cy() << endl;
 		*file << lvl << "set width " << el->width() << endl;
 		*file << lvl << "set height " << el->height() << endl;
+		*file << lvl << "set xscale " << el->scale_x() << endl;
+		*file << lvl << "set yscale " << el->scale_y() << endl;
 		*file << lvl << "set angle " << setprecision(16) << el->angle() << endl;
 		*file << lvl << "set arc " << setprecision(16) << el->arc() << endl;
 		*file << lvl << "set thickness " << el->thickness() << endl;

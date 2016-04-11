@@ -172,6 +172,8 @@ class Element {
 		unsigned int sections(void) {return sect;}
 		unsigned int subsections(void) {return subsect;}
 		unsigned int color(void) {return col;}
+		double scale_x(void) { return scale[0]; }
+		double scale_y(void) { return scale[1]; }
 		string text(void) {return txt;}
 		
 		void cx(double d) {geometry[0]=d;}
@@ -184,6 +186,8 @@ class Element {
 		void sections(unsigned int d) {sect=d;}
 		void subsections(unsigned int d) {subsect=d;}
 		void color(unsigned int d) {col=d;}
+		void scale_x(double d) { scale[0]=d; }
+		void scale_y(double d) { scale[1]=d; }
 		void text(string d) {txt=d;}
 		
 
@@ -323,37 +327,12 @@ This is identical in concept to the Container, but child elements also inherit r
 		bool pre_compose(Origin);
 };
 
-class Offset:public Container {
-/*
-Offset container. This offsets the centre of rotation, allowing its contents to "orbit" the centre of the offset by the radius described by that offset.
-This does not pass on rotation, so child elements will still have their original orientation.
-*/
+class Scale:public Rotation {
 	public:
-	int placeholder;
-};
+	    Scale();
+		bool post_compose(Origin);
+		bool pre_compose(Origin);
 
-class OffsetRotation: public Container {
-/*
-Identical in conecpt to the Offset, but child elements do inherit rotation.
-*/
-	public:
-	int placeholder;
-};
-
-class StaticContainer:public Container {
-/*
-This container is used where its contents will never change relative to one another.
-It will actually delete its children once it has calculated the points within it, and once this is done its points will never be recalculated.
-Please note that the StaticContainer itself can continue to be moved, rotated and scaled - it is not completely static on the screen - rather its internal
-contents never need to be updated.
-
-This allows for the ability to cache points without having to check recursively if they are dirty (if they have changed since the last frame), hopefully
-allowing you to squeeze better perfomance out of the process. Because it only stores points, you cannot use these to contain text or other bitmap/surfaces.
-
-It is worth re-stating here: ANY CHILD ELEMENTS OF A STATIC CONTAINER WILL CEASE TO EXIST AS SOON AS THE CONTAINER IS CALCULATED. You cannot, I repeat CAN NOT
-change the contents of a StaticContainer once its "construct" function is called; if you try to do so the original contents of the container will be lost and
-replaced by whatever elements you add, and at this point it will also delete its point cache! YOU HAVE BEEN WARNED.
-*/
 };
 
 class OptionContainer:public Container{

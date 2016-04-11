@@ -2,7 +2,7 @@ add Spiral {
   set cx 300
   set cy 300
   set width 500
-  set height 1
+  set height 0
   set angle 0
   set arc 15.707963
   set thickness 10

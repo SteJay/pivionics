@@ -32,11 +32,17 @@ along with Pivionics.  If not, see <http://www.gnu.org/licenses/>.
 using namespace std;
 
 Rotation::Rotation(void) {
-	name("Rot");
+	name("");
 	compose_order=COMPOSE_ORDER_STR; // Scale, Translate, Rotate
 }
 
+Scale::Scale(void) {
+	name("");
+	compose_order=COMPOSE_ORDER_TRS; // Translate, Rotate, Scale
+}
+
 Element* fn_create_rotation(void) { return new Rotation; }
+Element* fn_create_scale(void) { return new Scale; }
 
 bool Rotation::pre_compose(Origin origin) {
 	composed_points.clear();
@@ -68,7 +74,6 @@ bool Rotation::pre_compose(Origin origin) {
 	return false;
 }
 bool Rotation::post_compose(Origin origin) {
-	// Now we compose this element as a whole
 	PointSet tps,tps2;
 	Point tp,tp2;
 	vector<PointSet> tpsv;

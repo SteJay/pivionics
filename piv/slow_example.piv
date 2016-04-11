@@ -2,7 +2,7 @@ add Circle {
   set cx 300
   set cy 300
   set width 590
-  set height 1
+  set height 0
   set angle 0
   set arc 6.283185307179586
   set thickness 2
@@ -16,7 +16,7 @@ add Circle {
   set cx 300
   set cy 300
   set width 560
-  set height 1
+  set height 0
   set angle 0
   set arc 6.283185307179586
   set thickness 2
@@ -30,7 +30,7 @@ add Circle {
   set cx 300
   set cy 300
   set width 530
-  set height 1
+  set height 0
   set angle 0
   set arc 6.283185307179586
   set thickness 2
@@ -44,7 +44,7 @@ add Circle {
   set cx 300
   set cy 300
   set width 500
-  set height 1
+  set height 0
   set angle 0
   set arc 6.283185307179586
   set thickness 2
@@ -58,7 +58,7 @@ add Circle {
   set cx 300
   set cy 300
   set width 470
-  set height 1
+  set height 0
   set angle 0
   set arc 6.283185307179586
   set thickness 2
@@ -72,7 +72,7 @@ add Circle {
   set cx 300
   set cy 300
   set width 440
-  set height 1
+  set height 0
   set angle 0
   set arc 6.283185307179586
   set thickness 2
@@ -86,7 +86,7 @@ add Circle {
   set cx 300
   set cy 300
   set width 410
-  set height 1
+  set height 0
   set angle 0
   set arc 6.283185307179586
   set thickness 2
@@ -100,7 +100,7 @@ add Circle {
   set cx 300
   set cy 300
   set width 380
-  set height 1
+  set height 0
   set angle 0
   set arc 6.283185307179586
   set thickness 2

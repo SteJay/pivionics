@@ -8,7 +8,7 @@ add Spiral {
   set thickness 15
   set sections 360
   set subsections 1
-  set color 4294967295
+  set color 0xff0000ff
   set inherit position true
   set inherit angle true
   set inherit scale true

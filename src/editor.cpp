@@ -64,7 +64,7 @@ void command(Window* window,string cmd) {
 	vector<string> args = split(cmd,L' ');
 	string c=args[0];
 
-	if(c.compare("exit")==0) {
+	if(c.compare("exit")==0||c.compare("cu")==0) {
 		if(current == NULL) {
 			cout << "ERROR: Already editing Window, the top level." << endl << endl;
 		} else {
@@ -171,40 +171,42 @@ void command(Window* window,string cmd) {
 			cout << "ERROR: You are at the top level (the Window) so there can't be any siblings." << endl;
 		}
 		cout << endl;
-	} else if(c.compare("list")==0||c.compare("ls")==0) {
-		if(current!=NULL) {
-			cout << "Current Element is " << current->type() << " named (" << current->name() << ")" << endl;
-			cout << "cx: " << current->cx() << ", cy: " << current->cy() << ", width: " << current->width() << ", height: " << current->height() << endl;
-			cout << "angle: " << current->angle() << ", arc: " << current->arc() << ", thickness: " << current->thickness() << endl;
-			cout << "sections: " << current->sections() << ", subsections: " << current->subsections() << ", color: " << hex << current->color() << endl;
-			cout << "Inherit Position: "; if(current->inherit_position) cout << "true"; else cout << "false";
-			cout << ", Inherit Angle: "; if(current->inherit_angle) cout << "true"; else cout << "false";
-			cout << ", Inherit Scale: "; if(current->inherit_scale) cout << "true"; else cout << "false";
-			vector<string> a=current->get_attrs();
-			string s;
+	} else if(c.compare("examine")==0||c.compare("ex")==0) {
+		if(current==NULL) current=window;
+		cout << "Current Element is " << current->type() << " named (" << current->name() << ")" << endl;
+		cout << "cx: " << current->cx() << ", cy: " << current->cy() << ", width: " << current->width() << ", height: " << current->height() << ", xscale: " << current->scale_x() << ", yscale: " << current->scale_y() << endl;
+		cout << "angle: " << current->angle() << ", arc: " << current->arc() << ", thickness: " << current->thickness();
+		cout << "sections: " << current->sections() << ", subsections: " << current->subsections() << ", color: " << hex << current->color() << dec << endl;
+		cout << "Inherit Position: "; if(current->inherit_position) cout << "true"; else cout << "false";
+		cout << ", Inherit Angle: "; if(current->inherit_angle) cout << "true"; else cout << "false";
+		cout << ", Inherit Scale: "; if(current->inherit_scale) cout << "true"; else cout << "false";
+		vector<string> a=current->get_attrs();
+		string s;
+		if(a.size()>0) {
+			cout << "Attributes:" << endl;
+			bool comma=false;
 			for(auto iter=a.begin(); iter!=a.end(); ++iter) {
 				s=*iter;
-				cout << "Attribute: " << s << " = " << current->get_attr(s) << "" << endl;
+				if(comma) cout << ", "; else comma=true;
+				cout << "Attribute: " << s << " = \"" << current->get_attr(s) << "\"";
 			}
-		} else {
-			cout << "Current Element is a window named (" << window->name() << ")" << endl;
-			cout << "DO NOT MESS WITH ANY PROPERTIES OF THE WINDOW, THEY ARE SET AUTOMATICALLY" << endl;
-			cout << "Playing about with the Window is a bad idea full stop." << endl;
-		}		
+			cout << endl;
+		}
+		if(current==window) current=NULL;
 		cout << endl;
 	} else if(c.compare("help")==0) {
 		if(args.size() < 2 ) {
 			cout << "Commands available:" << endl;
-			cout << "Listing:       types list ls children child siblings sibl parents" << endl;
+			cout << "Listing:       types examine ex list ls children child siblings sibl parents" << endl;
 			cout << "Navigation:    enter exit find" << endl;
 			cout << "Creation:      add new name rename set = " << endl;
 			cout << "Files:			save load" << endl;
 			cout << "Type \"help <command>\" for more information (where <command> is one of the above)." << endl;
 		} else {
 			c=args[1];
-			if(c.compare("list")==0||c.compare("ls")==0) {
-				cout << "Usage: list" << endl;
-				cout << "Usage: ls" << endl;
+			if(c.compare("examine")==0||c.compare("ex")==0) {
+				cout << "Usage: examine" << endl;
+				cout << "Usage: ex" << endl;
 				cout << "This lists the setup of the current element, including its geometry, angles and attributes." << endl;
 				cout << "THIS IS AN EDITOR COMMAND AND CANNOT BE COMBINED WITH OTHER COMMANDS ON A SINGLE LINE" << endl;
 			} else if(c.compare("types")==0) {
@@ -235,8 +237,9 @@ void command(Window* window,string cmd) {
 				cout << "This is for use where you have unnamed elements you need to switch to and is currently very basic" << endl;
 				cout << "A better version allowing you to specify a path is planned but not currently available." << endl;
 				cout << "THIS IS AN EDITOR COMMAND AND CANNOT BE COMBINED WITH OTHER COMMANDS ON A SINGLE LINE" << endl;
-			} else if(c.compare("exit")==0) {
+			} else if(c.compare("exit")==0||c.compare("cu")==0) {
 				cout << "Usage: exit" << endl;
+				cout << "Usage: cu" << endl;
 				cout << "This moves \"out of\" the current element, making its parent the current element." << endl;
 				cout << "THIS IS AN EDITOR COMMAND AND CANNOT BE COMBINED WITH OTHER COMMANDS ON A SINGLE LINE" << endl;
 			} else if(c.compare("find")==0) {
@@ -258,7 +261,7 @@ void command(Window* window,string cmd) {
 				cout << "Usage: set <perameter> <value>" << endl;
 				cout << "Usage: <perameter> = <value>" << endl;
 				cout << "Sets one of the element's parameters. Be careful to use a space either side of the = when using the second form." << endl;
-				cout << "The perameter can be any of: cx,cy,width,height,angle,arc,thickness,sections,subsections,color" << endl;
+				cout << "The perameter can be any of: cx,cy,width,height,xscale,yscale,angle,arc,thickness,sections,subsections,color" << endl;
 			} else if(c.compare("name")==0||c.compare("rename")==0) {
 				cout << "Usage: name <new name>" << endl;
 				cout << "Usage: rename <new name>" << endl;

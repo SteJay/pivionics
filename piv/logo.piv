@@ -2,7 +2,7 @@ add Container {
   set cx 300
   set cy 300
   set width 1
-  set height 1
+  set height 0
   set angle 0
   set arc 6.283185307179586
   set thickness 1
@@ -17,7 +17,7 @@ add Container {
     set cx 0
     set cy 0
     set width 580
-    set height 1
+    set height 0
     set angle 0.034907
     set arc 0.977384
     set thickness 90
@@ -35,7 +35,7 @@ add Container {
     set cx 0
     set cy 0
     set width 580
-    set height 1
+    set height 0
     set angle 1.082104
     set arc 0.977384
     set thickness 90
@@ -53,7 +53,7 @@ add Container {
     set cx 0
     set cy 0
     set width 580
-    set height 1
+    set height 0
     set angle 2.129302
     set arc 0.977384
     set thickness 90
@@ -71,7 +71,7 @@ add Container {
     set cx 0
     set cy 0
     set width 580
-    set height 1
+    set height 0
     set angle 3.176499
     set arc 0.977384
     set thickness 90
@@ -89,7 +89,7 @@ add Container {
     set cx 0
     set cy 0
     set width 580
-    set height 1
+    set height 0
     set angle 4.223697
     set arc 0.977384
     set thickness 90
@@ -107,7 +107,7 @@ add Container {
     set cx 0
     set cy 0
     set width 580
-    set height 1
+    set height 0
     set angle 5.270894
     set arc 0.977384
     set thickness 90

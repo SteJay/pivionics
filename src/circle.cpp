@@ -27,10 +27,11 @@ Element* fn_create_circle(void) { return new Circle; }
 Element* fn_create_spiral(void) { return new Spiral; }
 
 Circle::Circle(void) {
+	geometry[2]=1.0;
+	geometry[3]=0.0;
     name("");
     sect=360;
-	attrs["drawmode"]="torus"; // torus,filled,outline,radius|radial
-	attrs["offset_inner"]="false"; // Offset the inner circle by half a step (more efficient draw?)
+	attrs["drawmode"]="outline"; // torus,filled,outline,radius|radial
 }
 
 double Circle::mod_inner_radius(double r,double percent) { return r; }
