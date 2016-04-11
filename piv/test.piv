@@ -1,0 +1,94 @@
+add Box {
+  set cx -200
+  set cy 0
+  set width 380
+  set height 380
+  set xscale 1
+  set yscale 1
+  set angle 0
+  set arc 6.283185307179586
+  set thickness 1
+  set sections 4
+  set subsections 4
+  set color 4294967295
+  set inherit position true
+  set inherit angle true
+  set inherit scale true
+  attr drawmode "outline"
+}
+add Circle {
+  set cx 200
+  set cy 0
+  set width 380
+  set height 0
+  set xscale 1
+  set yscale 1
+  set angle 0
+  set arc 6.283185307179586
+  set thickness 1
+  set sections 360
+  set subsections 1
+  set color 4294967295
+  set inherit position true
+  set inherit angle true
+  set inherit scale true
+  attr dirtyfix "attr"
+  attr drawmode "outline"
+}
+add Spiral {
+  set cx 200
+  set cy 0
+  set width 380
+  set height 0
+  set xscale 1
+  set yscale 1
+  set angle 0
+  set arc 15.707963
+  set thickness 0
+  set sections 360
+  set subsections 1
+  set color 4294967295
+  set inherit position true
+  set inherit angle true
+  set inherit scale true
+  attr dirtyfix "attr"
+  attr drawmode "outline"
+}
+add Spiral {
+  set cx 200
+  set cy 0
+  set width 380
+  set height 0
+  set xscale 1
+  set yscale 1
+  set angle 2.094395
+  set arc 15.707963
+  set thickness 1
+  set sections 360
+  set subsections 1
+  set color 4294967295
+  set inherit position true
+  set inherit angle true
+  set inherit scale true
+  attr dirtyfix "attr"
+  attr drawmode "outline"
+}
+add Spiral {
+  set cx 200
+  set cy 0
+  set width 380
+  set height 0
+  set xscale 1
+  set yscale 1
+  set angle 4.18879
+  set arc 15.707963
+  set thickness 1
+  set sections 360
+  set subsections 1
+  set color 4294967295
+  set inherit position true
+  set inherit angle true
+  set inherit scale true
+  attr dirtyfix "attr"
+  attr drawmode "outline"
+}

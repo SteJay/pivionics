@@ -143,7 +143,7 @@ int Compositor::compose(void) {
 								p2p(&rg.points[3],&wpoints[1]);
 								rg.point_count=4;
 								rg.is_surface=false;
-							} else if( (render_flags&(RENDER_SIDE_DIAGONAL|RENDER_SIDE_INNER)) >0 ) {
+							} else if( (render_flags&RENDER_SIDE_INNER) >0 ) {
 						//cout << "\t\tRENDER_SIDE_DIAGONAL|RENDER_SIDE_INNER" << endl;
 								p2p(&rg.points[2],&wpoints[3]);
 								rg.point_count=3;

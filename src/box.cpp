@@ -43,20 +43,35 @@ void Box::construct(void) {
         if( attrs["drawmode"].compare("filled")==0 ) {
             ps.render_flags=RENDER_SIDE_OUTLINE|RENDER_SIDE_INLINE|RENDER_FILL;
         } else if( attrs["drawmode"].compare("outline")==0 ) {
-            ps.render_flags=RENDER_SIDE_OUTLINE|RENDER_SIDE_INLINE|RENDER_SIDE_RADIAL;
+            ps.render_flags=RENDER_SIDE_OUTLINE|RENDER_SIDE_INLINE|RENDER_SIDE_RADIAL;;
+        } else if( attrs["drawmode"].compare("radius")==0 ) {
+            ps.render_flags=RENDER_SIDE_RADIAL;
+        } else if( attrs["drawmode"].compare("triangle")==0 ) {
+            ps.render_flags=RENDER_SIDE_OUTLINE|RENDER_SIDE_DIAGONAL|RENDER_FILL;
+        } else if( attrs["drawmode"].compare("triangle2")==0 ) {
+            ps.render_flags=RENDER_SIDE_OUTLINE|RENDER_SIDE_DIAGONAL|RENDER_SIDE_INNER|RENDER_FILL;
+        } else if( attrs["drawmode"].compare("outlinetriangle")==0 ) {
+            ps.render_flags=RENDER_SIDE_OUTLINE|RENDER_SIDE_DIAGONAL|RENDER_SIDE_INLINE|RENDER_SIDE_RADIAL;
+        } else if( attrs["drawmode"].compare("outlinetriangle2")==0 ) {
+            ps.render_flags=RENDER_SIDE_OUTLINE|RENDER_SIDE_INNER|RENDER_SIDE_INLINE|RENDER_SIDE_RADIAL;
+        } else if( attrs["drawmode"].compare("crisscross")==0 ) {
+            ps.render_flags=RENDER_SIDE_OUTLINE|RENDER_SIDE_INNER|RENDER_SIDE_INLINE|RENDER_SIDE_RADIAL|RENDER_SIDE_DIAGONAL;
+        } else if( attrs["drawmode"].compare("hourglass")==0 ) {
+            ps.render_flags=RENDER_SIDE_OUTLINE|RENDER_SIDE_INNER|RENDER_SIDE_INLINE|RENDER_SIDE_DIAGONAL;
         } else if( attrs["drawmode"].compare("radius")==0 ) {
             ps.render_flags=RENDER_SIDE_RADIAL;
         } else {
             ps.render_flags=RENDER_SIDE_OUTLINE|RENDER_SIDE_INLINE|RENDER_FILL;
 		}
+
 		double lengthx = geometry[2] / subsect ;
 		double lengthy = geometry[3] / sect;
 		for(int m=0;m<=subsect;++m) {
-			p.x = geometry[0]+w + (lengthx*m);
-			p.y = geometry[1]-h + (lengthy*n); 
+			p.x = 0-w + (lengthx*m);
+			p.y = 0-h + (lengthy*n); 
 			ps.points.push_back(p);
-			p.x = geometry[0]+w + (lengthx*m);
-			p.y = geometry[1]-h + (lengthy*(n+1)); 
+			p.x = 0-w + (lengthx*m);
+			p.y = 0-h + (lengthy*(n+1)); 
 			ps.points.push_back(p);
 			
 		}

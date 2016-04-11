@@ -107,12 +107,17 @@ void Circle::construct(void) {
 		} else if( attrs["drawmode"].compare("outline")==0 ) {
 			tpointset.render_flags=RENDER_SIDE_OUTLINE;
 		} else if( attrs["drawmode"].compare("outlinetriangle")==0 ) {
-			tpointset.render_flags=RENDER_SIDE_OUTLINE|RENDER_SIDE_DIAGONAL;
+			tpointset.render_flags=RENDER_SIDE_OUTLINE|RENDER_SIDE_DIAGONAL|RENDER_SIDE_RADIAL;
 		} else if( attrs["drawmode"].compare("outlinetriangle2")==0 ) {
-			tpointset.render_flags=RENDER_SIDE_OUTLINE|RENDER_SIDE_DIAGONAL|RENDER_SIDE_INNER;
+			tpointset.render_flags=RENDER_SIDE_OUTLINE|RENDER_SIDE_INNER|RENDER_SIDE_RADIAL;
 		} else if( attrs["drawmode"].compare("radius")==0 ) {
 			tpointset.render_flags=RENDER_SIDE_RADIAL;
+        } else if( attrs["drawmode"].compare("crisscross")==0 ) {
+            tpointset.render_flags=RENDER_SIDE_OUTLINE|RENDER_SIDE_INNER|RENDER_SIDE_INLINE|RENDER_SIDE_RADIAL|RENDER_SIDE_DIAGONAL;
+        } else if( attrs["drawmode"].compare("hourglass")==0 ) {
+            tpointset.render_flags=RENDER_SIDE_OUTLINE|RENDER_SIDE_INNER|RENDER_SIDE_INLINE|RENDER_SIDE_DIAGONAL;
 		}
+
 		tpointset.color=col;
 		// Iterate through each subsection
 		for(unsigned int m=0; m<=subsect; ++m) {
