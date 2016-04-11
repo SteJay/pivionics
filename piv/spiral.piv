@@ -1,0 +1,18 @@
+add Spiral {
+  set cx 300
+  set cy 300
+  set width 500
+  set height 1
+  set angle 0
+  set arc 15.707963
+  set thickness 10
+  set sections 50
+  set subsections 1
+  set color 4294967295
+  set inherit position true
+  set inherit angle true
+  set inherit scale true
+  attr dirtyfix "true"
+  attr drawmode "outline"
+  attr offset_inner "false"
+}

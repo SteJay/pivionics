@@ -32,6 +32,7 @@ along with Pivionics.  If not, see <http://www.gnu.org/licenses/>.
 
 using namespace std;
 double normalise_angle( double d ) { d=fmod(d,PI*2); if(d<0.0) d+=PI*2; return d; }
+long double normalise_angle( long double d ) { d=fmod(d,PI*2.0L); if(d<0.0) d+=PI*2; return d; }
 
 Element::Element() {
 	id_store=0;

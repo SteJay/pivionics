@@ -24,56 +24,75 @@ along with Pivionics.  If not, see <http://www.gnu.org/licenses/>.
 #include "circle.h"
 
 Element* fn_create_circle(void) { return new Circle; }
+Element* fn_create_spiral(void) { return new Spiral; }
 
 Circle::Circle(void) {
     name("");
     sect=360;
 	attrs["drawmode"]="torus"; // torus,filled,outline,radius|radial
-	attrs["offset_inner"]="false"; // Offset the inner circle by half a step (more efficient draw)
+	attrs["offset_inner"]="false"; // Offset the inner circle by half a step (more efficient draw?)
 }
+
+double Circle::mod_inner_radius(double r,double percent) { return r; }
+double Circle::mod_outer_radius(double r,double percent) { return r; }
+
+
+double Spiral::mod_inner_radius(double r,double percent) { return r-(r*percent); }
+double Spiral::mod_outer_radius(double r,double percent) { return r-(r*percent); }
+
+
+unsigned int Circle::mod_color(unsigned int c, double percent) { return c; }
 
 void Circle::construct(void) {
 	access.lock();
 	// Clear our current point set
 	points.clear();
-	int w,h; w=geometry[2]/2; h=geometry[3]/2;
-	double angle_per_sect=angles[1]/sect;
-//	double angle_per_subsect=normalise_angle(angle_per_sect/subsect);
+	// Intitialise our perameters:
+	Point inner_point,outer_point;// Used and set within loop
+	Point tpoint;				  // Used and set within loop
+	int w,h; w=geometry[2]/2; h=geometry[3]/2; // Used to work out radius
+	double angle_per_sect=angles[1]/sect; 
 	double outer_radius = sqrt(w*w+h*h); // Ah, pythagoras....
 	double inner_radius = outer_radius - thick;
-	double theta;
-//	double outer_length = (2*outer_radius*sin((PI/sect)*(angles[1]/sect))/subsect);
-//	double inner_length = (2*inner_radius*sin((PI/sect)*(angles[1]/sect))/subsect);
-//	double outer_length = (2*outer_radius*sin((PI/sect))/subsect)*(angles[1]/(2*PI));
-//	double outer_length = (2*outer_radius*sin((PI/sect))/subsect)*(angles[1]/(2*PI));
-	if(attrs["drawmode"].compare("filled")==0) {
-	  inner_radius=0.0;
-	}
-	theta=0;
+	long double theta=0.0L; // Initialised within every loop iteration
+	if(attrs["drawmode"].compare("filled")==0) { inner_radius=0.0; } // zero inner radius should cause the compositor to clip to triangles
 	Point inner_sect_point={inner_radius,0};
 	Point outer_sect_point={outer_radius,0};
 	Point next_inner_sect_point = { inner_radius*cos( angle_per_sect*1), inner_radius*sin( angle_per_sect*1) };
 	Point next_outer_sect_point = { outer_radius*cos( angle_per_sect*1), outer_radius*sin( angle_per_sect*1) };
-	double outer_length = sqrt( pow(next_outer_sect_point.x-outer_sect_point.x,2)+pow(next_outer_sect_point.y-outer_sect_point.y,2));
-	double inner_length = sqrt( pow(next_inner_sect_point.x-inner_sect_point.x,2)+pow(next_inner_sect_point.y-inner_sect_point.y,2));
-	Point inner_point,outer_point;
-	Point tpoint;
+	long double outer_length = sqrt( pow(next_outer_sect_point.x-outer_sect_point.x,2)+pow(next_outer_sect_point.y-outer_sect_point.y,2));
+	long double inner_length = sqrt( pow(next_inner_sect_point.x-inner_sect_point.x,2)+pow(next_inner_sect_point.y-inner_sect_point.y,2));
 	outer_length = outer_length/subsect;
 	inner_length = inner_length/subsect;
-//	outer_length+=outer_length*0.3076923076923077;
-//	inner_length+=inner_length*0.3076923076923077;
-
+	double percent=0.0;
+	double nextpercent=0.0;
+	// In order to keep track of the radius, we're going to need to store its initial value:
+	double defined_outer_radius=outer_radius;
+	double defined_inner_radius=inner_radius;
+	
 	// Now iterate through each section
 	for( unsigned int n=0; n<sect; ++n) {
 		// First we need some setup for this section; we need to kno
 		PointSet tpointset;
+		percent = static_cast<double>(n)/static_cast<double>(sect);// 0.0-1.0 on how far we've drawn...
+		nextpercent = static_cast<double>(n+1)/static_cast<double>(sect);// 0.0-1.0 on how far we've drawn...
+		// Work out the next point first, hopefully stop the annoying jitter
+		inner_radius=this->mod_inner_radius(defined_inner_radius, nextpercent);
+		outer_radius=this->mod_outer_radius(defined_outer_radius, nextpercent);
+		next_inner_sect_point = { inner_radius*cos( angle_per_sect*(n+1)), inner_radius*sin( angle_per_sect*(n+1)) };
+		next_outer_sect_point = { outer_radius*cos( angle_per_sect*(n+1)), outer_radius*sin( angle_per_sect*(n+1)) };
+		// Now work out the point we're currently on
+		inner_radius=this->mod_inner_radius(defined_inner_radius, percent);
+		outer_radius=this->mod_outer_radius(defined_outer_radius, percent);
 		inner_sect_point.x = inner_radius*cos( angle_per_sect*n);
 		inner_sect_point.y = inner_radius*sin( angle_per_sect*n);
 		outer_sect_point.x = outer_radius*cos( angle_per_sect*n);
 		outer_sect_point.y = outer_radius*sin( angle_per_sect*n);
-//		tpointset.points.push_back(outer_sect_point);
-//		tpointset.points.push_back(inner_sect_point);
-		
+		// The lengths may have changed, so lets recalculate those next	
+		outer_length = sqrt( pow(next_outer_sect_point.x-outer_sect_point.x,2)+pow(next_outer_sect_point.y-outer_sect_point.y,2));
+		inner_length = sqrt( pow(next_inner_sect_point.x-inner_sect_point.x,2)+pow(next_inner_sect_point.y-inner_sect_point.y,2));
+		outer_length = outer_length/subsect;
+		inner_length = inner_length/subsect;
 		
 		// Set the render_flags according to the "drawmode" attribute:
 		if( attrs["drawmode"].compare("filled")==0 ) {
@@ -96,21 +115,26 @@ void Circle::construct(void) {
 		tpointset.color=col;
 		// Iterate through each subsection
 		for(unsigned int m=0; m<=subsect; ++m) {
-//			theta = normalise_angle((angle_per_sect*n) + (PI/2) + (angle_per_subsect*m));
-			theta= normalise_angle(PI+(angle_per_sect*n) - ((PI-angle_per_sect)/2));
+			theta= normalise_angle(PI+static_cast<long double>(angle_per_sect*n) - ((PI-static_cast<long double>(angle_per_sect))/2.0L));
 			// Now generate the points for this subsection...
 			inner_point.x = (inner_sect_point.x + (m*inner_length) * cos( theta ));	
 			inner_point.y = (inner_sect_point.y + (m*inner_length) * sin( theta ));
 			outer_point.x = (outer_sect_point.x + (m*outer_length) * cos( theta ));
 			outer_point.y = (outer_sect_point.y + (m*outer_length) * sin( theta ));
+			if( attrs["dirtyfix"].compare("")!=0 ) {
+				if(m==subsect) {
+					inner_point.x=next_inner_sect_point.x;
+					inner_point.y=next_inner_sect_point.y;
+					outer_point.x=next_outer_sect_point.x;
+					outer_point.y=next_outer_sect_point.y;
+				}
+			}
 			// Push the points onto our temporary poly
-		//cout << "\tCircle part: Theta: " << theta << "\t, Points: " << outer_point.x << "\t" << outer_point.y << "\t\t" << inner_point.x << "\t" << inner_point.y << endl;
 			tpointset.points.push_back(outer_point);
 			tpointset.points.push_back(inner_point);
 		}
 		// And finally push the temporary poly to our points
 		points.push_back(tpointset);
-	//cout << "\tset!" << endl;
 	}
 	// There we go, good to go!
 	access.unlock();

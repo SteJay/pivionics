@@ -299,16 +299,11 @@ int main (int argc, char* argv[]) {
 	char chrbuf[128];
 	Window window;
 	string in_str;
-	//window.register_creator("Element",&create_element);
 	//window.register_creator("Element",&element_creator<Element>); // Some sort of class casting conflict doing this for other types... We'll come back to this later.
 	window.register_creator("Container",&fn_create_container);
 	window.register_creator("Rotation",&fn_create_rotation);
 	window.register_creator("Circle",&fn_create_circle);
-	//window.register_creator("Container",&create_container);
-	//window.register_creator("Rotation",&create_rotation);
-	//window.register_creator("Offset",&create_offset);
-	//window.register_creator("OffsetRotation",&create_offset_rotation);
-	//window.register_creator("StaticContainer",&create_static_container);
+	window.register_creator("Spiral",&fn_create_spiral);
 
 	if( argc>1 && file_exists(argv[1])) {
 		string fn=argv[1];

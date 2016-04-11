@@ -38,6 +38,7 @@ using namespace std;
 #define STRUCTURE_H
 
 double normalise_angle(double);
+long double normalise_angle(long double);
 /* The constants below are used to control which sides are drawn
    given a set of points. These are used by the Compositor class
    and (if used) the Compositor. 
