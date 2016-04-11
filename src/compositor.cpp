@@ -23,7 +23,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 using namespace std;
 
 Compositor::~Compositor() {
-
+	rend=NULL;
+	wind=NULL;
 }
 
 void Compositor::p2p(IntPoint* intpoint,Point* point) {
@@ -35,12 +36,24 @@ int Compositor::link_renderer(Renderer* r) {
 	access.lock();
 	while(!r->ready());
 	rend=r;
+	if(wind!=NULL) {
+		wind->cx( rend->width/2 );
+		wind->cy( rend->height/2 );
+		wind->width( rend->width );
+		wind->height( rend->height );
+	}
 	access.unlock();
 	return 0;
 }
 int Compositor::link_window(Window* w) {
 	access.lock();
 	wind=w;
+	if(rend!=NULL) {
+		wind->cx( rend->width/2 );
+		wind->cy( rend->height/2 );
+		wind->width( rend->width );
+		wind->height( rend->height );
+	}
 	access.unlock();
 	return 0;
 }

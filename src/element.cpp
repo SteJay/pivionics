@@ -56,11 +56,7 @@ Element::Element() {
 	compose_order=COMPOSE_ORDER_SRT; // Scale, Rotate, Translate
 	parent=NULL;
 }
-Container::Container() {
-	name("");
-}
 Element* fn_create_element(void) { return new Element; }
-Element* fn_create_container(void) { return new Container; }
 Element::~Element() {
 	access.lock();
     Element* e;

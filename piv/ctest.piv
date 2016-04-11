@@ -1,0 +1,132 @@
+add Container {
+  name "main"
+  set cx 0
+  set cy 0
+  set width 1
+  set height 1
+  set xscale 1
+  set yscale 1
+  set angle 0
+  set arc 6.283185307179586
+  set thickness 1
+  set sections 1
+  set subsections 1
+  set color 4294967295
+  set inherit position true
+  set inherit angle true
+  set inherit scale true
+  add Container {
+    name "container"
+    set cx 0
+    set cy 0
+    set width 1
+    set height 1
+    set xscale 1
+    set yscale 1
+    set angle 0
+    set arc 6.283185307179586
+    set thickness 1
+    set sections 1
+    set subsections 1
+    set color 4294967295
+    set inherit position true
+    set inherit angle true
+    set inherit scale true
+    add Circle {
+      name "cpoint"
+      set cx 200
+      set cy 0
+      set width 15
+      set height 15
+      set xscale 1
+      set yscale 1
+      set angle 0
+      set arc 6.283185307179586
+      set thickness 0
+      set sections 3
+      set subsections 1
+      set color 4278190335
+      set inherit position true
+      set inherit angle true
+      set inherit scale true
+      attr dirtyfix "attr"
+      attr drawmode "outline"
+    }
+  }
+  add Rotation {
+    name "rotation"
+    set cx 0
+    set cy 0
+    set width 1
+    set height 1
+    set xscale 1
+    set yscale 1
+    set angle 0
+    set arc 6.283185307179586
+    set thickness 1
+    set sections 1
+    set subsections 1
+    set color 4294967295
+    set inherit position true
+    set inherit angle true
+    set inherit scale true
+    add Circle {
+      name "rpoint"
+      set cx 150
+      set cy 0
+      set width 15
+      set height 15
+      set xscale 1
+      set yscale 1
+      set angle 0
+      set arc 6.283185307179586
+      set thickness 0
+      set sections 3
+      set subsections 1
+      set color 16711935
+      set inherit position true
+      set inherit angle true
+      set inherit scale true
+      attr dirtyfix "attr"
+      attr drawmode "outline"
+    }
+  }
+  add Rescale {
+    name "rescale"
+    set cx 0
+    set cy 0
+    set width 1
+    set height 1
+    set xscale 1
+    set yscale 1
+    set angle 0
+    set arc 6.283185307179586
+    set thickness 1
+    set sections 1
+    set subsections 1
+    set color 4294967295
+    set inherit position true
+    set inherit angle true
+    set inherit scale true
+    add Circle {
+      name "spoint"
+      set cx 100
+      set cy 0
+      set width 15
+      set height 15
+      set xscale 1
+      set yscale 1
+      set angle 0
+      set arc 6.283185307179586
+      set thickness 0
+      set sections 3
+      set subsections 1
+      set color 4294902015
+      set inherit position true
+      set inherit angle true
+      set inherit scale true
+      attr dirtyfix "attr"
+      attr drawmode "outline"
+    }
+  }
+}

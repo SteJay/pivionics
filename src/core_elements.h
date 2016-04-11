@@ -313,25 +313,28 @@ class Container:public Element {
 Basic container; Child elements inherit the container's position as their centre points, but their rotation remains unchanged.
 All child elements are still calculated recursively. 	   
 */
+	protected:
+		bool calc_rel_scale;
+		bool calc_rel_pos;
+		bool calc_rel_rot;
 	public:
 		Container();
+		bool pre_compose(Origin);
 };
 
-class Rotation:public Element {
+class Rotation:public Container {
 /*
 This is identical in concept to the Container, but child elements also inherit rotation from the container.
 */
 	public:
 	    Rotation();
 		bool post_compose(Origin);
-		bool pre_compose(Origin);
 };
 
-class Scale:public Rotation {
+class Rescale:public Container {
 	public:
-	    Scale();
+	    Rescale();
 		bool post_compose(Origin);
-		bool pre_compose(Origin);
 
 };
 
@@ -350,8 +353,6 @@ template <class T> T* element_creator(void) {
 Element* fn_create_element(void); 
 Element* fn_create_container(void); 
 Element* fn_create_rotation(void);
-Element* fn_create_offset(void); 
-Element* fn_create_offset_rotation(void); 
-Element* fn_create_static_container(void); 
+Element* fn_create_rescale(void);
 
 #endif

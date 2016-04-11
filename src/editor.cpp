@@ -305,6 +305,7 @@ int main (int argc, char* argv[]) {
 	//window.register_creator("Element",&element_creator<Element>); // Some sort of class casting conflict doing this for other types... We'll come back to this later.
 	window.register_creator("Container",&fn_create_container);
 	window.register_creator("Rotation",&fn_create_rotation);
+	window.register_creator("Rescale",&fn_create_rescale);
 	window.register_creator("Circle",&fn_create_circle);
 	window.register_creator("Spiral",&fn_create_spiral);
 
