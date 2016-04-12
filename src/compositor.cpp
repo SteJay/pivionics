@@ -76,10 +76,7 @@ int Compositor::compose(void) {
 			// We're gonna need a mutex...
 			access.lock();
 			///cout << "Compositor lock obtained" << endl;
-			vector<PointSet> working_points;
-			
 			pointsets.clear();
-			
 			Point offset={ width/2,height/2 };
 			Scale scale={ 1.0,1.0 };
 			Origin origin={offset,scale,0.0};
@@ -109,121 +106,132 @@ int Compositor::compose(void) {
 			int ino=0,iino=0;
 			for(auto iter=wind->composed_points.begin(); iter!=wind->composed_points.end();++iter) {
 				ino++;
-			//cout << "Compositor on composed pontset number " << ino << "..." << endl;
+				//cout << "Compositor on composed pontset number " << ino << "..." << endl;
 				nowset = *iter;
 				unsigned int render_flags=nowset.render_flags;
 				iino=0;
-				
-			auto piter=nowset.points.begin(); // Get Iterator
-				// Below we get the first two points...
-				for(;piter!=nowset.points.end()&&iino<2; ++piter) { wpoints[iino+2]=*piter; ++iino; }
-				// Now we loop through our iterator...
-				while(piter!=nowset.points.end() ) {
-					for(int ijuju=0;piter!=nowset.points.end()&&ijuju<2; ++piter) { 
-						wpoints[0]=wpoints[1]; wpoints[1]=wpoints[2]; wpoints[2]=wpoints[3];
-						wpoints[3]=*piter; ++ijuju; ++iino;
-					}
+				auto piter=nowset.points.begin(); // Get Iterator
+				if( (render_flags & RENDER_SURFACE)>0 ) {
+					wpoints[0]=*piter;
+					wpoints[1]=*piter;
+					++piter;
+					if(piter!=nowset.points.end()) wpoints[1]=*piter;
+					p2p(&rg.points[0],&wpoints[0]);
+					p2p(&rg.points[1],&wpoints[1]);
+					rg.is_surface=true;
+					rg.point_count=2;
+					rg.surface = nowset.surface;
+					rgv.push_back(rg);
+					//cout << "Compositor dealt with surface at " << nowset.surface << " for " << rg.points[0].x << "," << rg.points[0].y << "," << rg.points[1].x << "," << rg.points[1].y << "." << endl;
+				} else {	
+					// Below we get the first two points...
+					for(;piter!=nowset.points.end()&&iino<2; ++piter) { wpoints[iino+2]=*piter; ++iino; }
+					// Now we loop through our iterator...
+					while(piter!=nowset.points.end() ) {
+						for(int ijuju=0;piter!=nowset.points.end()&&ijuju<2; ++piter) { 
+							wpoints[0]=wpoints[1]; wpoints[1]=wpoints[2]; wpoints[2]=wpoints[3];
+							wpoints[3]=*piter; ++ijuju; ++iino;
+						}
 #ifdef REVERSE_COLOR_ORDER
-					rg.color= __builtin_bswap32(nowset.color);
+						rg.color= __builtin_bswap32(nowset.color);
 #else
-					rg.color=nowset.color;
+						rg.color=nowset.color;
 #endif
-				//cout << "\t\tTempQuad:\n"; for(int i=0;i<=3;i++) {//cout <<"\t\t" << wpoints[i].x-360 << ", " <<wpoints[i].y-360 << endl; }
-					rg.point_count=0;
-				//cout << render_flags;
-					if((render_flags & RENDER_SIDE_OUTLINE) > 0) {
-				//cout << "\t\tRENDER_SIDE_OUTLINE selected" << endl;
-						p2p(&rg.points[0],&wpoints[0]);
-						p2p(&rg.points[1],&wpoints[2]);
-						if((render_flags&RENDER_FILL)>0) {
-					//cout << "\t\tRENDER_FILL" << endl;
-							if( (render_flags&RENDER_SIDE_INLINE)>0) {
-						//cout << "\t\tRENDER_SIDE_INLINE" << endl;
-								p2p(&rg.points[2],&wpoints[3]);
-								p2p(&rg.points[3],&wpoints[1]);
-								rg.point_count=4;
+					//cout << "\t\tTempQuad:\n"; for(int i=0;i<=3;i++) {//cout <<"\t\t" << wpoints[i].x-360 << ", " <<wpoints[i].y-360 << endl; }
+						rg.point_count=0;
+					//cout << render_flags;
+						if((render_flags & RENDER_SIDE_OUTLINE) > 0) {
+					//cout << "\t\tRENDER_SIDE_OUTLINE selected" << endl;
+							p2p(&rg.points[0],&wpoints[0]);
+							p2p(&rg.points[1],&wpoints[2]);
+							if((render_flags&RENDER_FILL)>0) {
+						//cout << "\t\tRENDER_FILL" << endl;
+								if( (render_flags&RENDER_SIDE_INLINE)>0) {
+							//cout << "\t\tRENDER_SIDE_INLINE" << endl;
+									p2p(&rg.points[2],&wpoints[3]);
+									p2p(&rg.points[3],&wpoints[1]);
+									rg.point_count=4;
+									rg.is_surface=false;
+								} else if( (render_flags&RENDER_SIDE_INNER) >0 ) {
+							//cout << "\t\tRENDER_SIDE_DIAGONAL|RENDER_SIDE_INNER" << endl;
+									p2p(&rg.points[2],&wpoints[3]);
+									rg.point_count=3;
+									rg.is_surface=false;
+								} else if(( render_flags&(RENDER_SIDE_DIAGONAL)) >0 ) {
+							//cout << "\t\tRENDER_SIDE_DIAGONAL" << endl;
+									p2p(&rg.points[2],&wpoints[1]);
+									rg.point_count=3;
+									rg.is_surface=false;
+								} else {
+									p2p(&rg.points[2],&wpoints[3]);
+									rg.point_count=3;
+									rg.is_surface=false;
+	
+								}
+							} else { // unfilled
+						//cout << "\t\tUNFILLED" << endl;
+								rg.point_count=2;
 								rg.is_surface=false;
-							} else if( (render_flags&RENDER_SIDE_INNER) >0 ) {
-						//cout << "\t\tRENDER_SIDE_DIAGONAL|RENDER_SIDE_INNER" << endl;
-								p2p(&rg.points[2],&wpoints[3]);
-								rg.point_count=3;
-								rg.is_surface=false;
-							} else if(( render_flags&(RENDER_SIDE_DIAGONAL)) >0 ) {
-						//cout << "\t\tRENDER_SIDE_DIAGONAL" << endl;
-								p2p(&rg.points[2],&wpoints[1]);
-								rg.point_count=3;
-								rg.is_surface=false;
-							} else {
-								p2p(&rg.points[2],&wpoints[3]);
-								rg.point_count=3;
-								rg.is_surface=false;
-
+								if( (render_flags&RENDER_SIDE_INLINE)>0) {
+									rg=cull_rendergon(rg);
+									if(rg.point_count>0) { rgv.push_back(rg); }
+							//cout << "\t\tRENDER_SIDE_INLINE" << endl;
+									p2p(&rg.points[0],&wpoints[3]);
+									p2p(&rg.points[1],&wpoints[1]);
+								    rg.point_count=2;
+								}
+								if( (render_flags&(RENDER_SIDE_INNER)) >0 ) {
+							//cout << "\t\tRENDER_SIDE_DIAGONAL|RENDER_SIDE_INNER" << endl;
+									rg=cull_rendergon(rg);
+									if(rg.point_count>0) rgv.push_back(rg);
+									p2p(&rg.points[0],&wpoints[1]);
+									p2p(&rg.points[1],&wpoints[2]);
+									rg.point_count=2;
+									rg.is_surface=false;
+								} 
+								if(( render_flags&(RENDER_SIDE_DIAGONAL)) >0 ) {
+							//cout << "\t\tRENDER_SIDE_DIAGONAL" << endl;
+									rg=cull_rendergon(rg);
+									if(rg.point_count>0) rgv.push_back(rg);
+									p2p(&rg.points[0],&wpoints[0]);
+									p2p(&rg.points[1],&wpoints[3]);
+									rg.point_count=2;
+									rg.is_surface=false;
+								}
+								if(( render_flags&RENDER_SIDE_RADIAL)>0) {
+									rg=cull_rendergon(rg);
+									if(rg.point_count>0) rgv.push_back(rg);
+									p2p(&rg.points[0],&wpoints[0]);
+									p2p(&rg.points[1],&wpoints[1]);
+									rg.point_count=2;
+									rg=cull_rendergon(rg);
+									if(rg.point_count>0) rgv.push_back(rg);
+									p2p(&rg.points[0],&wpoints[2]);
+									p2p(&rg.points[1],&wpoints[3]);
+									rg.point_count=2;
+									rg.is_surface=false;
+								}
+								//rg.point_count=0;
 							}
-						} else { // unfilled
-					//cout << "\t\tUNFILLED" << endl;
+						} else if((render_flags&RENDER_SIDE_RADIAL)>0) {
+					//cout << "\t\tRENDER_SIDE_RADIAL" << endl;
+							p2p(&rg.points[0],&wpoints[0]);
+							p2p(&rg.points[1],&wpoints[1]);
 							rg.point_count=2;
 							rg.is_surface=false;
-							if( (render_flags&RENDER_SIDE_INLINE)>0) {
-								rg=cull_rendergon(rg);
-								if(rg.point_count>0) { rgv.push_back(rg); }
-						//cout << "\t\tRENDER_SIDE_INLINE" << endl;
-								p2p(&rg.points[0],&wpoints[3]);
-								p2p(&rg.points[1],&wpoints[1]);
-							    rg.point_count=2;
-							}
-							if( (render_flags&(RENDER_SIDE_INNER)) >0 ) {
-						//cout << "\t\tRENDER_SIDE_DIAGONAL|RENDER_SIDE_INNER" << endl;
-								rg=cull_rendergon(rg);
-								if(rg.point_count>0) rgv.push_back(rg);
-								p2p(&rg.points[0],&wpoints[1]);
-								p2p(&rg.points[1],&wpoints[2]);
-								rg.point_count=2;
-								rg.is_surface=false;
-							} 
-							if(( render_flags&(RENDER_SIDE_DIAGONAL)) >0 ) {
-						//cout << "\t\tRENDER_SIDE_DIAGONAL" << endl;
-								rg=cull_rendergon(rg);
-								if(rg.point_count>0) rgv.push_back(rg);
-								p2p(&rg.points[0],&wpoints[0]);
-								p2p(&rg.points[1],&wpoints[3]);
-								rg.point_count=2;
-								rg.is_surface=false;
-							}
-							if(( render_flags&RENDER_SIDE_RADIAL)>0) {
-								rg=cull_rendergon(rg);
-								if(rg.point_count>0) rgv.push_back(rg);
-								p2p(&rg.points[0],&wpoints[0]);
-								p2p(&rg.points[1],&wpoints[1]);
-								rg.point_count=2;
-								rg=cull_rendergon(rg);
-								if(rg.point_count>0) rgv.push_back(rg);
-								p2p(&rg.points[0],&wpoints[2]);
-								p2p(&rg.points[1],&wpoints[3]);
-								rg.point_count=2;
-								rg.is_surface=false;
-							}
-							//rg.point_count=0;
+						} else {
+					//cout << "\t\tComposing a single zero Point!" << endl;
+							p2p(&rg.points[0],&wpoints[0]);
+							rg.point_count=1;
+							rg.is_surface=false;
 						}
-					} else if((render_flags&RENDER_SIDE_RADIAL)>0) {
-				//cout << "\t\tRENDER_SIDE_RADIAL" << endl;
-						p2p(&rg.points[0],&wpoints[0]);
-						p2p(&rg.points[1],&wpoints[1]);
-						rg.point_count=2;
-						rg.is_surface=false;
-					} else {
-				//cout << "\t\tComposing a single zero Point!" << endl;
-						p2p(&rg.points[0],&wpoints[0]);
-						rg.point_count=1;
-						rg.is_surface=false;
-					}
-					// cull any points which point to a previous point in the set, or if all of the points in the rendergon are beyond visible range
-					rg=cull_rendergon(rg);
-					if(rg.point_count>0) {
-						rgv.push_back(rg); // Add the Rendergon if it has more than one point
-					}
-				} // end while loop through individual points
-				///cout << "Compositor completed culling process." << endl;
-				// Now we've optimised our points, we'll push them to our vector...
+						// cull any points which point to a previous point in the set, or if all of the points in the rendergon are beyond visible range
+						rg=cull_rendergon(rg);
+						if(rg.point_count>0) {
+							rgv.push_back(rg); // Add the Rendergon if it has more than one point
+						}
+					} // end while loop through individual points
+				}
 			} // Main For Loop through composed points
 			// Copy our newly worked out rendergons ready to transfer to the renderer
 			rendergons=rgv;

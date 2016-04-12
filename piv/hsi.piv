@@ -49,7 +49,7 @@ add Container {
       set inherit position true
       set inherit angle true
       set inherit scale true
-      attr dirtyfix ""
+      attr dirtyfix "attr"
       attr drawmode "radius"
       attr offset_inner "false"
     }
@@ -70,7 +70,7 @@ add Container {
       set inherit position true
       set inherit angle true
       set inherit scale true
-      attr dirtyfix ""
+      attr dirtyfix "attr"
       attr drawmode "radius"
       attr offset_inner "false"
     }
@@ -91,7 +91,7 @@ add Container {
       set inherit position true
       set inherit angle true
       set inherit scale true
-      attr dirtyfix ""
+      attr dirtyfix "attr"
       attr drawmode "outline"
       attr offset_inner "false"
     }
@@ -112,7 +112,7 @@ add Container {
       set inherit position true
       set inherit angle true
       set inherit scale true
-      attr dirtyfix ""
+      attr dirtyfix "attr"
       attr drawmode "radius"
       attr offset_inner "false"
     }
@@ -133,7 +133,7 @@ add Container {
       set inherit position true
       set inherit angle true
       set inherit scale true
-      attr dirtyfix ""
+      attr dirtyfix "attr"
       attr drawmode "radius"
       attr offset_inner "false"
     }
@@ -154,7 +154,7 @@ add Container {
       set inherit position true
       set inherit angle true
       set inherit scale true
-      attr dirtyfix ""
+      attr dirtyfix "attr"
       attr drawmode "radius"
       attr offset_inner "false"
     }
@@ -175,7 +175,7 @@ add Container {
       set inherit position true
       set inherit angle true
       set inherit scale true
-      attr dirtyfix ""
+      attr dirtyfix "attr"
       attr drawmode "radius"
       attr offset_inner "false"
     }
@@ -196,7 +196,7 @@ add Container {
       set inherit position true
       set inherit angle true
       set inherit scale true
-      attr dirtyfix ""
+      attr dirtyfix "attr"
       attr drawmode "radius"
       attr offset_inner "false"
     }
@@ -217,7 +217,7 @@ add Container {
       set inherit position true
       set inherit angle true
       set inherit scale true
-      attr dirtyfix ""
+      attr dirtyfix "attr"
       attr drawmode "radius"
       attr offset_inner "false"
     }
@@ -238,7 +238,7 @@ add Container {
       set inherit position true
       set inherit angle true
       set inherit scale true
-      attr dirtyfix ""
+      attr dirtyfix "attr"
       attr drawmode "radius"
       attr offset_inner "false"
     }
@@ -259,7 +259,7 @@ add Container {
       set inherit position true
       set inherit angle true
       set inherit scale true
-      attr dirtyfix ""
+      attr dirtyfix "attr"
       attr drawmode "radius"
       attr offset_inner "false"
     }
@@ -280,7 +280,7 @@ add Container {
       set inherit position true
       set inherit angle true
       set inherit scale true
-      attr dirtyfix ""
+      attr dirtyfix "attr"
       attr drawmode "radius"
       attr offset_inner "false"
     }
@@ -319,8 +319,8 @@ add Container {
       set inherit position true
       set inherit angle true
       set inherit scale true
-      attr dirtyfix ""
-      attr drawmode "torus"
+      attr dirtyfix "attr"
+      attr drawmode "filled"
       attr offset_inner "false"
     }
     add Circle {
@@ -340,8 +340,8 @@ add Container {
       set inherit position true
       set inherit angle true
       set inherit scale true
-      attr dirtyfix ""
-      attr drawmode "torus"
+      attr dirtyfix "attr"
+      attr drawmode "filled"
       attr offset_inner "false"
     }
   }

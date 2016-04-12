@@ -30,6 +30,7 @@ along with Pivionics.  If not, see <http://www.gnu.org/licenses/>.
 #include "sdlcompositor.h"
 #include "circle.h"
 #include "box.h"
+#include "text.h"
 using namespace std;
 inline bool file_exists(const string& name) { struct stat buffer; return (stat (name.c_str(), &buffer) == 0); }
 
@@ -40,7 +41,7 @@ inline bool file_exists(const string& name) { struct stat buffer; return (stat (
 //Element* create_offset_rotation(void) { return new OffsetRotation; }
 //Element* create_static_container(void) { return new StaticContainer; }
 
-SdlCompositor compositor;
+Compositor compositor;
 SdlRenderer renderer;
 
 Element* current=NULL;
@@ -329,6 +330,7 @@ int main (int argc, char* argv[]) {
 	window.register_creator("Circle",&fn_create_circle);
 	window.register_creator("Spiral",&fn_create_spiral);
 	window.register_creator("Box",&fn_create_box);
+	window.register_creator("Text",&fn_create_text);
 
 	if( argc>1 && file_exists(argv[1])) {
 		string fn=argv[1];

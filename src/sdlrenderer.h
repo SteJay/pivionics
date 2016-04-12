@@ -38,6 +38,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
 #include <SDL2/SDL2_gfxPrimitives.h>
 #include "core_elements.h"
 
@@ -53,7 +54,7 @@ class SdlRenderer: public Renderer {
         virtual void draw_line(unsigned int*,const IntPoint*, const IntPoint*); // Called by render_frame
         virtual void draw_triangle(unsigned int*, const IntPoint*, const IntPoint*, const IntPoint*); // Called by render_frame
         virtual void draw_quad(unsigned int*, const IntPoint*, const IntPoint*, const IntPoint*, const IntPoint*); // called by render_frame
-        virtual void draw_surface(void*,const IntPoint*);
+        virtual void draw_surface(void*,const IntPoint*,const IntPoint*);
 		virtual void flip(void);
 		virtual void clear(void);
 };

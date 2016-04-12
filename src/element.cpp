@@ -55,6 +55,9 @@ Element::Element() {
 	inherit_angle=true;
 	compose_order=COMPOSE_ORDER_SRT; // Scale, Rotate, Translate
 	parent=NULL;
+	has_surface=false;
+	vpsurface=NULL;
+	vpcomposed_surface=NULL;
 }
 Element* fn_create_element(void) { return new Element; }
 Element::~Element() {

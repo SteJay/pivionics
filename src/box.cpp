@@ -58,8 +58,6 @@ void Box::construct(void) {
             ps.render_flags=RENDER_SIDE_OUTLINE|RENDER_SIDE_INNER|RENDER_SIDE_INLINE|RENDER_SIDE_RADIAL|RENDER_SIDE_DIAGONAL;
         } else if( attrs["drawmode"].compare("hourglass")==0 ) {
             ps.render_flags=RENDER_SIDE_OUTLINE|RENDER_SIDE_INNER|RENDER_SIDE_INLINE|RENDER_SIDE_DIAGONAL;
-        } else if( attrs["drawmode"].compare("radius")==0 ) {
-            ps.render_flags=RENDER_SIDE_RADIAL;
         } else {
             ps.render_flags=RENDER_SIDE_OUTLINE|RENDER_SIDE_INLINE|RENDER_FILL;
 		}

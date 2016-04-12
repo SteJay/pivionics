@@ -1,5 +1,5 @@
 /*
-box.h - 
+text.h - 
 Copyright (C) 2016 Stephen J Sullivan
 
 This file is a part of Pivionics.
@@ -18,17 +18,16 @@ You should have received a copy of the GNU General Public License
 along with Pivionics.  If not, see <http://www.gnu.org/licenses/>.
 
 */
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
 #include "core_elements.h"
 
-// Circle Creator function
-Element* fn_create_box(void);
+Element* fn_create_text(void);
 
-// Circle Class Definition
-class Box: public Element {
-    public:
-        Box();
-        virtual void construct(void);
-
+class Text: public Element {
+	public:
+		Text();
+		void compose(Origin);
+		void construct(void);
+		
 };
-
-

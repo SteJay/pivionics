@@ -46,6 +46,10 @@ int SdlRenderer::init(void) {
 		access.unlock();
 		return ERR_RENDERER_CANNOT_CREATE_RENDER;
 	}
+	if(TTF_Init()==-1) {
+		access.unlock();
+		return ERR_RENDERER_CANNOT_INIT_TTF;
+	}
 	access.unlock();
 	return 0;
 }
@@ -54,6 +58,7 @@ int SdlRenderer::shutdown(void) {
 	access.lock();
 	if(run) render_stop();
 	//SDL_FreeSurface(sdl_screen);
+	TTF_Quit();
 	SDL_DestroyRenderer(sdl_renderer);
 	SDL_DestroyWindow(sdl_window);
 	SDL_Quit();
@@ -99,6 +104,11 @@ void SdlRenderer::draw_quad(unsigned int *c, const IntPoint* p1, const IntPoint*
 #ifdef ENABLE_RENDER_AA_QUAD
 #endif
 }
-void SdlRenderer::draw_surface(void* surf,const IntPoint* p) {
-	// NOT IMPLIMENTED YET!
+void SdlRenderer::draw_surface(void* surf,const IntPoint* p, const IntPoint* ps) {
+	SDL_Texture* s = SDL_CreateTextureFromSurface(sdl_renderer,static_cast<SDL_Surface*>(surf));
+	SDL_Rect dst;
+	dst.x=p->x;dst.y=p->y;dst.w=ps->x;dst.h=ps->y;
+	SDL_RenderCopy(sdl_renderer,s,NULL,&dst);
+	SDL_DestroyTexture(s);
+//	cout << "Render at " << dst.x << ", " << dst.y << " for " << dst.w << " by " << dst.h << "." << endl;
 }

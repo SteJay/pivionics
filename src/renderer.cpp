@@ -84,8 +84,8 @@ bool Renderer::render_frame(void) {
 		// Iterate through points
 		thisgon=*iter;
 	//cout << "Rendergon " << i << " has " << thisgon.point_count << " points." << endl; 
-		if(thisgon.is_surface) {
-			// TODO: Surface rendering
+		if(thisgon.is_surface && thisgon.point_count==2) {
+			draw_surface(thisgon.surface, &thisgon.points[0], &thisgon.points[1]);
 		} else {
 			switch(thisgon.point_count) {
 				case 1:
@@ -175,6 +175,6 @@ void Renderer::draw_quad(unsigned int *c, const IntPoint* p1, const IntPoint* p2
 #else
 #endif
 }
-void Renderer::draw_surface(void* surf,const IntPoint* p) {
+void Renderer::draw_surface(void* surf,const IntPoint* p,const IntPoint* ps) {
 
 }

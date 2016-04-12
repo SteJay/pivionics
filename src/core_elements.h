@@ -56,7 +56,7 @@ const unsigned int RENDER_SIDE_DIAGONAL=8;// Draw a line from 2-3
 const unsigned int RENDER_SIDE_INNER=16;  // Used with the above, instead draws from 1-4
 const unsigned int RENDER_FILL=32;   // Draw a filled polygon rather than lines, filling in the missing side
 const unsigned int RENDER_ALPHA=64;  // Inform the compositor this is not a solid surface and so it should not clip points underneath
-
+const unsigned int RENDER_SURFACE=128; // Inform the compositor that a surface should be expected
 /* Compose order constants. Use these to control how the element is composed */
 
 const unsigned int COMPOSE_ORDER_SRT = 57; // 11 10 01
@@ -81,6 +81,7 @@ const int ERR_RENDERER_CANNOT_INIT=-100;	// Initialisation of display driver fai
 const int ERR_RENDERER_CANNOT_CREATE_WINDOW=-101; // Initialisation of display driver failed
 const int ERR_RENDERER_CANNOT_CREATE_SCREEN=-102; // Initialisation of display driver failed
 const int ERR_RENDERER_CANNOT_CREATE_RENDER=-103; // Initialisation of display driver failed
+const int ERR_RENDERER_CANNOT_INIT_TTF=-104; // Initialisation of display driver failed
 
 /* X and Y points packed into one */
 struct Point {
@@ -109,6 +110,7 @@ struct PointSet {
     unsigned int render_flags;				// This is a combination of the above RENDER_ flags
     vector<Point> points; // A set of point pairs
     unsigned int color;				// The colour of this polygon
+	void* surface;
 };
 
 /* The following struct is used by the compositor to pass points to the renderer */
@@ -144,7 +146,9 @@ class Element {
 		string txt;
 		map<string,string> attrs;
 		list<Element*> contents;
-		
+		bool has_surface;
+		void* vpsurface;
+		void* vpcomposed_surface;
 	public:
 		bool inherit_position;
 		bool inherit_angle;
@@ -276,7 +280,7 @@ class Renderer {
 		virtual void draw_line(unsigned int*,const IntPoint*, const IntPoint*); // Called by render_frame
 		virtual void draw_triangle(unsigned int*, const IntPoint*, const IntPoint*, const IntPoint*); // Called by render_frame
 		virtual void draw_quad(unsigned int*, const IntPoint*, const IntPoint*, const IntPoint*, const IntPoint*); // called by render_frame
-		virtual void draw_surface(void*,const IntPoint*);
+		virtual void draw_surface(void*,const IntPoint*,const IntPoint*);
 		virtual void flip(void);
 		virtual void clear(void);
 		unsigned int get_fps();

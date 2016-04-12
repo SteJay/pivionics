@@ -8,7 +8,7 @@ CCOPTS := -DENABLE_RENDER_AA_ALL -DREVERSE_COLOR_ORDER
 AR := ar
 
 ARFLAGS := rcs
-SDLFLAGS := -lSDL2 -lSDL2_gfx
+SDLFLAGS := -lSDL2 -lSDL2_gfx -lSDL2_ttf
 BINDIR := bin
 SRCDIR := src
 OBJDIR := obj
@@ -16,7 +16,7 @@ LIBDIR := lib
 
 COREFLAGS := -lcore -pthread
 
-all: $(BINDIR)/pivionics $(BINDIR)/pivedit
+all: $(BINDIR)/pivedit
 
 .optional: $(BINDIR)/simple_edit
 
@@ -44,17 +44,17 @@ $(OBJDIR)/compositor.o: $(SRCDIR)/compositor.cpp $(SRCDIR)/core_elements.h
 $(OBJDIR)/renderer.o: $(SRCDIR)/renderer.cpp $(SRCDIR)/core_elements.h
 	$(CC) $(CCFLAGS) $(CCOPTS) -c $< -o $@
 
+$(OBJDIR)/text.o: $(SRCDIR)/text.cpp $(SRCDIR)/text.h $(SRCDIR)/core_elements.h
+	$(CC) $(CCFLAGS) $(CCOPTS) -c $< $(SDLFLAGS) -o $@
+
 $(OBJDIR)/sdlrenderer.o: $(SRCDIR)/sdlrenderer.cpp $(SRCDIR)/sdlrenderer.h $(SRCDIR)/core_elements.h
 	$(CC) $(CCFLAGS) $(CCOPTS) -c $< $(SDLFLAGS) -o $@
 
 $(OBJDIR)/sdlcompositor.o: $(SRCDIR)/sdlcompositor.cpp $(SRCDIR)/sdlcompositor.h $(SRCDIR)/core_elements.h
 	$(CC) $(CCFLAGS) $(CCOPTS) -c $< $(SDLFLAGS) -o $@
 
-$(LIBDIR)/libcore.a: $(OBJDIR)/stringsplit.o $(OBJDIR)/container.o $(OBJDIR)/circle.o $(OBJDIR)/box.o $(OBJDIR)/compositor.o $(OBJDIR)/renderer.o $(OBJDIR)/sdlcompositor.o $(OBJDIR)/sdlrenderer.o $(OBJDIR)/window.o $(OBJDIR)/element.o
+$(LIBDIR)/libcore.a: $(OBJDIR)/stringsplit.o $(OBJDIR)/container.o $(OBJDIR)/circle.o $(OBJDIR)/box.o $(OBJDIR)/compositor.o $(OBJDIR)/renderer.o $(OBJDIR)/sdlcompositor.o $(OBJDIR)/sdlrenderer.o $(OBJDIR)/text.o $(OBJDIR)/window.o $(OBJDIR)/element.o
 	$(AR) $(ARFLAGS) $@ $^
-
-$(BINDIR)/pivionics: $(SRCDIR)/main.cpp $(LIBDIR)/libcore.a
-	$(CC) $(CCFLAGS) $(CCOPTS) $< $(SDLFLAGS) $(COREFLAGS) -o $@
 
 #$(BINDIR)/simple_edit: $(SRCDIR)/simple_edit.cpp $(LIBDIR)/libcore.a
 #	$(CC) $(CCFLAGS) $(CCOPTS) $< $(COREFLAGS) -o $@
