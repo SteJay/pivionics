@@ -1,0 +1,76 @@
+add Container {
+  name "MainContainer"
+  set cx 0
+  set cy 0
+  set width 1
+  set height 1
+  set xscale 1
+  set yscale 1
+  set angle 0.069813
+  set arc 6.283185307179586
+  set thickness 1
+  set sections 1
+  set subsections 1
+  set color 4294967295
+  set inherit position true
+  set inherit angle true
+  set inherit scale true
+  add Circle {
+    name "BoxOuterCircle"
+    set cx 0
+    set cy 0
+    set width 800
+    set height 600
+    set xscale 1
+    set yscale 1
+    set angle 0
+    set arc 6.283185307179586
+    set thickness 400
+    set sections 36
+    set subsections 30
+    set color 4278190335
+    set inherit position true
+    set inherit angle true
+    set inherit scale true
+    attr dirtyfix ""
+    attr drawmode "radius"
+  }
+  add Circle {
+    set cx 0
+    set cy 0
+    set width 200
+    set height 0
+    set xscale 1
+    set yscale 1
+    set angle 0
+    set arc 6.283185307179586
+    set thickness 50
+    set sections 360
+    set subsections 1
+    set color 4290445567
+    set inherit position true
+    set inherit angle true
+    set inherit scale true
+    attr dirtyfix ""
+    attr drawmode "radius"
+  }
+  add Circle {
+    set cx 0
+    set cy 0
+    set width 1
+    set height 0
+    set xscale 1
+    set yscale 1
+    set angle 0
+    set arc 6.283185307179586
+    set thickness 50
+    set sections 50
+    set subsections 3
+    set color 4294902015
+    set inherit position true
+    set inherit angle true
+    set inherit scale true
+    attr dirtyfix ""
+    attr drawmode "radius"
+  }
+}

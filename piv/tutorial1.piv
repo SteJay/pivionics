@@ -1,0 +1,95 @@
+add Box {
+  name "MyBox"
+  set cx -200
+  set cy 0
+  set width 380
+  set height 380
+  set xscale 1
+  set yscale 1
+  set angle 0
+  set arc 6.283185307179586
+  set thickness 1
+  set sections 4
+  set subsections 4
+  set color 4294967295
+  set inherit position true
+  set inherit angle true
+  set inherit scale true
+  attr drawmode "hourglass"
+}
+add Circle {
+  set cx 200
+  set cy 0
+  set width 380
+  set height 0
+  set xscale 1
+  set yscale 1
+  set angle 0
+  set arc 6.283185307179586
+  set thickness 100
+  set sections 36
+  set subsections 1
+  set color 4194559
+  set inherit position true
+  set inherit angle true
+  set inherit scale true
+  attr dirtyfix "attr"
+  attr drawmode "radius"
+}
+add Circle {
+  set cx 200
+  set cy 0
+  set width 380
+  set height 0
+  set xscale 1
+  set yscale 1
+  set angle 0
+  set arc 6.283185307179586
+  set thickness 1
+  set sections 36
+  set subsections 1
+  set color 4294967295
+  set inherit position true
+  set inherit angle true
+  set inherit scale true
+  attr dirtyfix ""
+  attr drawmode "outline"
+}
+add Circle {
+  name "MyCircle"
+  set cx 200
+  set cy 0
+  set width 150
+  set height 100
+  set xscale 1
+  set yscale 1
+  set angle 0
+  set arc 6.283185307179586
+  set thickness 50
+  set sections 36
+  set subsections 1
+  set color 4294967295
+  set inherit position true
+  set inherit angle true
+  set inherit scale true
+  attr dirtyfix ""
+  attr drawmode "outline"
+}
+add Box {
+  set cx 200
+  set cy 0
+  set width 150
+  set height 100
+  set xscale 1
+  set yscale 1
+  set angle 0
+  set arc 6.283185307179586
+  set thickness 1
+  set sections 1
+  set subsections 1
+  set color 4294967295
+  set inherit position true
+  set inherit angle true
+  set inherit scale true
+  attr drawmode "crisscross"
+}

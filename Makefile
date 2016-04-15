@@ -3,7 +3,8 @@ CC := g++
 # The main options to set for our compiler
 CCFLAGS := -std=c++11 -fdiagnostics-color=always -L./lib
 # Compilation options
-CCOPTS := -DENABLE_RENDER_AA_ALL -DREVERSE_COLOR_ORDER -DGPL_LICENSE
+#CCOPTS := -DENABLE_RENDER_AA_ALL -DREVERSE_COLOR_ORDER -DGPL_LICENSE
+CCOPTS := -DREVERSE_COLOR_ORDER
 # Our archiver (used to create libraries)
 AR := ar
 
