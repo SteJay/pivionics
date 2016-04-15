@@ -31,6 +31,7 @@ along with Pivionics.  If not, see <http://www.gnu.org/licenses/>.
 #include "circle.h"
 #include "box.h"
 #include "text.h"
+#include "license.h"
 using namespace std;
 inline bool file_exists(const string& name) { struct stat buffer; return (stat (name.c_str(), &buffer) == 0); }
 
@@ -201,56 +202,53 @@ void command(Window* window,string cmd) {
 	} else if(c.compare("help")==0) {
 		if(args.size() < 2 ) {
 			cout << "Commands available:" << endl;
-			cout << "Listing:       types examine ex list ls children child siblings sibl parents" << endl;
-			cout << "Navigation:    enter cd exit cu find" << endl;
-			cout << "Creation:      add new delete remove encapsulate encap decapsulate decap name rename set = " << endl;
-			cout << "Files:			save load" << endl;
-			cout << "Type \"help <command>\" for more information (where <command> is one of the above)." << endl;
+			cout << "Listing:       child children examine ex parents siblings sibl types" << endl;
+			cout << "Navigation:    cd cu enter exit find" << endl;
+			cout << "Elemental:     add delete new remove" << endl;
+			cout << "Manipulation:  decap decapsulate encap encapsulate name rename set" << endl;
+			cout << "Miscellaneous:	load save quit" << endl;
+			cout << "Type \"help <command>\" for more information (where <command> is one of the" << endl << "keywords above)." << endl;
 		} else {
 			c=args[1];
 			if(c.compare("examine")==0||c.compare("ex")==0) {
 				cout << "Usage: examine" << endl;
 				cout << "Usage: ex" << endl;
-				cout << "This lists the setup of the current element, including its geometry, angles and attributes." << endl;
-				cout << "THIS IS AN EDITOR COMMAND AND CANNOT BE COMBINED WITH OTHER COMMANDS ON A SINGLE LINE" << endl;
+				cout << "This lists the setup of the current element, including its geometry, angles and" << endl << " attributes." << endl;
+				cout << "EDITOR COMMAND; CANNOT BE COMBINED WITH OTHER COMMANDS ON A SINGLE LINE" << endl;
 			} else if(c.compare("types")==0) {
 				cout << "Usage: types" << endl;
 				cout << "This lists all known (handled) element types." << endl;
-				cout << "THIS IS AN EDITOR COMMAND AND CANNOT BE COMBINED WITH OTHER COMMANDS ON A SINGLE LINE" << endl;
+				cout << "EDITOR COMMAND; CANNOT BE COMBINED WITH OTHER COMMANDS ON A SINGLE LINE" << endl;
 			} else if(c.compare("children")==0||c.compare("child")==0) {
 				cout << "Usage: children" << endl;
 				cout << "Usage: child" << endl;
-				cout << "This lists all children of the current element with their names and uids." << endl;
-				cout << "THIS IS AN EDITOR COMMAND AND CANNOT BE COMBINED WITH OTHER COMMANDS ON A SINGLE LINE" << endl;
+				cout << "This lists all children of the current element with their names and" << endl << "current id for use with the enter command." << endl;
+				cout << "EDITOR COMMAND; CANNOT BE COMBINED WITH OTHER COMMANDS ON A SINGLE LINE" << endl;
 			} else if(c.compare("siblings")==0||c.compare("sibl")==0) {
 				cout << "Usage: siblings" << endl;
 				cout << "Usage: sibl" << endl;
-				cout << "This lists all siblings of the current element with their names and uids." << endl;
-				cout << "THIS IS AN EDITOR COMMAND AND CANNOT BE COMBINED WITH OTHER COMMANDS ON A SINGLE LINE" << endl;
+				cout << "This lists all siblings of the current element with their names and" << endl << "current id for use with the enter command."  << endl;
+				cout << "EDITOR COMMAND; CANNOT BE COMBINED WITH OTHER COMMANDS ON A SINGLE LINE" << endl;
 			} else if(c.compare("parents")==0) {
 				cout << "Usage: parents" << endl;
-				cout << "This lists all siblings of the current element's parent with their names and uids." << endl;
-				cout << "THIS IS AN EDITOR COMMAND AND CANNOT BE COMBINED WITH OTHER COMMANDS ON A SINGLE LINE" << endl;
+				cout << "This lists all siblings of the current element's parent with their names and" << endl << "current id for use with the enter command."  << endl;
+				cout << "EDITOR COMMAND; CANNOT BE COMBINED WITH OTHER COMMANDS ON A SINGLE LINE" << endl;
 			} else if(c.compare("enter")==0 || c.compare("cd")==0) {
 				cout << "Usage: enter <child|sibling> <index>" << endl;
 				cout << "Usage: cd <child|sibling> <index>" << endl;
-				cout << "This is analogous to \"cd\" in CLIs like a shell. Use this in tandem with the" << endl;
-				cout << "\"children\" and \"siblings\"; find the element you want to move to, and provide" << endl;
-				cout << "the keyword \"child\" or \"sibling\" followed by the index number listed by children" << endl;
-				cout << "or siblings; the current element will then be changed to the element you specified." <<endl;
-				cout << "This is for use where you have unnamed elements you need to switch to and is currently very basic" << endl;
-				cout << "A better version allowing you to specify a path is planned but not currently available." << endl;
-				cout << "THIS IS AN EDITOR COMMAND AND CANNOT BE COMBINED WITH OTHER COMMANDS ON A SINGLE LINE" << endl;
+				cout << "This changes the current element to the child or sibling you specify" << endl << "(depending on whether you specify the \"child\" or \"sibling\" keyword)." << endl;
+				cout << "Use the \"children\" and \"siblings\" commands to find out what index to specify." << endl << "Also see the \"find\" command." << endl;
+				cout << "EDITOR COMMAND; CANNOT BE COMBINED WITH OTHER COMMANDS ON A SINGLE LINE" << endl;
 			} else if(c.compare("exit")==0||c.compare("cu")==0) {
 				cout << "Usage: exit" << endl;
 				cout << "Usage: cu" << endl;
-				cout << "This moves \"out of\" the current element, making its parent the current element." << endl;
-				cout << "THIS IS AN EDITOR COMMAND AND CANNOT BE COMBINED WITH OTHER COMMANDS ON A SINGLE LINE" << endl;
+				cout << "This moves \"out of\" the current element, making its parent the current" << endl << "element. If you are looking to exit the program, use \"quit\"." << endl;
+				cout << "EDITOR COMMAND; CANNOT BE COMBINED WITH OTHER COMMANDS ON A SINGLE LINE" << endl;
 			} else if(c.compare("find")==0) {
 				cout << "Usage: find <name>" << endl;
-				cout << "This changes to current element to the first element with a name matching the one given." << endl;
-				cout << "If no matching element can be found, the current element will change to the Window." << endl;
-				cout << "THIS IS AN EDITOR COMMAND AND CANNOT BE COMBINED WITH OTHER COMMANDS ON A SINGLE LINE" << endl;
+				cout << "This changes to current element to the first element with a name matching the" << endl << "name you specify. Pivionics does not ensure names are unique." << endl;
+				cout << "If no matching element can be found, the current element will change to the" << endl << "Window (top level)." << endl;
+				cout << "EDITOR COMMAND; CANNOT BE COMBINED WITH OTHER COMMANDS ON A SINGLE LINE" << endl;
 			} else if(c.compare("save")==0 || c.compare("write")==0) {
 				cout << "Usage: save <filename>" << endl;
 				cout << "Usage: write <filename>" << endl;
@@ -259,18 +257,32 @@ void command(Window* window,string cmd) {
 				cout << "You must specify a filename." << endl;
 			} else if(c.compare("load")==0||c.compare("read")==0) {
 				cout << "Usage: load <filename>" << endl;
-				cout << "Loads the given file as a child of the current element." << endl;
+				cout << "Loads the given file as a child/children of the current element." << endl;
 				cout << "You must specify a filename." << endl;
 			} else if(c.compare("set")==0||c.compare("=")==0) {
 				cout << "Usage: set <perameter> <value>" << endl;
 				cout << "Usage: <perameter> = <value>" << endl;
-				cout << "Sets one of the element's parameters. Be careful to use a space either side of the = when using the second form." << endl;
-				cout << "The perameter can be any of: cx,cy,width,height,xscale,yscale,angle,arc,thickness,sections,subsections,color" << endl;
+				cout << "Sets one of the element's parameters. The second form is included for " << endl << "convenience. Perameters are present for all elements, although not all" << endl << "elements will use all perameters." << endl;
+				cout << "Valid perameters for use with this command are:" << endl;
+				cout << "angle arc color cx cy height sections subsections thickness width xscale yscale" << endl;
+				cout << "See also the \"attr\", \"name\" and \"text\" commands." << endl;
+			} else if(c.compare("attr")==0) {
+				cout << "Usage: attr <attribute> <value>" << endl;
+				cout << "This sets an attribute (as opposed to perameter) of the current element." << endl << "Attributes are perameters for elements which are not one of the perameters" << endl << "available for every element (for which you would use the \"set\" command)." << endl << "Attributes are stored as strings, but care should be taken as some attributes" << endl << "will be treated as other types of information (such as numbers) and invalid" << endl << "values will cause undefined and undesired behaviour. A common example of an " << endl << "attribute is \"drawmode\" which specifies how an element should be drawn." << endl;
+				cout << "Enclose strings with spaces in \"quotes\". You can escape quotes within the" << endl << "string using \\\"." << endl;
+				cout << "See also the \"name\", \"set\" and \"text\" commands." << endl;
 			} else if(c.compare("name")==0||c.compare("rename")==0) {
 				cout << "Usage: name <new name>" << endl;
 				cout << "Usage: rename <new name>" << endl;
 				cout << "Changes the human-readable name of the current element to the one specified." << endl;
-				cout << "Enclose strings with spaces in \"quotes\". You can escape quotes within the string using \\\"." << endl;
+				cout << "Enclose strings with spaces in \"quotes\". You can escape quotes within the" << endl << "string using \\\". Although Pivionics makes no attempt to stop you from using" << endl << "the same name for more than one element, it is recommended that you make your" << endl << "element names unique so that you can use the \"find\" command to quickly" << endl << "jump between elements while you are editing. See the \"find\" command for more" << endl << "information." << endl;
+				cout << "See also the \"attr\", \"set\" and \"text\" commands." << endl;
+			} else if(c.compare("text")==0||c.compare("string")==0) {
+				cout << "Usage: text <text>" << endl;
+				cout << "Usage: string <text>" << endl;
+				cout << "Changes the current element's text field. This field is primarily for Text" << endl << "elements to set the text that they display. For other elements this can be" << endl << "used for annotation or comments. The currently set text can be viewed using the" << endl << "\"examine\" command; see the help on this command for more information." << endl;;
+				cout << "Enclose strings with spaces in \"quotes\". You can escape quotes within the" << endl << "string using \\\"." << endl;
+				cout << "See also the \"attr\", \"name\" and \"set\" commands." << endl;
 			} else if(c.compare("add")==0||c.compare("new")==0) {
 				cout << "Usage: add <element type>" << endl;
 				cout << "Usage: new <element type>" << endl;
@@ -280,6 +292,7 @@ void command(Window* window,string cmd) {
 				cout << "Usage: remove" << endl;
 				cout << "Usage: delete" << endl;
 				cout << "Deletes the current element and any children and exits to its parents." << endl;
+				cout << "USE WITH CAUTION. You will not be asked for confirmation." << endl;
 			} else if(c.compare("encap")==0||c.compare("encapsulate")==0) {
 				cout << "Usage: encap <element type>" << endl;
 				cout << "Usage: encapsulate <element type>" << endl;
@@ -288,14 +301,11 @@ void command(Window* window,string cmd) {
 			} else if(c.compare("decap")==0||c.compare("decapsulate")==0) {
 				cout << "Usage: decap" << endl;
 				cout << "Usage: decapsulate" << endl;
-				cout << "The opposite of the encapsulate command. This takes all children of the current element and moves them to the parent." << endl;
+				cout << "The opposite of the \"encapsulate\" command. This takes all children of the" << endl << "current element and moves them to the parent as children after any existing" << endl << "elements, leaving the current element empty but otherwise unchanged." << endl;
 			} else if(c.compare("{")==0||c.compare("}")==0) {
-				cout << "Curly brackets (braces to our USA friends) are used to allow one command set (line or file)" << endl;
-				cout << "to encapsulate more than one element. This is used mainly for loading files, but" << endl;
-				cout << "can be used in this editor as long as they are contained within a single line." << endl;
-				cout << endl << "For example the following line will create an element named \"Element1\" which contains another element named \"Element2\":" << endl << "add Element { name Element1 add Element { name Element2 } }" << endl;
+				cout << "Curly brackets (braces) are used to encapsulate commands to be executed on the" << endl << "last added element. To use them in the editor, curly brackets should all open" << endl << "and close on the same line. Files are processed whole and so new lines can" << endl << "be inserted within a file whereupon they will be treated like spaces. Eg:" << endl << "new Box { set cx -100 set cy -100 set width 100 set height 100 }" << endl << "TAKE CARE TO ENSURE THERE IS A SPACE BEFORE AND AFTER YOUR CURLY BRACKETS!" << endl;
 			} else {
-				cout << c << " is not a recognised command, so I can't help you with it." << endl;
+				cout << "No help available for " << c << "." << endl;
 			}
 		}
 		cout << endl;
@@ -321,8 +331,21 @@ void command(Window* window,string cmd) {
 
 int main (int argc, char* argv[]) {
 	//sleep(10);
-	cout << "GPL and such" << endl;
-	cout << "Pivionics window editor - type \"help\" for help" << endl;
+#ifdef GPL_LICENSE
+	if(argc>1 && strcmp(argv[1],"--license")==0) {
+		cout << LICENSE;
+		return 0;
+	}
+#endif
+	cout << "Pivionics Window Editor  Copyright (C) 2016  Stephen J Sullivan" << endl;
+	cout << "This program is licensed under the GNU General Public License version 3." << endl;
+	cout << "This program comes with ABSOLUTELY NO WARRANTY; without even the implied\nwarranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE .\nThis is free software, and you are welcome to redistribute it under certain\nconditions. You should have received a full copy of the license along with\n Pivionics, in a file called \"LICENSE\" and/or \"COPYING\"";
+#ifdef GPL_LICENSE
+	cout << ", and running this\nprogram with --license will also produce a full copy of it to the shell." << endl;
+#else
+	cout << "." << endl;
+#endif
+	cout << "Type \"help\" for a list of available commands." <<endl << endl;
 	char chrbuf[128];
 	Window window;
 	string in_str;

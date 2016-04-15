@@ -1,0 +1,33 @@
+Pivionics
+2D geometric display system written in C++ aimed at simulated avionics displays
+
+PIVIONICS IS CURRENTLY AN INCOMPLETE WORK IN PROGRESS.
+PIVIONICS IS LICENSED UNDER THE GPLv3 - I may have yet to apply notices to some source files.
+
+Unfortunately the external flight sim displays you can buy are either prohibitively expensive
+or inadequate to the task. Having spent a few hundred pounds (sterling) on a "flight panel"
+(radio, autopilot, switches, flight instrument displays, etc) I found that, unfortunately, it 
+was impractical to have them all connected as they consumed more power than my computer or
+even most USB hubs could provide - in addition they didn't work very well with my flight sim
+of choice, having buggy and difficult to use drivers, and wouldn't work at all with FlightGear,
+the excellent open source flight simulator I also like to use.
+
+This project, Pivionics, was conceived to address that. Pivionics should allow anyone to use a
+modest spec computer (hopefully such as the Raspberry Pi) to produce an elegant, configurable
+physical display interface for use with flight simulators. I'm not a games programmer, so it's
+probably not going to be the most efficient code, but I hope my 20+ years experience as a
+programmer will allow me to make it functional and solid.
+
+If you are reading this hoping to instantly get up and running, sorry - at this stage I have
+comitted to github only as a backup of my local repository - I'm currently building the
+graphical system on which Pivionics will be based and it can't actually be used for its
+intended purpose yet (no mechanism to receive and interpret data from your flight sim). Do,
+however, keep an eye on the project as I have got the basics of this graphics system working
+and hopefully will soon be able to start adding such functionality.
+
+In addition, some of you looking for SDL2 examples may find my work helpful, or you may wish
+to point out something I'm not doing right (as I said, I'm not a game programmer so SDL2 is a
+bit new to me!)
+
+If all this hasn't scared you off, then please feel free to take a look and use this source
+however you see fit (in accordance with the GPL).
