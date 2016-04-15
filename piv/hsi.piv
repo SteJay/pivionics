@@ -23,7 +23,7 @@ add Container {
     set height 0
     set xscale 1
     set yscale 1
-    set angle 0.785398
+    set angle 0
     set arc 6.283185307179586
     set thickness 1
     set sections 1
@@ -302,9 +302,9 @@ add Container {
       set inherit scale true
       add Text {
         name "Base Element"
-        text "Test"
+        text "Rotation"
         set cx 0
-        set cy -180
+        set cy 100
         set width 1
         set height 1
         set xscale 1
@@ -321,6 +321,46 @@ add Container {
         attr font "fonts/monofonto/MONOFONT.TTF"
         attr fontsize "24"
       }
+    }
+    add Text {
+      name "Base Element"
+      text "Test"
+      set cx 0
+      set cy 0
+      set width 1
+      set height 1
+      set xscale 1
+      set yscale 1
+      set angle 0
+      set arc 6.283185307179586
+      set thickness 1
+      set sections 1
+      set subsections 1
+      set color 4294967295
+      set inherit position true
+      set inherit angle true
+      set inherit scale true
+      attr font "fonts/monofonto/MONOFONT.TTF"
+      attr fontsize "24"
+    }
+    add Box {
+      name "CentreBox"
+      set cx 0
+      set cy 0
+      set width 100
+      set height 100
+      set xscale 1
+      set yscale 1
+      set angle 0
+      set arc 6.283185307179586
+      set thickness 1
+      set sections 1
+      set subsections 1
+      set color 4294967295
+      set inherit position true
+      set inherit angle true
+      set inherit scale true
+      attr drawmode "hourglass"
     }
   }
   add Container {

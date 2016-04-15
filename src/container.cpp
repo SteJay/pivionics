@@ -112,13 +112,15 @@ bool Rotation::post_compose(Origin origin) {
 			if((tps.render_flags&RENDER_SURFACE)>0) {
 	            tp=*magnumpi;
 				if( magnumpi - tps.points.begin() < 1 ) {
+					//++magnumpi;
+					tp2=*magnumpi;
 					tp.x=origin.position.x-tp.x;
 					tp.y=origin.position.y-tp.y;
 	            	tp2.x=tp.x*cos(origin.angle)-tp.y*sin(origin.angle);
 	            	tp2.y=tp.x*sin(origin.angle)+tp.y*cos(origin.angle);
 					tp2.x+=origin.position.x;
 					tp2.y+=origin.position.y;
-					tp=tp2; tps2.surface_angle += normalise_angle(tps2.surface_angle) * (180/PI);
+					tp=tp2; 
 				} else {
 				}
 	            tps2.points.push_back(tp);
@@ -134,6 +136,10 @@ bool Rotation::post_compose(Origin origin) {
 	            tps2.points.push_back(tp2);
 			}			
         }
+		if((tps2.render_flags&RENDER_SURFACE)>0) {
+			tps2.surface_angle = normalise_angle(origin.angle-PI) * (180/PI);
+			cout << "Composed surface: " << tps2.points[0].x << ", " << tps2.points[0].y << ", " << tps2.points[1].x << ", " << tps2.points[1].y << ", @" << tps2.surface_angle << "(origin says " << origin.angle << ")" << endl;
+		}
         tpsv.push_back(tps2);
     }
     composed_points=tpsv;
