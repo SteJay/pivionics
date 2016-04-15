@@ -109,15 +109,30 @@ bool Rotation::post_compose(Origin origin) {
         tps2=*iter;
         tps2.points.clear();
         for(auto magnumpi=tps.points.begin();magnumpi!=tps.points.end();++magnumpi) {
-            tp=*magnumpi;
-			tp.x=origin.position.x-tp.x;
-			tp.y=origin.position.y-tp.y;
-            tp2.x=tp.x*cos(origin.angle)-tp.y*sin(origin.angle);
-            tp2.y=tp.x*sin(origin.angle)+tp.y*cos(origin.angle);
-			tp2.x+=origin.position.x;
-			tp2.y+=origin.position.y;
-            tps2.points.push_back(tp2);
-			
+			if((tps.render_flags&RENDER_SURFACE)>0) {
+	            tp=*magnumpi;
+				if( magnumpi - tps.points.begin() < 1 ) {
+					tp.x=origin.position.x-tp.x;
+					tp.y=origin.position.y-tp.y;
+	            	tp2.x=tp.x*cos(origin.angle)-tp.y*sin(origin.angle);
+	            	tp2.y=tp.x*sin(origin.angle)+tp.y*cos(origin.angle);
+					tp2.x+=origin.position.x;
+					tp2.y+=origin.position.y;
+					tp=tp2; tps2.surface_angle += normalise_angle(tps2.surface_angle) * (180/PI);
+				} else {
+				}
+	            tps2.points.push_back(tp);
+				// This is a special case for surfaces as they are rotated and scaled differently
+			} else {
+	            tp=*magnumpi;
+				tp.x=origin.position.x-tp.x;
+				tp.y=origin.position.y-tp.y;
+	            tp2.x=tp.x*cos(origin.angle)-tp.y*sin(origin.angle);
+	            tp2.y=tp.x*sin(origin.angle)+tp.y*cos(origin.angle);
+				tp2.x+=origin.position.x;
+				tp2.y+=origin.position.y;
+	            tps2.points.push_back(tp2);
+			}			
         }
         tpsv.push_back(tps2);
     }

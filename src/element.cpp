@@ -114,24 +114,26 @@ void Element::compose(Origin origin) {
 		for(auto piter=tps.points.begin(); piter!=tps.points.end(); ++piter) {
 			tp=*piter;
 			for(int i=0;i<3;++i) {
-				switch( (compose_order >> (i*2)) & 3){
-				case 1:
-					// Scale...
-					tp.x=tp.x*origin.scale.x;
-					tp.y=tp.y*origin.scale.y;
-					break;
-				case 3:
-					// Translate...
-					tp.x+=origin.position.x;
-					tp.y+=origin.position.y;
-					break;
-				case 2:
-					// Rotate...
-					tp2.x=tp.x*cos(origin.angle)-tp.y*sin(origin.angle);
-					tp2.y=tp.x*sin(origin.angle)+tp.y*cos(origin.angle);
-					tp=tp2;
-					break;
-				}
+					switch( (compose_order >> (i*2)) & 3){
+					case 1:
+						// Scale...
+						tp.x=tp.x*origin.scale.x;
+						tp.y=tp.y*origin.scale.y;
+						break;
+					case 3:
+						// Translate...
+						tp.x+=origin.position.x;
+						tp.y+=origin.position.y;
+						break;
+					case 2:
+						// Rotate...
+						if((tps.render_flags&RENDER_SURFACE)==0) { 
+							tp2.x=tp.x*cos(origin.angle)-tp.y*sin(origin.angle);
+							tp2.y=tp.x*sin(origin.angle)+tp.y*cos(origin.angle);
+						}
+						tp=tp2;
+						break;
+					}
 			}
 			tps2.points.push_back(tp);
 		}
