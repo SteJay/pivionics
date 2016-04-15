@@ -39,6 +39,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
+#include <SDL2/SDL_image.h>
 #include <SDL2/SDL2_gfxPrimitives.h>
 #include "core_elements.h"
 
@@ -47,14 +48,17 @@ class SdlRenderer: public Renderer {
 		SDL_Window* sdl_window;
 		SDL_Surface* sdl_screen;
 		SDL_Renderer* sdl_renderer;
+		SDL_Texture* test_texture;
 	public:
-		virtual int init(void);
-		virtual int shutdown(void);
-        virtual void draw_point(unsigned int*, const IntPoint*); // called by render_frame
-        virtual void draw_line(unsigned int*,const IntPoint*, const IntPoint*); // Called by render_frame
-        virtual void draw_triangle(unsigned int*, const IntPoint*, const IntPoint*, const IntPoint*); // Called by render_frame
-        virtual void draw_quad(unsigned int*, const IntPoint*, const IntPoint*, const IntPoint*, const IntPoint*); // called by render_frame
-        virtual void draw_surface(void*,const IntPoint*,const IntPoint*);
-		virtual void flip(void);
-		virtual void clear(void);
+		int init(void);
+		int shutdown(void);
+        void draw_point(unsigned int*, const IntPoint*); // called by render_frame
+        void draw_line(unsigned int*,const IntPoint*, const IntPoint*); // Called by render_frame
+        void draw_triangle(unsigned int*, const IntPoint*, const IntPoint*, const IntPoint*); // Called by render_frame
+        void draw_quad(unsigned int*, const IntPoint*, const IntPoint*, const IntPoint*, const IntPoint*); // called by render_frame
+        void draw_surface(int,double,const IntPoint*,const IntPoint*);
+		void flip(void);
+		void clear(void);
+		int allocate_surface(void*);
+		void deallocate_surface(int);
 };

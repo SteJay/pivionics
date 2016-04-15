@@ -75,6 +75,7 @@ void Circle::construct(void) {
 	for( unsigned int n=0; n<sect; ++n) {
 		// First we need some setup for this section; we need to kno
 		PointSet tpointset;
+		tpointset.owner=this;
 		percent = static_cast<double>(n)/static_cast<double>(sect);// 0.0-1.0 on how far we've drawn...
 		nextpercent = static_cast<double>(n+1)/static_cast<double>(sect);// 0.0-1.0 on how far we've drawn...
 		// Work out the next point first, hopefully stop the annoying jitter

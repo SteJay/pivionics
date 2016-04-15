@@ -99,7 +99,7 @@ bool Container::pre_compose(Origin origin) {
 	return false;
 }
 bool Rotation::post_compose(Origin origin) {
-	PointSet tps,tps2;
+	PointSet tps,tps2; tps.owner=this; tps2.owner=this;
 	Point tp,tp2;
 	vector<PointSet> tpsv;
 	origin.angle = normalise_angle(PI+origin.angle);
@@ -126,7 +126,7 @@ bool Rotation::post_compose(Origin origin) {
 	// Composition is good to go!
 }
 bool Rescale::post_compose(Origin origin) {
-	PointSet tps,tps2;
+	PointSet tps,tps2; tps.owner=this; tps2.owner=this;
 	Point tp;
 	vector<PointSet>tpsv;
     for( auto iter=composed_points.begin(); iter!=composed_points.end();++iter) {

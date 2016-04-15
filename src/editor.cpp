@@ -184,6 +184,8 @@ void command(Window* window,string cmd) {
 		cout << ", Inherit Scale: "; if(current->inherit_scale) cout << "true"; else cout << "false";
 		vector<string> a=current->get_attrs();
 		string s;
+		s=current->text();
+		if(s.compare("")!=0) cout << "Text: [" << s << "]" << endl;
 		if(a.size()>0) {
 			cout << "Attributes:" << endl;
 			bool comma=false;
@@ -318,6 +320,7 @@ void command(Window* window,string cmd) {
 }
 
 int main (int argc, char* argv[]) {
+	//sleep(10);
 	cout << "GPL and such" << endl;
 	cout << "Pivionics window editor - type \"help\" for help" << endl;
 	char chrbuf[128];
@@ -339,6 +342,7 @@ int main (int argc, char* argv[]) {
 	renderer.render_run();
 	compositor.link_window(&window);
 	compositor.link_renderer(&renderer);
+	sleep(3); // TODO: Proper check that renderer is fully initialised
 	while( in_str.compare("quit") != 0) {
 		window.construct();
 		compositor.compose();

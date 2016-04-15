@@ -111,6 +111,8 @@ struct PointSet {
     vector<Point> points; // A set of point pairs
     unsigned int color;				// The colour of this polygon
 	void* surface;
+	void* owner;
+	double surface_angle;
 };
 
 /* The following struct is used by the compositor to pass points to the renderer */
@@ -119,7 +121,8 @@ struct Rendergon {
 	unsigned int point_count;
 	unsigned int color;
 	bool is_surface;
-	void* surface;
+	int surface_index;
+	double surface_angle;
 };
 
 
@@ -260,6 +263,7 @@ class Renderer {
 		bool dirty;
 		unsigned int fps_cap;
 		vector<Rendergon> points;
+		vector<void*> surfaces;
 		bool run;
 		unsigned int fps;
 		thread* runthread;
@@ -280,11 +284,13 @@ class Renderer {
 		virtual void draw_line(unsigned int*,const IntPoint*, const IntPoint*); // Called by render_frame
 		virtual void draw_triangle(unsigned int*, const IntPoint*, const IntPoint*, const IntPoint*); // Called by render_frame
 		virtual void draw_quad(unsigned int*, const IntPoint*, const IntPoint*, const IntPoint*, const IntPoint*); // called by render_frame
-		virtual void draw_surface(void*,const IntPoint*,const IntPoint*);
+		virtual void draw_surface(int,double,const IntPoint*,const IntPoint*);
 		virtual void flip(void);
 		virtual void clear(void);
 		unsigned int get_fps();
-
+		// Surface support
+		virtual int allocate_surface(void*);
+		virtual void deallocate_surface(int);
 };
 
 class Compositor {

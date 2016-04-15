@@ -87,7 +87,14 @@ list<string> Window::command(list<string> args,Element* base){
 				base->name(args.front());
 				args.pop_front();
 			} else {
-				args.push_front("ERROR: No name specified!");
+				base->name("");
+			}
+		} else if(cmd.compare("text")==0||cmd.compare("string")==0) {
+			if( args.size()>0 ) {
+				base->text(args.front());
+				args.pop_front();
+			} else {
+				base->text("");
 				return args;
 			}
 		} else if(cmd.compare("remove")==0||cmd.compare("delete")==0) {
@@ -356,6 +363,8 @@ void Window::save(ofstream* file,Element* el,string lvl) {
 		lvl+="  ";
 		t=el->name();
 		if(t.compare("") != 0) { *file << lvl << "name \"" + replace_all(t,"\"","\\\"") + "\"" << endl; }
+		t=el->text();
+		if(t.compare("") != 0) { *file << lvl << "text \"" + replace_all(t,"\"","\\\"") + "\"" << endl; }
 		*file << lvl << "set cx " << el->cx() << endl;
 		*file << lvl << "set cy " << el->cy() << endl;
 		*file << lvl << "set width " << el->width() << endl;

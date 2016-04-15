@@ -1,0 +1,61 @@
+add Circle {
+  set width 580
+  attr drawmode filled
+}
+add Spiral {
+  set cx 0
+  set cy 0
+  set width 580
+  set height 0
+  set xscale 1
+  set yscale 1
+  set angle 0
+  set arc 30
+  set thickness 12
+  set sections 12
+  set subsections 1
+  set color 2290649224
+  set inherit position true
+  set inherit angle true
+  set inherit scale true
+  attr dirtyfix "true"
+  attr drawmode "torus"
+}
+add Spiral {
+  set cx 0
+  set cy 0
+  set width 580
+  set height 0
+  set xscale 1
+  set yscale 1
+  set angle 0
+  set arc 30
+  set thickness 12
+  set sections 24
+  set subsections 1
+  set color 2290649224
+  set inherit position true
+  set inherit angle true
+  set inherit scale true
+  attr dirtyfix "true"
+  attr drawmode "torus"
+}
+add Spiral {
+  set cx 0
+  set cy 0
+  set width 580
+  set height 0
+  set xscale 1
+  set yscale 1
+  set angle 0
+  set arc 30
+  set thickness 12
+  set sections 36
+  set subsections 1
+  set color 2290649224
+  set inherit position true
+  set inherit angle true
+  set inherit scale true
+  attr dirtyfix "true"
+  attr drawmode "torus"
+}

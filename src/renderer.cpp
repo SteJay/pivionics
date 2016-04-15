@@ -85,7 +85,7 @@ bool Renderer::render_frame(void) {
 		thisgon=*iter;
 	//cout << "Rendergon " << i << " has " << thisgon.point_count << " points." << endl; 
 		if(thisgon.is_surface && thisgon.point_count==2) {
-			draw_surface(thisgon.surface, &thisgon.points[0], &thisgon.points[1]);
+			draw_surface(thisgon.surface_index,thisgon.surface_angle, &thisgon.points[0], &thisgon.points[1]);
 		} else {
 			switch(thisgon.point_count) {
 				case 1:
@@ -148,10 +148,23 @@ void Renderer::render_stop(void) {
 bool Renderer::set_rendergons(const vector<Rendergon>* rgv) {
 	access.lock();
 	points = *rgv;
+	// Unfortunately we now need to go through all of these rendergons to convert the surfaces to textures...
+/*	Rendergon trg,trg2;
+	for(auto iter=points.begin();iter!=points.end();++iter) {
+		trg=*iter;
+		trg2=*iter;
+		if(trg.is_surface) {
+			trg.surface = get_surface(trg.surface);
+		}
+		*iter=trg;
+	}*/
 	access.unlock();
 	return true;
 }
 
+int Renderer::allocate_surface(void* s) { }
+
+void Renderer::deallocate_surface(int i) { }
 
 void Renderer::flip(void) { }
 void Renderer::clear(void) { }
@@ -175,6 +188,5 @@ void Renderer::draw_quad(unsigned int *c, const IntPoint* p1, const IntPoint* p2
 #else
 #endif
 }
-void Renderer::draw_surface(void* surf,const IntPoint* p,const IntPoint* ps) {
-
+void Renderer::draw_surface(int surfid,double angle,const IntPoint* p,const IntPoint* ps) {
 }

@@ -50,6 +50,8 @@ int SdlRenderer::init(void) {
 		access.unlock();
 		return ERR_RENDERER_CANNOT_INIT_TTF;
 	}
+//	test_surface = IMG_Load("logo.png");
+//	test_texture = SDL_CreateTextureFromSurface(sdl_renderer,test_surface);
 	access.unlock();
 	return 0;
 }
@@ -69,6 +71,7 @@ int SdlRenderer::shutdown(void) {
 void SdlRenderer::clear(void) {
 	SDL_SetRenderDrawColor(sdl_renderer,0,0,0,255);
 	SDL_RenderClear(sdl_renderer);
+	SDL_RenderCopy(sdl_renderer, test_texture, NULL, NULL);
 }
 
 void SdlRenderer::flip(void){
@@ -104,11 +107,37 @@ void SdlRenderer::draw_quad(unsigned int *c, const IntPoint* p1, const IntPoint*
 #ifdef ENABLE_RENDER_AA_QUAD
 #endif
 }
-void SdlRenderer::draw_surface(void* surf,const IntPoint* p, const IntPoint* ps) {
-	SDL_Texture* s = SDL_CreateTextureFromSurface(sdl_renderer,static_cast<SDL_Surface*>(surf));
-	SDL_Rect dst;
-	dst.x=p->x;dst.y=p->y;dst.w=ps->x;dst.h=ps->y;
-	SDL_RenderCopy(sdl_renderer,s,NULL,&dst);
-	SDL_DestroyTexture(s);
-//	cout << "Render at " << dst.x << ", " << dst.y << " for " << dst.w << " by " << dst.h << "." << endl;
+
+void SdlRenderer::draw_surface(int surfid,double angle,const IntPoint* p, const IntPoint* ps) {
+	if(surfid < surfaces.size() && surfid>=0) {
+		SDL_Texture* s = static_cast<SDL_Texture*>(surfaces[surfid]);
+		SDL_Rect dst;
+		SDL_Point pnt;
+		pnt.x = ps->x/2;
+		pnt.y = ps->y/2;
+		dst.x=p->x;dst.y=p->y;dst.w=ps->x;dst.h=ps->y;
+		SDL_RenderCopyEx(sdl_renderer,static_cast<SDL_Texture*>(surfaces[surfid]),NULL,&dst,angle,&pnt,SDL_FLIP_NONE);
+	}
+}
+
+int SdlRenderer::allocate_surface(void* surf) {
+	access.lock();
+	SDL_Texture* tex = SDL_CreateTextureFromSurface(sdl_renderer,static_cast<SDL_Surface*>(surf));
+	auto iter = surfaces.begin();
+	for(;iter!=surfaces.end()&&*iter!=NULL;++iter);
+	int i = 0;
+	if(iter!=surfaces.end()) {
+		*iter=tex;
+		i = iter-surfaces.begin();
+	} else {
+		i=surfaces.size();
+		surfaces.push_back(tex);
+	}
+	access.unlock();
+	return i;
+}
+
+void SdlRenderer::deallocate_surface(int surfid) {
+	SDL_DestroyTexture(static_cast<SDL_Texture*>(surfaces[surfid]));
+	surfaces[surfid]=NULL;
 }

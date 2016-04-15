@@ -8,7 +8,7 @@ CCOPTS := -DENABLE_RENDER_AA_ALL -DREVERSE_COLOR_ORDER
 AR := ar
 
 ARFLAGS := rcs
-SDLFLAGS := -lSDL2 -lSDL2_gfx -lSDL2_ttf
+SDLFLAGS := -lSDL2 -lSDL2_gfx -lSDL2_ttf -lSDL2_image
 BINDIR := bin
 SRCDIR := src
 OBJDIR := obj

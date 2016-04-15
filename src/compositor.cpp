@@ -99,7 +99,7 @@ int Compositor::compose(void) {
 			rg.point_count=0;
 			rg.color=0;
 			rg.is_surface=false;
-			rg.surface=NULL;
+			rg.surface_index=-1;
 			vector<Rendergon> rgv;
 			int wp=0;
 			///cout << "Compositor now starting its work..." << endl;
@@ -120,7 +120,9 @@ int Compositor::compose(void) {
 					p2p(&rg.points[1],&wpoints[1]);
 					rg.is_surface=true;
 					rg.point_count=2;
-					rg.surface = nowset.surface;
+					//rg.surface = nowset.surface;
+					rg.surface_index = rend->allocate_surface(nowset.surface);
+					rg.surface_angle = nowset.surface_angle;
 					rgv.push_back(rg);
 					//cout << "Compositor dealt with surface at " << nowset.surface << " for " << rg.points[0].x << "," << rg.points[0].y << "," << rg.points[1].x << "," << rg.points[1].y << "." << endl;
 				} else {	

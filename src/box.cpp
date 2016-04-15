@@ -34,6 +34,7 @@ Box::Box(void) {
 void Box::construct(void) {
 	access.lock();
 	PointSet ps;
+	ps.owner=this;
 	Point p;
 	int w,h; w=geometry[2]/2; h=geometry[3]/2;
 	points.clear();
