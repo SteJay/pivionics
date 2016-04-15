@@ -79,16 +79,18 @@ void command(Window* window,string cmd) {
 		unsigned int fpstot=0;
 		unsigned int max=10;
 		struct timespec t,t2;
+		unsigned int fpsttot=0;
 		for(int  i=0;i<20;++i) {
 			cout << ".";
 			cout.flush();
 			fpstot+=renderer.get_fps();
+			fpsttot+=renderer.get_fps_trim();
 			t.tv_sec=0;
 			t.tv_nsec=500000000;
 			nanosleep(&t,&t2);
 		} 
 		cout << endl;
-		cout << "Approximate Frame Rate: " << to_string(fpstot/20) << " fps." << endl <<endl;
+		cout << "Approximate Frame Rate: " << to_string(fpstot/20) << " frames per second with an average of " << (fpsttot/20) << "ms to spare per frame." << endl <<endl;
 	} else if(c.compare("find")==0 || c.compare("search")==0) {
 		if(args.size() == 2) {
 			string s=args[1];

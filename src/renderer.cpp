@@ -75,6 +75,12 @@ unsigned int Renderer::get_fps(void) {
 	access.unlock();
 	return f; 
 }
+unsigned int Renderer::get_fps_trim(void) { 
+	access.lock();
+	unsigned int f = fps_trim;
+	access.unlock();
+	return f; 
+}
 bool Renderer::render_frame(void) {
 	clear();
 	Rendergon thisgon;
@@ -117,22 +123,24 @@ bool Renderer::render_loop(void) {
 		chrono::milliseconds ms(1);
 		unsigned int fpstime=SDL_GetTicks();
 		unsigned int frametime;
+		unsigned int totft=0;
 		unsigned int framecount;
 		bool renderedall=true;
 		while(run) {
-			access.lock();
 			frametime=SDL_GetTicks();
 			framecount++;
+			access.lock();
 			renderedall=render_frame();
 			flip();
+			frametime = (1000.0/fps_cap )-(SDL_GetTicks()-frametime);
+			totft+=frametime;
 			if( SDL_GetTicks()-fpstime>1000 ) {
 				fps=framecount;
+				fps_trim=totft/framecount;
 				fpstime=SDL_GetTicks();
 				framecount=0;
 			}
 			access.unlock();
-			frametime = (1000/fps_cap )-(SDL_GetTicks()-frametime);
-			if(frametime>10) this_thread::sleep_for(ms*frametime);
 			running=true;
 		}
 		running=false;
