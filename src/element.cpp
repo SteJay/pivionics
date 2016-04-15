@@ -127,10 +127,8 @@ void Element::compose(Origin origin) {
 						break;
 					case 2:
 						// Rotate...
-						if((tps.render_flags&RENDER_SURFACE)==0) { 
-							tp2.x=tp.x*cos(origin.angle)-tp.y*sin(origin.angle);
-							tp2.y=tp.x*sin(origin.angle)+tp.y*cos(origin.angle);
-						}
+						tp2.x=tp.x*cos(origin.angle)-tp.y*sin(origin.angle);
+						tp2.y=tp.x*sin(origin.angle)+tp.y*cos(origin.angle);
 						tp=tp2;
 						break;
 					}

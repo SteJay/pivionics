@@ -32,13 +32,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define ENABLE_RENDER_AA_SURFACE
 #endif
 
+
 Renderer::Renderer() {
 	dirty=false;
 	fps_cap=60;
 	run=false;
+	running=false;
 	fps=0;
 	width=800;
 	height=600;
+	runthread=NULL;
 }
 
 Renderer::~Renderer() {
@@ -73,7 +76,6 @@ unsigned int Renderer::get_fps(void) {
 	return f; 
 }
 bool Renderer::render_frame(void) {
-	access.lock();
 	clear();
 	Rendergon thisgon;
 	bool renderedall=true;
@@ -107,28 +109,33 @@ bool Renderer::render_frame(void) {
 		}
 	}
 //cout << "Rendergons drawn." << endl;
-	access.unlock();
 	return renderedall;
 }
 bool Renderer::render_loop(void) {
-	int rr=0;
-	if(rr=init() >=0) {
+	if(this->init()>=0) {
+		//using milliseconds = chrono::duration<int, milli>;
+		chrono::milliseconds ms(1);
 		unsigned int fpstime=SDL_GetTicks();
+		unsigned int frametime;
 		unsigned int framecount;
 		bool renderedall=true;
 		while(run) {
+			access.lock();
+			frametime=SDL_GetTicks();
 			framecount++;
 			renderedall=render_frame();
 			flip();
 			if( SDL_GetTicks()-fpstime>1000 ) {
-				access.lock();
 				fps=framecount;
-				access.unlock();
 				fpstime=SDL_GetTicks();
 				framecount=0;
 			}
-				
+			access.unlock();
+			frametime = (1000/fps_cap )-(SDL_GetTicks()-frametime);
+			if(frametime>10) this_thread::sleep_for(ms*frametime);
+			running=true;
 		}
+		running=false;
 		return renderedall;
 	} else {
 		return false;
@@ -136,12 +143,16 @@ bool Renderer::render_loop(void) {
 }
 
 void Renderer::render_run(void) {
+	access.lock();
 	run=true;
+	access.unlock();
 	runthread = new thread(&Renderer::render_loop,this);
 }
 
 void Renderer::render_stop(void) {
+	access.lock();
 	run=false;
+	access.unlock();
 	runthread->join(); // Wait for the thread to quit
 }
 

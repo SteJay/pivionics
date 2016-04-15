@@ -48,8 +48,8 @@ class SdlRenderer: public Renderer {
 		SDL_Window* sdl_window;
 		SDL_Surface* sdl_screen;
 		SDL_Renderer* sdl_renderer;
-		SDL_Texture* test_texture;
 	public:
+		SdlRenderer();
 		int init(void);
 		int shutdown(void);
         void draw_point(unsigned int*, const IntPoint*); // called by render_frame

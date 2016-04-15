@@ -122,6 +122,7 @@ int Compositor::compose(void) {
 					rg.point_count=2;
 					//rg.surface = nowset.surface;
 					rg.surface_index = rend->allocate_surface(nowset.surface);
+					cout << "Compositor got " << rg.surface_index << " as surface index" << endl;
 					rg.surface_angle = nowset.surface_angle;
 					rgv.push_back(rg);
 					//cout << "Compositor dealt with surface at " << nowset.surface << " for " << rg.points[0].x << "," << rg.points[0].y << "," << rg.points[1].x << "," << rg.points[1].y << "." << endl;
@@ -236,6 +237,10 @@ int Compositor::compose(void) {
 				}
 			} // Main For Loop through composed points
 			// Copy our newly worked out rendergons ready to transfer to the renderer
+			for(auto iter=rendergons.begin();iter!=rendergons.end();++iter) {
+				rg=*iter;
+				if(rg.surface_index>-1) rend->deallocate_surface(rg.surface_index);
+			}
 			rendergons=rgv;
 		//cout << "Compositor readied " << rendergons.size() << " Rendergons." << endl;
 		} // End of no_renderer else block

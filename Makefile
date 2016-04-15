@@ -1,7 +1,7 @@
 # Our compiler. The default is g++, the gcc for c++
 CC := g++
 # The main options to set for our compiler
-CCFLAGS := -std=c++11 -fdiagnostics-color=always -L./lib
+CCFLAGS := -g -o0 -std=c++11 -fdiagnostics-color=always -L./lib
 # Compilation options
 #CCOPTS := -DENABLE_RENDER_AA_ALL -DREVERSE_COLOR_ORDER -DGPL_LICENSE
 CCOPTS := -DREVERSE_COLOR_ORDER

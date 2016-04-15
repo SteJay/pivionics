@@ -21,6 +21,12 @@ along with Pivionics.  If not, see <http://www.gnu.org/licenses/>.
 #include <iostream>
 #include "sdlrenderer.h"
 
+SdlRenderer::SdlRenderer() {
+	sdl_screen=NULL;
+	sdl_renderer=NULL;
+	sdl_window=NULL;
+}
+
 int SdlRenderer::init(void) {
 	access.lock();
 	if( SDL_Init(SDL_INIT_VIDEO)<0) {
@@ -71,7 +77,6 @@ int SdlRenderer::shutdown(void) {
 void SdlRenderer::clear(void) {
 	SDL_SetRenderDrawColor(sdl_renderer,0,0,0,255);
 	SDL_RenderClear(sdl_renderer);
-	SDL_RenderCopy(sdl_renderer, test_texture, NULL, NULL);
 }
 
 void SdlRenderer::flip(void){
@@ -124,12 +129,21 @@ int SdlRenderer::allocate_surface(void* surf) {
 	access.lock();
 	SDL_Texture* tex = SDL_CreateTextureFromSurface(sdl_renderer,static_cast<SDL_Surface*>(surf));
 	auto iter = surfaces.begin();
-	for(;iter!=surfaces.end()&&*iter!=NULL;++iter);
+	for(;iter!=surfaces.end()&&static_cast<void*>(*iter)!=NULL&&static_cast<void*>(*iter)!=surf;++iter);
 	int i = 0;
 	if(iter!=surfaces.end()) {
+		cout << "Found surface to be over written";
+		if(*iter!=NULL) {
+			SDL_DestroyTexture(static_cast<SDL_Texture*>(*iter));
+			cout << " which has now been deleted.";
+		} else {
+			cout << " which was NULL";
+		}
+		cout << endl;
 		*iter=tex;
 		i = iter-surfaces.begin();
 	} else {
+		cout << "No free surfaces" << endl;
 		i=surfaces.size();
 		surfaces.push_back(tex);
 	}

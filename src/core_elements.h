@@ -265,6 +265,7 @@ class Renderer {
 		vector<Rendergon> points;
 		vector<void*> surfaces;
 		bool run;
+		bool running;
 		unsigned int fps;
 		thread* runthread;
 	public:

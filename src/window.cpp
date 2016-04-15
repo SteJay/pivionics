@@ -335,13 +335,15 @@ void Window::load(string fn,Element *el) {
 	char* buf;
 	if(file.is_open()) {
 		streampos size=file.tellg(); // because we used ios::ate we start at the end of the file, thus we know the length
-		buf=new char[size];
-		file.seekg(0,ios::beg); // seek back to the beginning of the file
-		file.read(buf,size);
+		if(size>0) {
+			buf=new char[size];
+			file.seekg(0,ios::beg); // seek back to the beginning of the file
+			file.read(buf,size);
+			command(buf,el);
+			delete buf;
+		}
 		file.close();
 	}
-	command(buf,el);
-	delete buf;
 }
 void Window::load(string fn) { load(fn,this); }
 
