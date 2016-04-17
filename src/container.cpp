@@ -100,7 +100,7 @@ bool Container::pre_compose(Origin origin) {
 }
 bool Rotation::post_compose(Origin origin) {
 	PointSet tps,tps2; tps.owner=this; tps2.owner=this;
-	Point tp,tp2;
+	Point tp,tp2,tp3;
 	vector<PointSet> tpsv;
 	origin.angle = normalise_angle(PI+origin.angle);
     // Now the extra rotation magic...  
@@ -112,8 +112,7 @@ bool Rotation::post_compose(Origin origin) {
 			if((tps.render_flags&RENDER_SURFACE)>0) {
 	            tp=*magnumpi;
 				if( magnumpi - tps.points.begin() < 1 ) {
-					//++magnumpi;
-					tp2=*magnumpi;
+				    tp2=*magnumpi;
 					tp.x=origin.position.x-tp.x;
 					tp.y=origin.position.y-tp.y;
 	            	tp2.x=tp.x*cos(origin.angle)-tp.y*sin(origin.angle);
@@ -138,7 +137,7 @@ bool Rotation::post_compose(Origin origin) {
         }
 		if((tps2.render_flags&RENDER_SURFACE)>0) {
 			tps2.surface_angle = normalise_angle(origin.angle-PI) * (180/PI);
-			cout << "Composed surface: " << tps2.points[0].x << ", " << tps2.points[0].y << ", " << tps2.points[1].x << ", " << tps2.points[1].y << ", @" << tps2.surface_angle << "(origin says " << origin.angle << ")" << endl;
+			//cout << "Composed surface: " << tps2.points[0].x << ", " << tps2.points[0].y << ", " << tps2.points[1].x << ", " << tps2.points[1].y << ", @" << tps2.surface_angle << "(origin says " << origin.angle << ")" << endl;
 		}
         tpsv.push_back(tps2);
     }

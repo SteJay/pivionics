@@ -268,7 +268,6 @@ class Renderer {
 		bool run;
 		bool running;
 		unsigned int fps;
-		unsigned int fps_trim;
 		thread* runthread;
 	public:
 		int width;
@@ -291,7 +290,6 @@ class Renderer {
 		virtual void flip(void);
 		virtual void clear(void);
 		unsigned int get_fps();
-		unsigned int get_fps_trim();
 		// Surface support
 		virtual int allocate_surface(void*);
 		virtual void deallocate_surface(int);
