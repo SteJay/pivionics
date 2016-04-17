@@ -136,7 +136,10 @@ bool Rotation::post_compose(Origin origin) {
 			}			
         }
 		if((tps2.render_flags&RENDER_SURFACE)>0) {
-			tps2.surface_angle = normalise_angle(origin.angle-PI) * (180/PI);
+			Element* argh=static_cast<Element*>(tps2.owner);
+			if( argh->inherit_angle ) {
+				tps2.surface_angle += (normalise_angle(origin.angle-PI) * (180/PI));
+			}
 			//cout << "Composed surface: " << tps2.points[0].x << ", " << tps2.points[0].y << ", " << tps2.points[1].x << ", " << tps2.points[1].y << ", @" << tps2.surface_angle << "(origin says " << origin.angle << ")" << endl;
 		}
         tpsv.push_back(tps2);
