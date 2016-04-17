@@ -36,6 +36,9 @@ $(OBJDIR)/container.o: $(SRCDIR)/container.cpp $(SRCDIR)/core_elements.h
 $(OBJDIR)/circle.o: $(SRCDIR)/circle.cpp $(SRCDIR)/circle.h $(SRCDIR)/core_elements.h
 	$(CC) $(CCFLAGS) $(CCOPTS) -c $< -o $@
 
+$(OBJDIR)/irregular.o: $(SRCDIR)/irregular.cpp $(SRCDIR)/irregular.h $(SRCDIR)/core_elements.h
+	$(CC) $(CCFLAGS) $(CCOPTS) -c $< -o $@
+
 $(OBJDIR)/box.o: $(SRCDIR)/box.cpp $(SRCDIR)/box.h $(SRCDIR)/core_elements.h
 	$(CC) $(CCFLAGS) $(CCOPTS) -c $< -o $@
 
@@ -54,7 +57,7 @@ $(OBJDIR)/sdlrenderer.o: $(SRCDIR)/sdlrenderer.cpp $(SRCDIR)/sdlrenderer.h $(SRC
 $(OBJDIR)/sdlcompositor.o: $(SRCDIR)/sdlcompositor.cpp $(SRCDIR)/sdlcompositor.h $(SRCDIR)/core_elements.h
 	$(CC) $(CCFLAGS) $(CCOPTS) -c $< $(SDLFLAGS) -o $@
 
-$(LIBDIR)/libcore.a: $(OBJDIR)/stringsplit.o $(OBJDIR)/container.o $(OBJDIR)/circle.o $(OBJDIR)/box.o $(OBJDIR)/compositor.o $(OBJDIR)/renderer.o $(OBJDIR)/sdlcompositor.o $(OBJDIR)/sdlrenderer.o $(OBJDIR)/text.o $(OBJDIR)/window.o $(OBJDIR)/element.o
+$(LIBDIR)/libcore.a: $(OBJDIR)/stringsplit.o $(OBJDIR)/container.o $(OBJDIR)/circle.o $(OBJDIR)/box.o $(OBJDIR)/compositor.o $(OBJDIR)/renderer.o $(OBJDIR)/sdlcompositor.o $(OBJDIR)/sdlrenderer.o $(OBJDIR)/text.o $(OBJDIR)/window.o $(OBJDIR)/element.o $(OBJDIR)/irregular.o
 	$(AR) $(ARFLAGS) $@ $^
 
 #$(BINDIR)/simple_edit: $(SRCDIR)/simple_edit.cpp $(LIBDIR)/libcore.a

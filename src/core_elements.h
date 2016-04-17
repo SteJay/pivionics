@@ -356,12 +356,6 @@ class Rescale:public Container {
 
 };
 
-class OptionContainer:public Container{
-/* This container can be turned on and off dynamically; useful for features that may need turning off on occasions.*/
-	public:
-		int placeholder;
-};
-
 template <class T> T* element_creator(void) {
 	T* t;
 	t=new T;

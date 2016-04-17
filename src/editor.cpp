@@ -31,6 +31,7 @@ along with Pivionics.  If not, see <http://www.gnu.org/licenses/>.
 #include "circle.h"
 #include "box.h"
 #include "text.h"
+#include "irregular.h"
 #include "license.h"
 using namespace std;
 inline bool file_exists(const string& name) { struct stat buffer; return (stat (name.c_str(), &buffer) == 0); }
@@ -357,6 +358,7 @@ int main (int argc, char* argv[]) {
 	window.register_creator("Spiral",&fn_create_spiral);
 	window.register_creator("Box",&fn_create_box);
 	window.register_creator("Text",&fn_create_text);
+	window.register_creator("Irregular",&fn_create_irregular);
 
 	if( argc>1 && file_exists(argv[1])) {
 		string fn=argv[1];
