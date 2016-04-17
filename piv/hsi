@@ -1,7 +1,7 @@
 add Container {
   name "HSI"
   set cx 0
-  set cy 20
+  set cy 0
   set width 1
   set height 1
   set xscale 1

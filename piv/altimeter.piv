@@ -1,0 +1,642 @@
+add Container {
+  name "Altimeter"
+  set cx 0
+  set cy 0
+  set width 1
+  set height 1
+  set xscale 1
+  set yscale 1
+  set angle 0
+  set arc 6.283185307179586
+  set thickness 1
+  set sections 1
+  set subsections 1
+  set color 4294967295
+  set inherit position true
+  set inherit angle true
+  set inherit scale true
+  add Rescale {
+    set cx 0
+    set cy 0
+    set width 1
+    set height 1
+    set xscale 1
+    set yscale 1
+    set angle 0
+    set arc 6.283185307179586
+    set thickness 1
+    set sections 1
+    set subsections 1
+    set color 4294967295
+    set inherit position true
+    set inherit angle true
+    set inherit scale true
+    add Box {
+      name "altback"
+      set cx 0
+      set cy 0
+      set width 100
+      set height 48
+      set xscale 1
+      set yscale 1
+      set angle 0
+      set arc 6.283185307179586
+      set thickness 1
+      set sections 1
+      set subsections 1
+      set color 4294967295
+      set inherit position true
+      set inherit angle true
+      set inherit scale true
+      attr drawmode "filled"
+    }
+    add Container {
+      name "Marks"
+      set cx 0
+      set cy 0
+      set width 1
+      set height 1
+      set xscale 1
+      set yscale 1
+      set angle 0
+      set arc 6.283185307179586
+      set thickness 1
+      set sections 1
+      set subsections 1
+      set color 4294967295
+      set inherit position true
+      set inherit angle true
+      set inherit scale true
+      add Circle {
+        name "MinorMarks"
+        set cx 0
+        set cy 0
+        set width 340
+        set height 0
+        set xscale 1
+        set yscale 1
+        set angle -0.314159
+        set arc 6.283185307179586
+        set thickness 20
+        set sections 50
+        set subsections 2
+        set color 2863311615
+        set inherit position true
+        set inherit angle true
+        set inherit scale true
+        attr dirtyfix ""
+        attr drawmode "radius"
+      }
+      add Circle {
+        name "MajorMarks"
+        set cx 0
+        set cy 0
+        set width 340
+        set height 0
+        set xscale 1
+        set yscale 1
+        set angle -0.314159
+        set arc 6.283185307179586
+        set thickness 30
+        set sections 10
+        set subsections 1
+        set color 4294967295
+        set inherit position true
+        set inherit angle true
+        set inherit scale true
+        attr dirtyfix ""
+        attr drawmode "radius"
+      }
+      add Rotation {
+        name "text@0"
+        set cx 0
+        set cy 0
+        set width 1
+        set height 1
+        set xscale 1
+        set yscale 1
+        set angle 0
+        set arc 6.283185307179586
+        set thickness 1
+        set sections 1
+        set subsections 1
+        set color 4294967295
+        set inherit position true
+        set inherit angle true
+        set inherit scale true
+        add Text {
+          name "0"
+          text "0"
+          set cx 0
+          set cy -125
+          set width 1
+          set height 1
+          set xscale 1
+          set yscale 1
+          set angle 0
+          set arc 6.283185307179586
+          set thickness 1
+          set sections 1
+          set subsections 1
+          set color 4294967295
+          set inherit position true
+          set inherit angle false
+          set inherit scale true
+          attr font "fonts/monofonto/MONOFONT.TTF"
+          attr fontsize "24"
+        }
+        add Text {
+          name "5"
+          text "5"
+          set cx 0
+          set cy 125
+          set width 1
+          set height 1
+          set xscale 1
+          set yscale 1
+          set angle 0
+          set arc 6.283185307179586
+          set thickness 1
+          set sections 1
+          set subsections 1
+          set color 4294967295
+          set inherit position true
+          set inherit angle false
+          set inherit scale true
+          attr font "fonts/monofonto/MONOFONT.TTF"
+          attr fontsize "24"
+        }
+      }
+      add Rotation {
+        name "text@1"
+        set cx 0
+        set cy 0
+        set width 1
+        set height 1
+        set xscale 1
+        set yscale 1
+        set angle 0.628319
+        set arc 6.283185307179586
+        set thickness 1
+        set sections 1
+        set subsections 1
+        set color 4294967295
+        set inherit position true
+        set inherit angle true
+        set inherit scale true
+        add Text {
+          name "1"
+          text "1"
+          set cx 0
+          set cy -125
+          set width 1
+          set height 1
+          set xscale 1
+          set yscale 1
+          set angle 0
+          set arc 6.283185307179586
+          set thickness 1
+          set sections 1
+          set subsections 1
+          set color 4294967295
+          set inherit position true
+          set inherit angle false
+          set inherit scale true
+          attr font "fonts/monofonto/MONOFONT.TTF"
+          attr fontsize "24"
+        }
+        add Text {
+          name "6"
+          text "6"
+          set cx 0
+          set cy 125
+          set width 1
+          set height 1
+          set xscale 1
+          set yscale 1
+          set angle 0
+          set arc 6.283185307179586
+          set thickness 1
+          set sections 1
+          set subsections 1
+          set color 4294967295
+          set inherit position true
+          set inherit angle false
+          set inherit scale true
+          attr font "fonts/monofonto/MONOFONT.TTF"
+          attr fontsize "24"
+        }
+      }
+      add Rotation {
+        name "text@2"
+        set cx 0
+        set cy 0
+        set width 1
+        set height 1
+        set xscale 1
+        set yscale 1
+        set angle 1.256637
+        set arc 6.283185307179586
+        set thickness 1
+        set sections 1
+        set subsections 1
+        set color 4294967295
+        set inherit position true
+        set inherit angle true
+        set inherit scale true
+        add Text {
+          name "2"
+          text "2"
+          set cx 0
+          set cy -125
+          set width 1
+          set height 1
+          set xscale 1
+          set yscale 1
+          set angle 0
+          set arc 6.283185307179586
+          set thickness 1
+          set sections 1
+          set subsections 1
+          set color 4294967295
+          set inherit position true
+          set inherit angle false
+          set inherit scale true
+          attr font "fonts/monofonto/MONOFONT.TTF"
+          attr fontsize "24"
+        }
+        add Text {
+          name "7"
+          text "7"
+          set cx 0
+          set cy 125
+          set width 1
+          set height 1
+          set xscale 1
+          set yscale 1
+          set angle 0
+          set arc 6.283185307179586
+          set thickness 1
+          set sections 1
+          set subsections 1
+          set color 4294967295
+          set inherit position true
+          set inherit angle false
+          set inherit scale true
+          attr font "fonts/monofonto/MONOFONT.TTF"
+          attr fontsize "24"
+        }
+      }
+      add Rotation {
+        name "text@3"
+        set cx 0
+        set cy 0
+        set width 1
+        set height 1
+        set xscale 1
+        set yscale 1
+        set angle 1.884956
+        set arc 6.283185307179586
+        set thickness 1
+        set sections 1
+        set subsections 1
+        set color 4294967295
+        set inherit position true
+        set inherit angle true
+        set inherit scale true
+        add Text {
+          name "3"
+          text "3"
+          set cx 0
+          set cy -125
+          set width 1
+          set height 1
+          set xscale 1
+          set yscale 1
+          set angle 0
+          set arc 6.283185307179586
+          set thickness 1
+          set sections 1
+          set subsections 1
+          set color 4294967295
+          set inherit position true
+          set inherit angle false
+          set inherit scale true
+          attr font "fonts/monofonto/MONOFONT.TTF"
+          attr fontsize "24"
+        }
+        add Text {
+          name "8"
+          text "8"
+          set cx 0
+          set cy 125
+          set width 1
+          set height 1
+          set xscale 1
+          set yscale 1
+          set angle 0
+          set arc 6.283185307179586
+          set thickness 1
+          set sections 1
+          set subsections 1
+          set color 4294967295
+          set inherit position true
+          set inherit angle false
+          set inherit scale true
+          attr font "fonts/monofonto/MONOFONT.TTF"
+          attr fontsize "24"
+        }
+      }
+      add Rotation {
+        name "text@4"
+        set cx 0
+        set cy 0
+        set width 1
+        set height 1
+        set xscale 1
+        set yscale 1
+        set angle 2.513274
+        set arc 6.283185307179586
+        set thickness 1
+        set sections 1
+        set subsections 1
+        set color 4294967295
+        set inherit position true
+        set inherit angle true
+        set inherit scale true
+        add Text {
+          name "4"
+          text "4"
+          set cx 0
+          set cy -125
+          set width 1
+          set height 1
+          set xscale 1
+          set yscale 1
+          set angle 0
+          set arc 6.283185307179586
+          set thickness 1
+          set sections 1
+          set subsections 1
+          set color 4294967295
+          set inherit position true
+          set inherit angle false
+          set inherit scale true
+          attr font "fonts/monofonto/MONOFONT.TTF"
+          attr fontsize "24"
+        }
+        add Text {
+          name "9"
+          text "9"
+          set cx 0
+          set cy 125
+          set width 1
+          set height 1
+          set xscale 1
+          set yscale 1
+          set angle 0
+          set arc 6.283185307179586
+          set thickness 1
+          set sections 1
+          set subsections 1
+          set color 4294967295
+          set inherit position true
+          set inherit angle false
+          set inherit scale true
+          attr font "fonts/monofonto/MONOFONT.TTF"
+          attr fontsize "24"
+        }
+      }
+    }
+    add Text {
+      name "altitude"
+      text "10180"
+      set cx 0
+      set cy 0
+      set width 1
+      set height 1
+      set xscale 1
+      set yscale 1
+      set angle 0
+      set arc 6.283185307179586
+      set thickness 1
+      set sections 1
+      set subsections 1
+      set color 255
+      set inherit position true
+      set inherit angle true
+      set inherit scale true
+      attr font "fonts/monofonto/MONOFONT.TTF"
+      attr fontsize "40"
+    }
+    add Circle {
+      name "CentreCircle"
+      set cx 0
+      set cy 0
+      set width 100
+      set height 0
+      set xscale 1
+      set yscale 1
+      set angle 0
+      set arc 6.283185307179586
+      set thickness 1
+      set sections 36
+      set subsections 1
+      set color 4294967295
+      set inherit position true
+      set inherit angle true
+      set inherit scale true
+      attr dirtyfix ""
+      attr drawmode "outline"
+    }
+    add Text {
+      name "AltLabel"
+      text "ALT"
+      set cx 0
+      set cy -35
+      set width 1
+      set height 1
+      set xscale 1
+      set yscale 1
+      set angle 0
+      set arc 6.283185307179586
+      set thickness 1
+      set sections 1
+      set subsections 1
+      set color 4294967295
+      set inherit position true
+      set inherit angle true
+      set inherit scale true
+      attr font "fonts/monofonto/MONOFONT.TTF"
+      attr fontsize "24"
+    }
+    add Text {
+      name "AltUnit"
+      text "FT"
+      set cx 0
+      set cy 35
+      set width 1
+      set height 1
+      set xscale 1
+      set yscale 1
+      set angle 0
+      set arc 6.283185307179586
+      set thickness 1
+      set sections 1
+      set subsections 1
+      set color 4294967295
+      set inherit position true
+      set inherit angle true
+      set inherit scale true
+      attr font "fonts/monofonto/MONOFONT.TTF"
+      attr fontsize "24"
+    }
+    add Irregular {
+      name "needle10k"
+      set cx 0
+      set cy 0
+      set width 1
+      set height 1
+      set xscale 1
+      set yscale 1
+      set angle 0.6460859825032609
+      set arc 6.283185307179586
+      set thickness 1
+      set sections 1
+      set subsections 1
+      set color 4294902015
+      set inherit position true
+      set inherit angle true
+      set inherit scale true
+      attr drawmode "filled"
+      attr points "0,-50~0,-150~-10,-165,10,-165~0,-170"
+      attr predef ""
+    }
+    add Irregular {
+      name "needle1k"
+      set cx 0
+      set cy 0
+      set width 1
+      set height 1
+      set xscale 1
+      set yscale 1
+      set angle 0.003141592653589793
+      set arc 6.283185307179586
+      set thickness 1
+      set sections 1
+      set subsections 1
+      set color 2863268095
+      set inherit position true
+      set inherit angle true
+      set inherit scale true
+      attr drawmode "filled"
+      attr points "-3,-50,3,-50~-7,-80,7,-80~0,-100"
+      attr predef ""
+    }
+    add Irregular {
+      name "needle100"
+      set cx 0
+      set cy 0
+      set width 1
+      set height 1
+      set xscale 1
+      set yscale 1
+      set angle 1.130973355292326
+      set arc 6.283185307179586
+      set thickness 1
+      set sections 1
+      set subsections 1
+      set color 4294902015
+      set inherit position true
+      set inherit angle true
+      set inherit scale true
+      attr drawmode "filled"
+      attr points "-2,-50,2,-50~-2,-120,2,-120~0,-140"
+      attr predef ""
+    }
+    add Text {
+      name "hPa"
+      text "1013"
+      set cx -150
+      set cy -150
+      set width 1
+      set height 1
+      set xscale 1
+      set yscale 1
+      set angle 0
+      set arc 6.283185307179586
+      set thickness 1
+      set sections 1
+      set subsections 1
+      set color 4294967295
+      set inherit position true
+      set inherit angle true
+      set inherit scale true
+      attr font "fonts/monofonto/MONOFONT.TTF"
+      attr fontsize "24"
+    }
+    add Text {
+      name "inHG"
+      text "29.92"
+      set cx 150
+      set cy -150
+      set width 1
+      set height 1
+      set xscale 1
+      set yscale 1
+      set angle 0
+      set arc 6.283185307179586
+      set thickness 1
+      set sections 1
+      set subsections 1
+      set color 4294967295
+      set inherit position true
+      set inherit angle true
+      set inherit scale true
+      attr font "fonts/monofonto/MONOFONT.TTF"
+      attr fontsize "24"
+    }
+    add Text {
+      name "hPa_label"
+      text "hPa"
+      set cx -150
+      set cy -130
+      set width 1
+      set height 1
+      set xscale 1
+      set yscale 1
+      set angle 0
+      set arc 6.283185307179586
+      set thickness 1
+      set sections 1
+      set subsections 1
+      set color 4294967295
+      set inherit position true
+      set inherit angle true
+      set inherit scale true
+      attr font "fonts/monofonto/MONOFONT.TTF"
+      attr fontsize "24"
+    }
+    add Text {
+      name "inHG_label"
+      text "inHG"
+      set cx 150
+      set cy -130
+      set width 1
+      set height 1
+      set xscale 1
+      set yscale 1
+      set angle 0
+      set arc 6.283185307179586
+      set thickness 1
+      set sections 1
+      set subsections 1
+      set color 4294967295
+      set inherit position true
+      set inherit angle true
+      set inherit scale true
+      attr font "fonts/monofonto/MONOFONT.TTF"
+      attr fontsize "24"
+    }
+  }
+}

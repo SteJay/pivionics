@@ -166,7 +166,7 @@ list<string> Window::command(list<string> args,Element* base){
 				args.pop_front();
 				t=args.front();
 				args.pop_front();
-				base->attrs[s]=t;
+				base->set_attr(s,t);
 				//cout << "Attribute set " << s << " to " << t << endl;
 			}
 		} else if(cmd.compare("{")==0||cmd.compare("{")==0) {

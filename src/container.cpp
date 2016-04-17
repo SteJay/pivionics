@@ -156,8 +156,8 @@ bool Rescale::post_compose(Origin origin) {
 					tp.x+=origin.position.x;
 					tp.y+=origin.position.y;
 				} else {
-					tp.x*=origin.scale.x*-1;
-					tp.y*=origin.scale.y*-1;
+					tp.x*=origin.scale.x;
+					tp.y*=origin.scale.y;
 				}
 		        tps2.points.push_back(tp);
 			} else {
