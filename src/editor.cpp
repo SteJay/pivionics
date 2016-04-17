@@ -206,7 +206,7 @@ void command(Window* window,string cmd) {
 			cout << "Listing:       child children examine ex parents siblings sibl types" << endl;
 			cout << "Navigation:    cd cu enter exit find" << endl;
 			cout << "Elemental:     add delete new remove" << endl;
-			cout << "Manipulation:  decap decapsulate encap encapsulate name rename set" << endl;
+			cout << "Manipulation:  decap decapsulate encap encapsulate move mv name rename set" << endl;
 			cout << "Miscellaneous:	load save quit" << endl;
 			cout << "Type \"help <command>\" for more information (where <command> is one of the" << endl << "keywords above)." << endl;
 		} else {
@@ -249,6 +249,19 @@ void command(Window* window,string cmd) {
 				cout << "Usage: find <name>" << endl;
 				cout << "This changes to current element to the first element with a name matching the" << endl << "name you specify. Pivionics does not ensure names are unique." << endl;
 				cout << "If no matching element can be found, the current element will change to the" << endl << "Window (top level)." << endl;
+				cout << "EDITOR COMMAND; CANNOT BE COMBINED WITH OTHER COMMANDS ON A SINGLE LINE" << endl;
+			} else if(c.compare("move")==0 || c.compare("mv")==0) {
+				cout << "Usage: move parent" << endl;
+				cout << "Usage: mv p" << endl;
+				cout << "Moves the current element up to it's grandparent. Has no effect if the element" << endl << "is already at top level (Window's child" << endl << endl;
+				cout << "Usage: move sibling <index>" << endl;
+				cout << "Usage: mv s <index>" << endl;
+				cout << "Moves the current element to the last child of the specified sibling, where " << endl << "the index you specify matches the output of the \"sibling\" command." << endl << endl;
+				cout << "Usage: move to <name>" << endl;
+				cout << "Usage: mv ~ <name>" << endl;
+				cout << "Moves the current element to the last child of the named element. Note that as" << endl << "with all functions based on \"find\", if more than one element exists the first" << endl << "matching element will be used." << endl << endl;
+
+
 				cout << "EDITOR COMMAND; CANNOT BE COMBINED WITH OTHER COMMANDS ON A SINGLE LINE" << endl;
 			} else if(c.compare("save")==0 || c.compare("write")==0) {
 				cout << "Usage: save <filename>" << endl;
