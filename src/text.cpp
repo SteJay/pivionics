@@ -53,7 +53,7 @@ void Text::compose(Origin origin) {
 			tps.points.push_back(tp);
 			tp.x=tsurf->w*origin.scale.x;
 			tp.y=tsurf->h*origin.scale.y;
-			cout << "Text \"" << txt << "\" has size of " << tp.x << " by " << tp.y << endl;
+			//cout << "Text \"" << txt << "\" has size of " << tp.x << " by " << tp.y << endl;
 			tps.points.push_back(tp);
 			tps.surface=vpsurface;
 			tps.owner=this;

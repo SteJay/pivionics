@@ -150,18 +150,18 @@ int SdlRenderer::allocate_surface(void* surf) {
 		for(;iter!=surfaces.end()&&static_cast<void*>(*iter)!=NULL&&static_cast<void*>(*iter)!=surf;++iter);
 		int i = 0;
 		if(iter!=surfaces.end()) {
-			cout << "Found surface to be over written";
+		//	cout << "Found surface to be over written";
 			if(*iter!=NULL) {
 				SDL_DestroyTexture(static_cast<SDL_Texture*>(*iter));
-				cout << " which has now been deleted.";
+				//cout << " which has now been deleted.";
 			} else {
-				cout << " which was NULL";
+				//cout << " which was NULL";
 			}
-			cout << endl;
+			//cout << endl;
 			*iter=tex;
 			i = iter-surfaces.begin();
 		} else {
-			cout << "No free surfaces" << endl;
+			//cout << "No free surfaces" << endl;
 			i=surfaces.size();
 			surfaces.push_back(tex);
 		}
