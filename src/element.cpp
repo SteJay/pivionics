@@ -264,3 +264,41 @@ void Element::construct(void) {
 	}
 	access.unlock();
 }
+
+Element* Element::copy(Element* wnd) {
+		
+		Window* w=static_cast<Window*>(wnd);
+		Element* e=w->add(this->typestr,this->parent);
+		
+		for(int i=0;i<4;++i) e->geometry[i]=this->geometry[i];
+		for(int i=0;i<2;++i) {
+			e->scale[i]=this->scale[i];
+			e->angles[i]=this->angles[i];
+		}
+		e->thick=this->thick;
+		e->sect=this->sect;
+		e->subsect=this->subsect;
+		e->col=this->col;
+		e->txt=this->txt;
+		e->inherit_angle=this->inherit_angle;
+		e->inherit_scale=this->inherit_scale;
+		e->compose_order=this->compose_order;
+
+		vector<string> a=get_attrs();
+		for(auto it=a.begin();it!=a.end();++it) {
+			e->set_attr(*it,this->get_attr(*it));
+		}
+		e->parent=this->parent;
+		e->typestr=this->typestr;
+		for(auto it=this->contents.begin();it!=this->contents.end();++it) {
+			// Now copy all sub-elements...
+			Element* cel = *it;
+			Element* celd = cel->copy(wnd);
+			w->move(celd,e);
+		}
+		return e;
+}
+Element* Element::copy_all(Element* w) {
+	return this->copy(w);
+}
+

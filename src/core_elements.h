@@ -168,6 +168,8 @@ class Element {
 		vector<string> get_attrs(void);
 		string get_attr(string);
 		void set_attr(string, string);
+		virtual Element* copy(Element*);// MUST PASS Window INSTANCE!
+		virtual Element* copy_all(Element*); // MUST PASS WINDOW INSTANCE!!
 	
 		// For these simple getters and setters I won't bother prototyping and defining in seperate files
 		double cx(void) {return geometry[0];}

@@ -85,7 +85,7 @@ void command(Window* window,string cmd) {
 			cout.flush();
 			fpstot+=renderer.get_fps();
 			t.tv_sec=0;
-			t.tv_nsec=500000000;
+			t.tv_nsec=250000000;
 			nanosleep(&t,&t2);
 		} 
 		cout << endl;
@@ -205,8 +205,8 @@ void command(Window* window,string cmd) {
 			cout << "Commands available:" << endl;
 			cout << "Listing:       child children examine ex parents siblings sibl types" << endl;
 			cout << "Navigation:    cd cu enter exit find" << endl;
-			cout << "Elemental:     add delete new remove" << endl;
-			cout << "Manipulation:  decap decapsulate encap encapsulate move mv name rename set" << endl;
+			cout << "Elemental:     add copy cp delete move mv new remove" << endl;
+			cout << "Manipulation:  decap decapsulate encap encapsulate name rename set" << endl;
 			cout << "Miscellaneous:	load save quit" << endl;
 			cout << "Type \"help <command>\" for more information (where <command> is one of the" << endl << "keywords above)." << endl;
 		} else {
@@ -260,9 +260,14 @@ void command(Window* window,string cmd) {
 				cout << "Usage: move to <name>" << endl;
 				cout << "Usage: mv ~ <name>" << endl;
 				cout << "Moves the current element to the last child of the named element. Note that as" << endl << "with all functions based on \"find\", if more than one element exists the first" << endl << "matching element will be used." << endl << endl;
-
-
 				cout << "EDITOR COMMAND; CANNOT BE COMBINED WITH OTHER COMMANDS ON A SINGLE LINE" << endl;
+			} else if(c.compare("copy")==0 || c.compare("cp")==0) {
+				cout << "Usage: copy" << endl;
+				cout << "Usage: cp" << endl;
+				cout << "Creates a basic copy of the current element. The new copy will be created as" << endl << "the last sibling of the current element. The name will not be copied, but " << endl << "attributes and properties are." << endl;
+				cout << "This function is recursive; if the current elements contain other elements they" << endl << "will also be copied." << endl;
+				cout << "EDITOR COMMAND; CANNOT BE COMBINED WITH OTHER COMMANDS ON A SINGLE LINE" << endl;
+
 			} else if(c.compare("save")==0 || c.compare("write")==0) {
 				cout << "Usage: save <filename>" << endl;
 				cout << "Usage: write <filename>" << endl;

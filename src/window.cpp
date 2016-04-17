@@ -134,6 +134,10 @@ list<string> Window::command(list<string> args,Element* base){
 					}
 				}
 			}
+		} else if(cmd.compare("copy")==0||cmd.compare("cp")==0) {
+			if(base != NULL) {
+				Element* dummy=base->copy(this);
+			}
 		} else if(cmd.compare("decap")==0||cmd.compare("decapsulate")==0) {
 				last_added=decap(base);
 		} else if(cmd.compare("set")==0||(args.size()>0 && args.front().compare("=")==0)) {
