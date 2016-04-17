@@ -1,112 +1,160 @@
 add Circle {
-  set cx 300
-  set cy 300
+  set cx 0
+  set cy 0
   set width 590
   set height 0
+  set xscale 1
+  set yscale 1
   set angle 0
   set arc 6.283185307179586
   set thickness 2
   set sections 36
   set subsections 1
   set color 4294967295
+  set inherit position true
+  set inherit angle true
+  set inherit scale true
+  attr dirtyfix ""
   attr drawmode "torus"
   attr offset_inner "false"
 }
 add Circle {
-  set cx 300
-  set cy 300
+  set cx 0
+  set cy 0
   set width 560
   set height 0
+  set xscale 1
+  set yscale 1
   set angle 0
   set arc 6.283185307179586
   set thickness 2
   set sections 36
   set subsections 1
   set color 4294967295
+  set inherit position true
+  set inherit angle true
+  set inherit scale true
+  attr dirtyfix ""
   attr drawmode "torus"
   attr offset_inner "false"
 }
 add Circle {
-  set cx 300
-  set cy 300
+  set cx 0
+  set cy 0
   set width 530
   set height 0
+  set xscale 1
+  set yscale 1
   set angle 0
   set arc 6.283185307179586
   set thickness 2
   set sections 36
   set subsections 1
   set color 4294967295
+  set inherit position true
+  set inherit angle true
+  set inherit scale true
+  attr dirtyfix ""
   attr drawmode "torus"
   attr offset_inner "false"
 }
 add Circle {
-  set cx 300
-  set cy 300
+  set cx 0
+  set cy 0
   set width 500
   set height 0
+  set xscale 1
+  set yscale 1
   set angle 0
   set arc 6.283185307179586
   set thickness 2
   set sections 36
   set subsections 1
   set color 4294967295
+  set inherit position true
+  set inherit angle true
+  set inherit scale true
+  attr dirtyfix ""
   attr drawmode "torus"
   attr offset_inner "false"
 }
 add Circle {
-  set cx 300
-  set cy 300
+  set cx 0
+  set cy 0
   set width 470
   set height 0
+  set xscale 1
+  set yscale 1
   set angle 0
   set arc 6.283185307179586
   set thickness 2
   set sections 36
   set subsections 1
   set color 4294967295
+  set inherit position true
+  set inherit angle true
+  set inherit scale true
+  attr dirtyfix ""
   attr drawmode "torus"
   attr offset_inner "false"
 }
 add Circle {
-  set cx 300
-  set cy 300
+  set cx 0
+  set cy 0
   set width 440
   set height 0
+  set xscale 1
+  set yscale 1
   set angle 0
   set arc 6.283185307179586
   set thickness 2
   set sections 36
   set subsections 1
   set color 4294967295
+  set inherit position true
+  set inherit angle true
+  set inherit scale true
+  attr dirtyfix ""
   attr drawmode "torus"
   attr offset_inner "false"
 }
 add Circle {
-  set cx 300
-  set cy 300
+  set cx 0
+  set cy 0
   set width 410
   set height 0
+  set xscale 1
+  set yscale 1
   set angle 0
   set arc 6.283185307179586
   set thickness 2
   set sections 36
   set subsections 1
   set color 4294967295
+  set inherit position true
+  set inherit angle true
+  set inherit scale true
+  attr dirtyfix ""
   attr drawmode "torus"
   attr offset_inner "false"
 }
 add Circle {
-  set cx 300
-  set cy 300
+  set cx 0
+  set cy 0
   set width 380
   set height 0
+  set xscale 1
+  set yscale 1
   set angle 0
   set arc 6.283185307179586
   set thickness 2
   set sections 36
   set subsections 1
   set color 4294967295
+  set inherit position true
+  set inherit angle true
+  set inherit scale true
+  attr dirtyfix ""
   attr drawmode "torus"
   attr offset_inner "false"
 }

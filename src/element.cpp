@@ -209,7 +209,7 @@ Element* Window::del_children(Element* el) {
 	// First we delete all children
 	for(auto iter=el->contents.begin(); iter!=el->contents.end(); ++iter) {
 		del_children(*iter);
-		cout << "Deleting " << *iter << endl;
+		//cout << "Deleting " << *iter << endl;
 		delete *iter;
 	}
 	// Now we remove them from the contents
