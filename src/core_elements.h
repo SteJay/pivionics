@@ -137,6 +137,8 @@ class Element {
 		int id_store;
 		string namestr;
 		string typestr;
+		bool dirty;
+		void dirty_parent(void);
 	protected:
 		mutex access;
 		double geometry[4];
@@ -153,6 +155,9 @@ class Element {
 		void* vpsurface;
 		void* vpcomposed_surface;
 	public:
+		bool is_dirty(void);
+		void make_dirty(void);
+		void make_clean(void);
 		bool inherit_position;
 		bool inherit_angle;
 		bool inherit_scale;

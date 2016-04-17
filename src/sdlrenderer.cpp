@@ -127,12 +127,14 @@ void SdlRenderer::draw_surface(int surfid,double angle,const IntPoint* p, const 
 	if(sdl_renderer!=NULL) {
 		if(surfid < surfaces.size() && surfid>=0) {
 			SDL_Texture* s = static_cast<SDL_Texture*>(surfaces[surfid]);
-			SDL_Rect dst;
-			SDL_Point pnt;
-			pnt.x = ps->x/2;
-			pnt.y = ps->y/2;
-			dst.x=p->x;dst.y=p->y;dst.w=ps->x;dst.h=ps->y;
-			SDL_RenderCopyEx(sdl_renderer,static_cast<SDL_Texture*>(surfaces[surfid]),NULL,&dst,angle,&pnt,SDL_FLIP_NONE);
+			if(s!=NULL) {
+				SDL_Rect dst;
+				SDL_Point pnt;
+				pnt.x = ps->x/2;
+				pnt.y = ps->y/2;
+				dst.x=p->x;dst.y=p->y;dst.w=ps->x;dst.h=ps->y;
+				SDL_RenderCopyEx(sdl_renderer,static_cast<SDL_Texture*>(surfaces[surfid]),NULL,&dst,angle,&pnt,SDL_FLIP_NONE);
+			}
 		}
 	}
 }

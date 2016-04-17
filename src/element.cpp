@@ -35,6 +35,7 @@ double normalise_angle( double d ) { d=fmod(d,PI*2); if(d<0.0) d+=PI*2; return d
 long double normalise_angle( long double d ) { d=fmod(d,PI*2.0L); if(d<0.0) d+=PI*2; return d; }
 
 Element::Element() {
+	dirty=true;
 	id_store=0;
 	namestr="Base Element";
 	typestr="Element";
@@ -70,6 +71,17 @@ Element::~Element() {
 	}
 	access.unlock();
 }
+
+bool Element::is_dirty(void) { return dirty; }
+void Element::make_dirty(void) { dirty=true; dirty_parent(); }
+void Element::make_clean(void) { dirty=false; }
+void Element::dirty_parent(void) {
+	Element* e=this->parent;
+	if(e!=NULL) {
+		e->make_dirty();
+	}
+}
+
 bool Element::pre_compose(Origin o) { return true; }
 bool Element::post_compose(Origin o) { return true; }
 bool Element::pre_construct(void) { return true; }
@@ -85,6 +97,7 @@ vector<string> Element::get_attrs(void) {
 }
 
 void Element::compose(Origin origin) {
+  if(this->is_dirty()) {
   access.lock();
   if(this->pre_compose(origin)) {
 	composed_points.clear();
@@ -148,7 +161,9 @@ void Element::compose(Origin origin) {
   }
   if(this->post_compose(origin)) {
   }
+  make_clean();
   access.unlock();
+  }
   // Composition is good to go!
 }
 
@@ -188,6 +203,7 @@ Element* Window::add(string s,Element* el) {
 		} else {
 			this->contents.push_back(e);
 		}
+		e->make_dirty();
 		access.unlock();
 		return e;
 	}
@@ -200,6 +216,7 @@ Element* Window::del(Element* el) {
 	Element* par=this;
 	if(el->parent!=NULL) par=el->parent;
 	par->contents.remove(el);
+	par->make_dirty();
 	delete el;
 }
 Element* Window::del_children(Element* el) {
@@ -212,6 +229,7 @@ Element* Window::del_children(Element* el) {
 	}
 	// Now we remove them from the contents
 	while(!el->contents.empty()) el->contents.pop_front();
+	el->make_dirty();
 	return el;
 }
 
@@ -227,6 +245,7 @@ Element* Window::move(Element* subject,Element* target) {
 		target->access.unlock();
 		subject->access.unlock();
 	}
+	subject->make_dirty();
 	return subject->parent;
 }
 
@@ -254,6 +273,7 @@ Element* Window::decap(Element* el) {
 }
 
 void Element::construct(void) {
+	if(is_dirty()) {
 	access.lock();
 	Element* el;
 	for(auto iter=contents.begin(); iter!=contents.end(); ++iter) {
@@ -261,4 +281,5 @@ void Element::construct(void) {
 		el->construct();
 	}
 	access.unlock();
+	}
 }
