@@ -125,14 +125,19 @@ void SdlRenderer::draw_quad(unsigned int *c, const IntPoint* p1, const IntPoint*
 
 void SdlRenderer::draw_surface(int surfid,double angle,const IntPoint* p, const IntPoint* ps) {
 	if(sdl_renderer!=NULL) {
+		unsigned int c=0xff00ffff;
 		if(surfid < surfaces.size() && surfid>=0) {
 			SDL_Texture* s = static_cast<SDL_Texture*>(surfaces[surfid]);
 			SDL_Rect dst;
 			SDL_Point pnt;
 			pnt.x = ps->x/2;
 			pnt.y = ps->y/2;
-			dst.x=p->x;dst.y=p->y;dst.w=ps->x;dst.h=ps->y;
+			dst.x=p->x-pnt.x;dst.y=p->y-pnt.y;dst.w=ps->x;dst.h=ps->y;
 			SDL_RenderCopyEx(sdl_renderer,static_cast<SDL_Texture*>(surfaces[surfid]),NULL,&dst,angle,&pnt,SDL_FLIP_NONE);
+// These were used to check positioning
+//			aalineColor(sdl_renderer,p->x-5,p->y-5,p->x+5,p->y+5,c);
+//			aalineColor(sdl_renderer,p->x+5,p->y-5,p->x-5,p->y+5,c);
+
 		}
 	}
 }

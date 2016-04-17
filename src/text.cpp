@@ -42,8 +42,8 @@ void Text::compose(Origin origin) {
 		    if(!inherit_position) { origin.position.x=0.0; origin.position.y=0.0; }
 		    if(!inherit_scale) { origin.scale.x=1.0; origin.scale.y=1.0; }
 		    if(!inherit_angle) { origin.angle=0.0; }
-		    origin.position.x+=geometry[0]-(tsurf->w/2);
-		    origin.position.y+=geometry[1]-(tsurf->h/2);
+		    origin.position.x+=geometry[0];//-(tsurf->w/2);
+		    origin.position.y+=geometry[1];//-(tsurf->h/2);
 		    origin.scale.x *= scale[0];
 		    origin.scale.y *= scale[1];
 		    origin.angle += angles[0];
