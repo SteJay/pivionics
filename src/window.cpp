@@ -104,6 +104,36 @@ list<string> Window::command(list<string> args,Element* base){
 				last_added=encap(args.front(),base);
 			}
 			args.pop_front();
+		} else if(cmd.compare("move")==0||cmd.compare("mv")==0) {
+			string item="";
+			if(args.size()>0) {
+				item=args.front(); args.pop_front();
+				if(item.compare("p")==0||item.compare("parent")==0) {
+					Element* elephant=base->parent;
+					if( elephant!=NULL ) {
+						elephant=elephant->parent;
+						if( elephant!=NULL && elephant!=base ) {
+							move(base,elephant);
+						}
+					}
+				} else if(args.size()>0) {
+					if(item.compare("s")==0||item.compare("sibling")==0) {
+						int indx=stoi(args.front());
+						args.pop_front();
+						Element* elephant=sibling(indx,base);
+						if( elephant!=NULL && elephant!=base ) {
+							move(base,elephant);
+						}
+					} else if(item.compare("~")==0||item.compare("to")==0) {
+						Element* elephant=find_name(args.front());
+						if( elephant!=NULL && elephant!=base) {
+							move(base,elephant);
+						}
+						args.pop_front();
+						
+					}
+				}
+			}
 		} else if(cmd.compare("decap")==0||cmd.compare("decapsulate")==0) {
 				last_added=decap(base);
 		} else if(cmd.compare("set")==0||(args.size()>0 && args.front().compare("=")==0)) {
