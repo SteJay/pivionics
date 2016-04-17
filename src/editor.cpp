@@ -367,7 +367,7 @@ int main (int argc, char* argv[]) {
 	renderer.render_run();
 	compositor.link_window(&window);
 	compositor.link_renderer(&renderer);
-	//sleep(3); // TODO: Proper check that renderer is fully initialised
+	sleep(3); // TODO: Proper check that renderer is fully initialised
 	while( in_str.compare("quit") != 0) {
 		window.construct();
 		compositor.compose();
