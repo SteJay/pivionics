@@ -31,41 +31,42 @@ Text::Text() {
 	attrs["font"]="fonts/monofonto/MONOFONT.TTF";
 	attrs["fontsize"]="24";
 	txt="Test";
-	vpsurface=NULL; vpcomposed_surface=NULL;
+	vpsurface=NULL; composed_surface=-1;
 }
 void Text::compose(Origin origin) {
 	access.lock();
-	composed_points.clear();
-	if(vpsurface!=NULL) {
-		SDL_Surface* tsurf = static_cast<SDL_Surface*>(vpsurface);
-	    if(!inherit_position) { origin.position.x=0.0; origin.position.y=0.0; }
-	    if(!inherit_scale) { origin.scale.x=1.0; origin.scale.y=1.0; }
-	    if(!inherit_angle) { origin.angle=0.0; }
-	    origin.position.x+=geometry[0]-(tsurf->w/2);
-	    origin.position.y+=geometry[1]-(tsurf->h/2);
-	    origin.scale.x *= scale[0];
-	    origin.scale.y *= scale[1];
-	    origin.angle += angles[0];
-
-		vpcomposed_surface=tsurf;
-		Point tp ={ origin.position.x,origin.position.y };
-		PointSet tps;
-		tps.points.clear();
-		tps.points.push_back(tp);
-		tp.x=tsurf->w;
-		tp.y=tsurf->h;
-		tps.points.push_back(tp);
-		tps.surface=vpsurface;
-		tps.owner=this;
-		tps.surface_angle = (180/PI)*normalise_angle(origin.angle);	
-		tps.render_flags=RENDER_SURFACE;
-		composed_points.push_back(tps);
-		//cout << "Text surface composed," << composed_points.size() << endl;
-	}
+	//if(dirty) {
+		composed_points.clear();
+		if(vpsurface!=NULL) {
+			SDL_Surface* tsurf = static_cast<SDL_Surface*>(vpsurface);
+		    if(!inherit_position) { origin.position.x=0.0; origin.position.y=0.0; }
+		    if(!inherit_scale) { origin.scale.x=1.0; origin.scale.y=1.0; }
+		    if(!inherit_angle) { origin.angle=0.0; }
+		    origin.position.x+=geometry[0]-(tsurf->w/2);
+		    origin.position.y+=geometry[1]-(tsurf->h/2);
+		    origin.scale.x *= scale[0];
+		    origin.scale.y *= scale[1];
+		    origin.angle += angles[0];
+			Point tp ={ origin.position.x,origin.position.y };
+			PointSet tps;
+			tps.points.clear();
+			tps.points.push_back(tp);
+			tp.x=tsurf->w;
+			tp.y=tsurf->h;
+			tps.points.push_back(tp);
+			tps.surface=vpsurface;
+			tps.owner=this;
+			tps.surface_angle = (180/PI)*normalise_angle(origin.angle);	
+			tps.render_flags=RENDER_SURFACE;
+			composed_points.push_back(tps);
+			//cout << "Text surface composed," << composed_points.size() << endl;
+		}
+	//}
 	access.unlock();
 }
 
 void Text::construct(void) {
+	if(dirty) {
 	access.lock();
 	//cout << "Using font " << attrs["font"] << " at size " << attrs["fontsize"] << endl;
 	TTF_Font* font=TTF_OpenFont(attrs["font"].c_str(), stoi( attrs["fontsize"].c_str(),nullptr,0 ) );
@@ -94,5 +95,6 @@ void Text::construct(void) {
 		points.push_back(ps);
 	}
 	access.unlock();
+	}
 	//cout << "Construct complete." << endl;
 }
