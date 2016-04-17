@@ -1,0 +1,246 @@
+==00:00:00:00.000 2805== Memcheck, a memory error detector
+==00:00:00:00.000 2805== Copyright (C) 2002-2015, and GNU GPL'd, by Julian Seward et al.
+==00:00:00:00.000 2805== Using Valgrind-3.11.0 and LibVEX; rerun with -h for copyright info
+==00:00:00:00.000 2805== Command: bin/pivedit piv/hsi.piv
+==00:00:00:00.000 2805== Parent PID: 2705
+==00:00:00:00.000 2805== 
+==00:00:00:01.240 2805== Invalid read of size 1
+==00:00:00:01.240 2805==    at 0x4C2D514: strlen (in /usr/lib64/valgrind/vgpreload_memcheck-amd64-linux.so)
+==00:00:00:01.240 2805==    by 0x58A0EB6: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib64/libstdc++.so.6.0.21)
+==00:00:00:01.241 2805==    by 0x41D6B9: Window::load(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, Element*) (window.cpp:342)
+==00:00:00:01.241 2805==    by 0x41D7AB: Window::load(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (window.cpp:348)
+==00:00:00:01.241 2805==    by 0x41CAA7: Window::command(std::__cxx11::list<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, Element*) (window.cpp:187)
+==00:00:00:01.241 2805==    by 0x41B66B: Window::command(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, Element*) (window.cpp:54)
+==00:00:00:01.241 2805==    by 0x4078DA: main (editor.cpp:365)
+==00:00:00:01.241 2805==  Address 0x814caf3 is 0 bytes after a block of size 9,555 alloc'd
+==00:00:00:01.241 2805==    at 0x4C2ADAF: operator new[](unsigned long) (in /usr/lib64/valgrind/vgpreload_memcheck-amd64-linux.so)
+==00:00:00:01.241 2805==    by 0x41D640: Window::load(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, Element*) (window.cpp:339)
+==00:00:00:01.241 2805==    by 0x41D7AB: Window::load(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (window.cpp:348)
+==00:00:00:01.241 2805==    by 0x41CAA7: Window::command(std::__cxx11::list<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, Element*) (window.cpp:187)
+==00:00:00:01.241 2805==    by 0x41B66B: Window::command(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, Element*) (window.cpp:54)
+==00:00:00:01.241 2805==    by 0x4078DA: main (editor.cpp:365)
+==00:00:00:01.241 2805== 
+==00:00:00:01.898 2805== Mismatched free() / delete / delete []
+==00:00:00:01.898 2805==    at 0x4C2B7EB: operator delete(void*) (in /usr/lib64/valgrind/vgpreload_memcheck-amd64-linux.so)
+==00:00:00:01.898 2805==    by 0x41D704: Window::load(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, Element*) (window.cpp:343)
+==00:00:00:01.898 2805==    by 0x41D7AB: Window::load(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (window.cpp:348)
+==00:00:00:01.898 2805==    by 0x41CAA7: Window::command(std::__cxx11::list<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, Element*) (window.cpp:187)
+==00:00:00:01.898 2805==    by 0x41B66B: Window::command(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, Element*) (window.cpp:54)
+==00:00:00:01.898 2805==    by 0x4078DA: main (editor.cpp:365)
+==00:00:00:01.898 2805==  Address 0x814a5a0 is 0 bytes inside a block of size 9,555 alloc'd
+==00:00:00:01.898 2805==    at 0x4C2ADAF: operator new[](unsigned long) (in /usr/lib64/valgrind/vgpreload_memcheck-amd64-linux.so)
+==00:00:00:01.898 2805==    by 0x41D640: Window::load(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, Element*) (window.cpp:339)
+==00:00:00:01.898 2805==    by 0x41D7AB: Window::load(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (window.cpp:348)
+==00:00:00:01.898 2805==    by 0x41CAA7: Window::command(std::__cxx11::list<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, Element*) (window.cpp:187)
+==00:00:00:01.898 2805==    by 0x41B66B: Window::command(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, Element*) (window.cpp:54)
+==00:00:00:01.898 2805==    by 0x4078DA: main (editor.cpp:365)
+==00:00:00:01.898 2805== 
+==00:00:00:06.050 2805== Thread 2:
+==00:00:00:06.050 2805== Syscall param writev(vector[...]) points to uninitialised byte(s)
+==00:00:00:06.050 2805==    at 0x631553D: ??? (in /lib64/libc-2.22.so)
+==00:00:00:06.050 2805==    by 0x90826F8: ??? (in /usr/lib64/libxcb.so.1.1.0)
+==00:00:00:06.050 2805==    by 0x9082AEC: ??? (in /usr/lib64/libxcb.so.1.1.0)
+==00:00:00:06.050 2805==    by 0x9082B74: xcb_writev (in /usr/lib64/libxcb.so.1.1.0)
+==00:00:00:06.050 2805==    by 0x8D7AD7D: _XSend (in /usr/lib64/libX11.so.6.3.0)
+==00:00:00:06.050 2805==    by 0x8D7B25D: _XReply (in /usr/lib64/libX11.so.6.3.0)
+==00:00:00:06.050 2805==    by 0x8D66866: XInternAtom (in /usr/lib64/libX11.so.6.3.0)
+==00:00:00:06.050 2805==    by 0x4EF302A: ??? (in /usr/lib64/libSDL2-2.0.so.0.4.0)
+==00:00:00:06.050 2805==    by 0x4EF3D94: ??? (in /usr/lib64/libSDL2-2.0.so.0.4.0)
+==00:00:00:06.050 2805==    by 0x4EE5118: ??? (in /usr/lib64/libSDL2-2.0.so.0.4.0)
+==00:00:00:06.050 2805==    by 0x4EE4F14: ??? (in /usr/lib64/libSDL2-2.0.so.0.4.0)
+==00:00:00:06.050 2805==    by 0x4E4AC66: ??? (in /usr/lib64/libSDL2-2.0.so.0.4.0)
+==00:00:00:06.050 2805==  Address 0x842b403 is 35 bytes inside a block of size 16,384 alloc'd
+==00:00:00:06.050 2805==    at 0x4C2C0F5: calloc (in /usr/lib64/valgrind/vgpreload_memcheck-amd64-linux.so)
+==00:00:00:06.050 2805==    by 0x8D6B692: XOpenDisplay (in /usr/lib64/libX11.so.6.3.0)
+==00:00:00:06.050 2805==    by 0x4EF2324: ??? (in /usr/lib64/libSDL2-2.0.so.0.4.0)
+==00:00:00:06.050 2805==    by 0x4EE4EC0: ??? (in /usr/lib64/libSDL2-2.0.so.0.4.0)
+==00:00:00:06.050 2805==    by 0x4E4AC66: ??? (in /usr/lib64/libSDL2-2.0.so.0.4.0)
+==00:00:00:06.050 2805==    by 0x419977: SdlRenderer::init() (sdlrenderer.cpp:32)
+==00:00:00:06.050 2805==    by 0x417BCC: Renderer::render_loop() (renderer.cpp:121)
+==00:00:00:06.050 2805==    by 0x419886: bool std::_Mem_fn_base<bool (Renderer::*)(), true>::operator()<, void>(Renderer*) const (in /home/ste/Code/cpp/pivionics/bin/pivedit)
+==00:00:00:06.051 2805==    by 0x4197F4: bool std::_Bind_simple<std::_Mem_fn<bool (Renderer::*)()> (Renderer*)>::_M_invoke<0ul>(std::_Index_tuple<0ul>) (functional:1531)
+==00:00:00:06.051 2805==    by 0x41970E: std::_Bind_simple<std::_Mem_fn<bool (Renderer::*)()> (Renderer*)>::operator()() (functional:1520)
+==00:00:00:06.051 2805==    by 0x4196AD: std::thread::_Impl<std::_Bind_simple<std::_Mem_fn<bool (Renderer::*)()> (Renderer*)> >::_M_run() (thread:115)
+==00:00:00:06.051 2805==    by 0x583CB2F: ??? (in /usr/lib64/libstdc++.so.6.0.21)
+==00:00:00:06.051 2805== 
+==00:00:00:06.481 2805== Invalid write of size 4
+==00:00:00:06.481 2805==    at 0xD63B53C: ??? (in /usr/lib64/dri/i965_dri.so)
+==00:00:00:06.481 2805==    by 0xD6051CE: ??? (in /usr/lib64/dri/i965_dri.so)
+==00:00:00:06.481 2805==    by 0xD5B7280: ??? (in /usr/lib64/dri/i965_dri.so)
+==00:00:00:06.481 2805==    by 0xD5B739D: ??? (in /usr/lib64/dri/i965_dri.so)
+==00:00:00:06.481 2805==    by 0xB7A1466: ??? (in /usr/lib64/libGL.so.1.2.0)
+==00:00:00:06.481 2805==    by 0xB77CABA: ??? (in /usr/lib64/libGL.so.1.2.0)
+==00:00:00:06.481 2805==    by 0xB77CDA4: glXCreateContext (in /usr/lib64/libGL.so.1.2.0)
+==00:00:00:06.481 2805==    by 0x4EF1B5F: ??? (in /usr/lib64/libSDL2-2.0.so.0.4.0)
+==00:00:00:06.481 2805==    by 0x4EE40CF: ??? (in /usr/lib64/libSDL2-2.0.so.0.4.0)
+==00:00:00:06.481 2805==    by 0x4EE4F28: ??? (in /usr/lib64/libSDL2-2.0.so.0.4.0)
+==00:00:00:06.481 2805==    by 0x4E4AC66: ??? (in /usr/lib64/libSDL2-2.0.so.0.4.0)
+==00:00:00:06.481 2805==    by 0x419977: SdlRenderer::init() (sdlrenderer.cpp:32)
+==00:00:00:06.481 2805==  Address 0x7fbb0e2ee1b8 is not stack'd, malloc'd or (recently) free'd
+==00:00:00:06.481 2805== 
+==00:00:00:06.513 2805== Invalid read of size 4
+==00:00:00:06.513 2805==    at 0xD63B765: ??? (in /usr/lib64/dri/i965_dri.so)
+==00:00:00:06.513 2805==    by 0xD6051CE: ??? (in /usr/lib64/dri/i965_dri.so)
+==00:00:00:06.513 2805==    by 0xD5B7280: ??? (in /usr/lib64/dri/i965_dri.so)
+==00:00:00:06.513 2805==    by 0xD5B739D: ??? (in /usr/lib64/dri/i965_dri.so)
+==00:00:00:06.513 2805==    by 0xB7A1466: ??? (in /usr/lib64/libGL.so.1.2.0)
+==00:00:00:06.513 2805==    by 0xB77CABA: ??? (in /usr/lib64/libGL.so.1.2.0)
+==00:00:00:06.513 2805==    by 0xB77CDA4: glXCreateContext (in /usr/lib64/libGL.so.1.2.0)
+==00:00:00:06.513 2805==    by 0x4EF1B5F: ??? (in /usr/lib64/libSDL2-2.0.so.0.4.0)
+==00:00:00:06.513 2805==    by 0x4EE40CF: ??? (in /usr/lib64/libSDL2-2.0.so.0.4.0)
+==00:00:00:06.513 2805==    by 0x4EE4F28: ??? (in /usr/lib64/libSDL2-2.0.so.0.4.0)
+==00:00:00:06.513 2805==    by 0x4E4AC66: ??? (in /usr/lib64/libSDL2-2.0.so.0.4.0)
+==00:00:00:06.513 2805==    by 0x419977: SdlRenderer::init() (sdlrenderer.cpp:32)
+==00:00:00:06.513 2805==  Address 0x7fbb0e2ee1b8 is not stack'd, malloc'd or (recently) free'd
+==00:00:00:06.513 2805== 
+==00:00:00:06.516 2805== Invalid write of size 4
+==00:00:00:06.516 2805==    at 0xD63B8AC: ??? (in /usr/lib64/dri/i965_dri.so)
+==00:00:00:06.516 2805==    by 0xD6051CE: ??? (in /usr/lib64/dri/i965_dri.so)
+==00:00:00:06.516 2805==    by 0xD5B7280: ??? (in /usr/lib64/dri/i965_dri.so)
+==00:00:00:06.516 2805==    by 0xD5B739D: ??? (in /usr/lib64/dri/i965_dri.so)
+==00:00:00:06.516 2805==    by 0xB7A1466: ??? (in /usr/lib64/libGL.so.1.2.0)
+==00:00:00:06.516 2805==    by 0xB77CABA: ??? (in /usr/lib64/libGL.so.1.2.0)
+==00:00:00:06.516 2805==    by 0xB77CDA4: glXCreateContext (in /usr/lib64/libGL.so.1.2.0)
+==00:00:00:06.516 2805==    by 0x4EF1B5F: ??? (in /usr/lib64/libSDL2-2.0.so.0.4.0)
+==00:00:00:06.516 2805==    by 0x4EE40CF: ??? (in /usr/lib64/libSDL2-2.0.so.0.4.0)
+==00:00:00:06.516 2805==    by 0x4EE4F28: ??? (in /usr/lib64/libSDL2-2.0.so.0.4.0)
+==00:00:00:06.516 2805==    by 0x4E4AC66: ??? (in /usr/lib64/libSDL2-2.0.so.0.4.0)
+==00:00:00:06.516 2805==    by 0x419977: SdlRenderer::init() (sdlrenderer.cpp:32)
+==00:00:00:06.516 2805==  Address 0x7fbb0e2ee190 is not stack'd, malloc'd or (recently) free'd
+==00:00:00:06.517 2805== 
+==00:00:00:06.521 2805== Invalid read of size 4
+==00:00:00:06.521 2805==    at 0xD63BA1D: ??? (in /usr/lib64/dri/i965_dri.so)
+==00:00:00:06.521 2805==    by 0xD6051CE: ??? (in /usr/lib64/dri/i965_dri.so)
+==00:00:00:06.521 2805==    by 0xD5B7280: ??? (in /usr/lib64/dri/i965_dri.so)
+==00:00:00:06.521 2805==    by 0xD5B739D: ??? (in /usr/lib64/dri/i965_dri.so)
+==00:00:00:06.521 2805==    by 0xB7A1466: ??? (in /usr/lib64/libGL.so.1.2.0)
+==00:00:00:06.521 2805==    by 0xB77CABA: ??? (in /usr/lib64/libGL.so.1.2.0)
+==00:00:00:06.521 2805==    by 0xB77CDA4: glXCreateContext (in /usr/lib64/libGL.so.1.2.0)
+==00:00:00:06.521 2805==    by 0x4EF1B5F: ??? (in /usr/lib64/libSDL2-2.0.so.0.4.0)
+==00:00:00:06.521 2805==    by 0x4EE40CF: ??? (in /usr/lib64/libSDL2-2.0.so.0.4.0)
+==00:00:00:06.521 2805==    by 0x4EE4F28: ??? (in /usr/lib64/libSDL2-2.0.so.0.4.0)
+==00:00:00:06.521 2805==    by 0x4E4AC66: ??? (in /usr/lib64/libSDL2-2.0.so.0.4.0)
+==00:00:00:06.521 2805==    by 0x419977: SdlRenderer::init() (sdlrenderer.cpp:32)
+==00:00:00:06.521 2805==  Address 0x7fbb0e2ee190 is not stack'd, malloc'd or (recently) free'd
+==00:00:00:06.521 2805== 
+==00:00:00:12.127 2805== Invalid read of size 8
+==00:00:00:12.127 2805==    at 0x4C30289: __memcmp_sse4_1 (in /usr/lib64/valgrind/vgpreload_memcheck-amd64-linux.so)
+==00:00:00:12.127 2805==    by 0xD61928F: ??? (in /usr/lib64/dri/i965_dri.so)
+==00:00:00:12.127 2805==    by 0xD61E45B: ??? (in /usr/lib64/dri/i965_dri.so)
+==00:00:00:12.127 2805==    by 0xD61EA07: ??? (in /usr/lib64/dri/i965_dri.so)
+==00:00:00:12.127 2805==    by 0xD60C074: ??? (in /usr/lib64/dri/i965_dri.so)
+==00:00:00:12.127 2805==    by 0xD4B9299: ??? (in /usr/lib64/dri/i965_dri.so)
+==00:00:00:12.127 2805==    by 0xD3D53B9: ??? (in /usr/lib64/dri/i965_dri.so)
+==00:00:00:12.127 2805==    by 0x4E91213: ??? (in /usr/lib64/libSDL2-2.0.so.0.4.0)
+==00:00:00:12.127 2805==    by 0x4E8E87A: ??? (in /usr/lib64/libSDL2-2.0.so.0.4.0)
+==00:00:00:12.127 2805==    by 0x4E86F42: ??? (in /usr/lib64/libSDL2-2.0.so.0.4.0)
+==00:00:00:12.127 2805==    by 0x419A6B: SdlRenderer::init() (sdlrenderer.cpp:49)
+==00:00:00:12.127 2805==    by 0x417BCC: Renderer::render_loop() (renderer.cpp:121)
+==00:00:00:12.127 2805==  Address 0x7fbb0e2ed200 is not stack'd, malloc'd or (recently) free'd
+==00:00:00:12.127 2805== 
+==00:00:00:12.130 2805== Invalid read of size 8
+==00:00:00:12.130 2805==    at 0x4C302A3: __memcmp_sse4_1 (in /usr/lib64/valgrind/vgpreload_memcheck-amd64-linux.so)
+==00:00:00:12.130 2805==    by 0xD61928F: ??? (in /usr/lib64/dri/i965_dri.so)
+==00:00:00:12.130 2805==    by 0xD61E45B: ??? (in /usr/lib64/dri/i965_dri.so)
+==00:00:00:12.130 2805==    by 0xD61EA07: ??? (in /usr/lib64/dri/i965_dri.so)
+==00:00:00:12.130 2805==    by 0xD60C074: ??? (in /usr/lib64/dri/i965_dri.so)
+==00:00:00:12.130 2805==    by 0xD4B9299: ??? (in /usr/lib64/dri/i965_dri.so)
+==00:00:00:12.130 2805==    by 0xD3D53B9: ??? (in /usr/lib64/dri/i965_dri.so)
+==00:00:00:12.130 2805==    by 0x4E91213: ??? (in /usr/lib64/libSDL2-2.0.so.0.4.0)
+==00:00:00:12.130 2805==    by 0x4E8E87A: ??? (in /usr/lib64/libSDL2-2.0.so.0.4.0)
+==00:00:00:12.130 2805==    by 0x4E86F42: ??? (in /usr/lib64/libSDL2-2.0.so.0.4.0)
+==00:00:00:12.130 2805==    by 0x419A6B: SdlRenderer::init() (sdlrenderer.cpp:49)
+==00:00:00:12.130 2805==    by 0x417BCC: Renderer::render_loop() (renderer.cpp:121)
+==00:00:00:12.130 2805==  Address 0x7fbb0e2ed208 is not stack'd, malloc'd or (recently) free'd
+==00:00:00:12.130 2805== 
+==00:00:00:12.668 2805== Invalid read of size 8
+==00:00:00:12.668 2805==    at 0x4C30289: __memcmp_sse4_1 (in /usr/lib64/valgrind/vgpreload_memcheck-amd64-linux.so)
+==00:00:00:12.668 2805==    by 0xD61928F: ??? (in /usr/lib64/dri/i965_dri.so)
+==00:00:00:12.668 2805==    by 0xD61F804: ??? (in /usr/lib64/dri/i965_dri.so)
+==00:00:00:12.668 2805==    by 0xD62041E: ??? (in /usr/lib64/dri/i965_dri.so)
+==00:00:00:12.668 2805==    by 0xD60C043: ??? (in /usr/lib64/dri/i965_dri.so)
+==00:00:00:12.668 2805==    by 0xD4B9299: ??? (in /usr/lib64/dri/i965_dri.so)
+==00:00:00:12.668 2805==    by 0xD3D53B9: ??? (in /usr/lib64/dri/i965_dri.so)
+==00:00:00:12.668 2805==    by 0x4E91213: ??? (in /usr/lib64/libSDL2-2.0.so.0.4.0)
+==00:00:00:12.668 2805==    by 0x4E8E87A: ??? (in /usr/lib64/libSDL2-2.0.so.0.4.0)
+==00:00:00:12.668 2805==    by 0x4E86F42: ??? (in /usr/lib64/libSDL2-2.0.so.0.4.0)
+==00:00:00:12.668 2805==    by 0x419A6B: SdlRenderer::init() (sdlrenderer.cpp:49)
+==00:00:00:12.668 2805==    by 0x417BCC: Renderer::render_loop() (renderer.cpp:121)
+==00:00:00:12.668 2805==  Address 0x7fbb0e2ed600 is not stack'd, malloc'd or (recently) free'd
+==00:00:00:12.668 2805== 
+==00:00:00:12.671 2805== Invalid read of size 8
+==00:00:00:12.671 2805==    at 0x4C302A3: __memcmp_sse4_1 (in /usr/lib64/valgrind/vgpreload_memcheck-amd64-linux.so)
+==00:00:00:12.671 2805==    by 0xD61928F: ??? (in /usr/lib64/dri/i965_dri.so)
+==00:00:00:12.671 2805==    by 0xD61F804: ??? (in /usr/lib64/dri/i965_dri.so)
+==00:00:00:12.671 2805==    by 0xD62041E: ??? (in /usr/lib64/dri/i965_dri.so)
+==00:00:00:12.671 2805==    by 0xD60C043: ??? (in /usr/lib64/dri/i965_dri.so)
+==00:00:00:12.671 2805==    by 0xD4B9299: ??? (in /usr/lib64/dri/i965_dri.so)
+==00:00:00:12.671 2805==    by 0xD3D53B9: ??? (in /usr/lib64/dri/i965_dri.so)
+==00:00:00:12.671 2805==    by 0x4E91213: ??? (in /usr/lib64/libSDL2-2.0.so.0.4.0)
+==00:00:00:12.671 2805==    by 0x4E8E87A: ??? (in /usr/lib64/libSDL2-2.0.so.0.4.0)
+==00:00:00:12.671 2805==    by 0x4E86F42: ??? (in /usr/lib64/libSDL2-2.0.so.0.4.0)
+==00:00:00:12.671 2805==    by 0x419A6B: SdlRenderer::init() (sdlrenderer.cpp:49)
+==00:00:00:12.671 2805==    by 0x417BCC: Renderer::render_loop() (renderer.cpp:121)
+==00:00:00:12.671 2805==  Address 0x7fbb0e2ed608 is not stack'd, malloc'd or (recently) free'd
+==00:00:00:12.671 2805== 
+==00:00:00:12.674 2805== Invalid read of size 1
+==00:00:00:12.674 2805==    at 0x4C302C5: __memcmp_sse4_1 (in /usr/lib64/valgrind/vgpreload_memcheck-amd64-linux.so)
+==00:00:00:12.674 2805==    by 0xD61928F: ??? (in /usr/lib64/dri/i965_dri.so)
+==00:00:00:12.674 2805==    by 0xD61F804: ??? (in /usr/lib64/dri/i965_dri.so)
+==00:00:00:12.674 2805==    by 0xD62041E: ??? (in /usr/lib64/dri/i965_dri.so)
+==00:00:00:12.674 2805==    by 0xD60C043: ??? (in /usr/lib64/dri/i965_dri.so)
+==00:00:00:12.674 2805==    by 0xD4B9299: ??? (in /usr/lib64/dri/i965_dri.so)
+==00:00:00:12.674 2805==    by 0xD3D53B9: ??? (in /usr/lib64/dri/i965_dri.so)
+==00:00:00:12.674 2805==    by 0x4E91213: ??? (in /usr/lib64/libSDL2-2.0.so.0.4.0)
+==00:00:00:12.674 2805==    by 0x4E8E87A: ??? (in /usr/lib64/libSDL2-2.0.so.0.4.0)
+==00:00:00:12.674 2805==    by 0x4E86F42: ??? (in /usr/lib64/libSDL2-2.0.so.0.4.0)
+==00:00:00:12.674 2805==    by 0x419A6B: SdlRenderer::init() (sdlrenderer.cpp:49)
+==00:00:00:12.674 2805==    by 0x417BCC: Renderer::render_loop() (renderer.cpp:121)
+==00:00:00:12.674 2805==  Address 0x7fbb0e2ed678 is not stack'd, malloc'd or (recently) free'd
+==00:00:00:12.674 2805== 
+==00:00:00:12.943 2805== Invalid read of size 1
+==00:00:00:12.943 2805==    at 0x4C302C5: __memcmp_sse4_1 (in /usr/lib64/valgrind/vgpreload_memcheck-amd64-linux.so)
+==00:00:00:12.943 2805==    by 0xD61928F: ??? (in /usr/lib64/dri/i965_dri.so)
+==00:00:00:12.943 2805==    by 0xD61E45B: ??? (in /usr/lib64/dri/i965_dri.so)
+==00:00:00:12.943 2805==    by 0xD61EA07: ??? (in /usr/lib64/dri/i965_dri.so)
+==00:00:00:12.943 2805==    by 0xD6131C9: ??? (in /usr/lib64/dri/i965_dri.so)
+==00:00:00:12.943 2805==    by 0xD34E7D8: ??? (in /usr/lib64/dri/i965_dri.so)
+==00:00:00:12.943 2805==    by 0xD3DCC27: ??? (in /usr/lib64/dri/i965_dri.so)
+==00:00:00:12.943 2805==    by 0xD3DCCC0: ??? (in /usr/lib64/dri/i965_dri.so)
+==00:00:00:12.943 2805==    by 0xD31ADC7: ??? (in /usr/lib64/dri/i965_dri.so)
+==00:00:00:12.943 2805==    by 0x4E8C783: ??? (in /usr/lib64/libSDL2-2.0.so.0.4.0)
+==00:00:00:12.944 2805==    by 0x419BAA: SdlRenderer::clear() (sdlrenderer.cpp:79)
+==00:00:00:12.944 2805==    by 0x4179D0: Renderer::render_frame() (renderer.cpp:85)
+==00:00:00:12.944 2805==  Address 0x7fbb0e2ed090 is not stack'd, malloc'd or (recently) free'd
+==00:00:00:12.944 2805== 
+==00:00:00:12.946 2805== Invalid read of size 1
+==00:00:00:12.946 2805==    at 0x4C302E0: __memcmp_sse4_1 (in /usr/lib64/valgrind/vgpreload_memcheck-amd64-linux.so)
+==00:00:00:12.946 2805==    by 0xD61928F: ??? (in /usr/lib64/dri/i965_dri.so)
+==00:00:00:12.946 2805==    by 0xD61E45B: ??? (in /usr/lib64/dri/i965_dri.so)
+==00:00:00:12.946 2805==    by 0xD61EA07: ??? (in /usr/lib64/dri/i965_dri.so)
+==00:00:00:12.946 2805==    by 0xD6131C9: ??? (in /usr/lib64/dri/i965_dri.so)
+==00:00:00:12.947 2805==    by 0xD34E7D8: ??? (in /usr/lib64/dri/i965_dri.so)
+==00:00:00:12.947 2805==    by 0xD3DCC27: ??? (in /usr/lib64/dri/i965_dri.so)
+==00:00:00:12.947 2805==    by 0xD3DCCC0: ??? (in /usr/lib64/dri/i965_dri.so)
+==00:00:00:12.947 2805==    by 0xD31ADC7: ??? (in /usr/lib64/dri/i965_dri.so)
+==00:00:00:12.947 2805==    by 0x4E8C783: ??? (in /usr/lib64/libSDL2-2.0.so.0.4.0)
+==00:00:00:12.947 2805==    by 0x419BAA: SdlRenderer::clear() (sdlrenderer.cpp:79)
+==00:00:00:12.947 2805==    by 0x4179D0: Renderer::render_frame() (renderer.cpp:85)
+==00:00:00:12.947 2805==  Address 0x7fbb0e2ed091 is not stack'd, malloc'd or (recently) free'd
+==00:00:00:12.947 2805== 
+==00:01:11:44.032 2805== 
+==00:01:11:44.033 2805== HEAP SUMMARY:
+==00:01:11:44.033 2805==     in use at exit: 21,906,063 bytes in 4,707 blocks
+==00:01:11:44.033 2805==   total heap usage: 1,987,849 allocs, 1,983,142 frees, 57,302,552,892 bytes allocated
+==00:01:11:44.033 2805== 
+==00:01:11:44.144 2805== LEAK SUMMARY:
+==00:01:11:44.145 2805==    definitely lost: 32,216 bytes in 30 blocks
+==00:01:11:44.145 2805==    indirectly lost: 13,120 bytes in 17 blocks
+==00:01:11:44.145 2805==      possibly lost: 21,702,543 bytes in 4,113 blocks
+==00:01:11:44.145 2805==    still reachable: 158,184 bytes in 547 blocks
+==00:01:11:44.145 2805==         suppressed: 0 bytes in 0 blocks
+==00:01:11:44.145 2805== Rerun with --leak-check=full to see details of leaked memory
+==00:01:11:44.145 2805== 
+==00:01:11:44.145 2805== For counts of detected and suppressed errors, rerun with: -v
+==00:01:11:44.145 2805== Use --track-origins=yes to see where uninitialised values come from
+==00:01:11:44.145 2805== ERROR SUMMARY: 111 errors from 14 contexts (suppressed: 0 from 0)

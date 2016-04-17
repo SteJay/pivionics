@@ -75,82 +75,95 @@ int SdlRenderer::shutdown(void) {
 }
 
 void SdlRenderer::clear(void) {
-	SDL_SetRenderDrawColor(sdl_renderer,0,0,0,255);
-	SDL_RenderClear(sdl_renderer);
+	if(sdl_renderer!=NULL) {
+		SDL_SetRenderDrawColor(sdl_renderer,0,0,0,255);
+		SDL_RenderClear(sdl_renderer);
+	}
 }
 
 void SdlRenderer::flip(void){
-	SDL_RenderPresent(sdl_renderer);
+	if(sdl_renderer!=NULL) {
+		SDL_RenderPresent(sdl_renderer);
+	}
 }
 
 void SdlRenderer::draw_point(unsigned int *c, const IntPoint* p) {
+	if(sdl_renderer!=NULL) {
 #ifdef ENABLE_RENDER_AA_POINT
-	aalineColor(sdl_renderer,p->x,p->y,p->x,p->y,*c);
+		aalineColor(sdl_renderer,p->x,p->y,p->x,p->y,*c);
 #else
-	lineColor(sdl_renderer,p->x,p->y,p->x,p->y,*c);
+		lineColor(sdl_renderer,p->x,p->y,p->x,p->y,*c);
 #endif
+	}
 }
 void SdlRenderer::draw_line(unsigned int *c, const IntPoint* p1, const IntPoint* p2) {
+	if(sdl_renderer!=NULL) {
 #ifdef ENABLE_RENDER_AA_LINE
-	aalineColor(sdl_renderer,p1->x,p1->y,p2->x,p2->y,*c);
+		aalineColor(sdl_renderer,p1->x,p1->y,p2->x,p2->y,*c);
 #else
-	lineColor(sdl_renderer,p1->x,p1->y,p2->x,p2->y,*c);
+		lineColor(sdl_renderer,p1->x,p1->y,p2->x,p2->y,*c);
 #endif
+	}
 }
 void SdlRenderer::draw_triangle(unsigned int *c, const IntPoint* p1, const IntPoint* p2, const IntPoint* p3) {
-	filledTrigonColor(sdl_renderer,p1->x,p1->y,p2->x,p2->y,p3->x,p3->y,*c);
+	if(sdl_renderer!=NULL) {
+		filledTrigonColor(sdl_renderer,p1->x,p1->y,p2->x,p2->y,p3->x,p3->y,*c);
 #ifdef ENABLE_RENDER_AA_TRIANGLE
-	aatrigonColor(sdl_renderer,p1->x,p1->y,p2->x,p2->y,p3->x,p3->y,c);
+//		aatrigonColor(sdl_renderer,p1->x,p1->y,p2->x,p2->y,p3->x,p3->y,c);
 #endif
+	}
 }
 void SdlRenderer::draw_quad(unsigned int *c, const IntPoint* p1, const IntPoint* p2, const IntPoint* p3, const IntPoint* p4) {
-//	filledTrigonColor(sdl_renderer,p1->x,p1->y,p2->x,p2->y,p3->x,p3->y,*c);
-//	filledTrigonColor(sdl_renderer,p1->x,p1->y,p3->x,p3->y,p4->x,p4->y,*c);
-	short vx[4]={p1->x,p2->x,p3->x,p4->x};
-	short vy[4]={p1->y,p2->y,p3->y,p4->y};
-	filledPolygonColor(sdl_renderer,vx,vy,4,*c);
+	if(sdl_renderer!=NULL) {
+		short vx[4]={p1->x,p2->x,p3->x,p4->x};
+		short vy[4]={p1->y,p2->y,p3->y,p4->y};
+		filledPolygonColor(sdl_renderer,vx,vy,4,*c);
+	}
 #ifdef ENABLE_RENDER_AA_QUAD
 #endif
 }
 
 void SdlRenderer::draw_surface(int surfid,double angle,const IntPoint* p, const IntPoint* ps) {
-	if(surfid < surfaces.size() && surfid>=0) {
-		SDL_Texture* s = static_cast<SDL_Texture*>(surfaces[surfid]);
-		SDL_Rect dst;
-		SDL_Point pnt;
-		pnt.x = ps->x/2;
-		pnt.y = ps->y/2;
-		dst.x=p->x;dst.y=p->y;dst.w=ps->x;dst.h=ps->y;
-		SDL_RenderCopyEx(sdl_renderer,static_cast<SDL_Texture*>(surfaces[surfid]),NULL,&dst,angle,&pnt,SDL_FLIP_NONE);
+	if(sdl_renderer!=NULL) {
+		if(surfid < surfaces.size() && surfid>=0) {
+			SDL_Texture* s = static_cast<SDL_Texture*>(surfaces[surfid]);
+			SDL_Rect dst;
+			SDL_Point pnt;
+			pnt.x = ps->x/2;
+			pnt.y = ps->y/2;
+			dst.x=p->x;dst.y=p->y;dst.w=ps->x;dst.h=ps->y;
+			SDL_RenderCopyEx(sdl_renderer,static_cast<SDL_Texture*>(surfaces[surfid]),NULL,&dst,angle,&pnt,SDL_FLIP_NONE);
+		}
 	}
 }
 
 int SdlRenderer::allocate_surface(void* surf) {
-	access.lock();
-	SDL_Texture* tex = SDL_CreateTextureFromSurface(sdl_renderer,static_cast<SDL_Surface*>(surf));
-	auto iter = surfaces.begin();
-	for(;iter!=surfaces.end()&&static_cast<void*>(*iter)!=NULL&&static_cast<void*>(*iter)!=surf;++iter);
-	int i = 0;
-	if(iter!=surfaces.end()) {
-		cout << "Found surface to be over written";
-		if(*iter!=NULL) {
-			SDL_DestroyTexture(static_cast<SDL_Texture*>(*iter));
-			cout << " which has now been deleted.";
+	if(sdl_renderer!=NULL) {
+		access.lock();
+		SDL_Texture* tex = SDL_CreateTextureFromSurface(sdl_renderer,static_cast<SDL_Surface*>(surf));
+		auto iter = surfaces.begin();
+		for(;iter!=surfaces.end()&&static_cast<void*>(*iter)!=NULL&&static_cast<void*>(*iter)!=surf;++iter);
+		int i = 0;
+		if(iter!=surfaces.end()) {
+			cout << "Found surface to be over written";
+			if(*iter!=NULL) {
+				SDL_DestroyTexture(static_cast<SDL_Texture*>(*iter));
+				cout << " which has now been deleted.";
+			} else {
+				cout << " which was NULL";
+			}
+			cout << endl;
+			*iter=tex;
+			i = iter-surfaces.begin();
 		} else {
-			cout << " which was NULL";
+			cout << "No free surfaces" << endl;
+			i=surfaces.size();
+			surfaces.push_back(tex);
 		}
-		cout << endl;
-		*iter=tex;
-		i = iter-surfaces.begin();
-	} else {
-		cout << "No free surfaces" << endl;
-		i=surfaces.size();
-		surfaces.push_back(tex);
-	}
-	access.unlock();
-	return i;
-}
-
+		access.unlock();
+		return i;
+	} else return -1;
+}	
 void SdlRenderer::deallocate_surface(int surfid) {
 	SDL_DestroyTexture(static_cast<SDL_Texture*>(surfaces[surfid]));
 	surfaces[surfid]=NULL;

@@ -90,8 +90,8 @@ struct Point {
 };
 
 struct IntPoint {
-	int x;
-	int y;
+	short x;
+	short y;
 };
 
 struct Scale {
