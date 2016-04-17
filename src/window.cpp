@@ -167,7 +167,7 @@ list<string> Window::command(list<string> args,Element* base){
 				t=args.front();
 				args.pop_front();
 				base->attrs[s]=t;
-				///cout << "Attribute set " << s << " to " << t << endl;
+				//cout << "Attribute set " << s << " to " << t << endl;
 			}
 		} else if(cmd.compare("{")==0||cmd.compare("{")==0) {
 			// Go into the last added element and perform following commands on that

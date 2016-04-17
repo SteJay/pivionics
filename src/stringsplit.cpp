@@ -50,6 +50,8 @@ list<string> get_arguments(string s) {
 				i++;
 			} else if(s[i]=='"' || s[i]==L'"') {
 				stringmode=false;
+				args.push_back(thisarg);
+				thisarg="";
 			} else {
 				thisarg+=s[i];
 			}
@@ -57,10 +59,10 @@ list<string> get_arguments(string s) {
 			if(s[i]=='"' || s[i]==L'"') {
 				stringmode=true;
 			} else if(s[i]==' ' || s[i]==L' ' || s[i]=='\n' || s[i]==L'\n' || s[i] == '\t' || s[i] == L'\t') {
-				if( thisarg.compare("")!=0 ) {
+				//if( thisarg.compare("")!=0 ) {
 					args.push_back(thisarg);
 					thisarg="";
-				}
+				//}
 			} else {
 				thisarg+=s[i];
 			}
