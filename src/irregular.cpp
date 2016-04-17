@@ -41,23 +41,23 @@ void Irregular::construct(void) {
 	PointSet tps;
 	tps.color = col;
 	tps.render_flags=RENDER_SIDE_OUTLINE|RENDER_SIDE_DIAGONAL|RENDER_SIDE_INLINE;
-
-
+	if( attrs["predef"].compare("arrow1")==0 ) {
+		attrs["points"]="0,0~-10,10,10,10~-2,10,2,10~-2,50,2,50~0,55";
+	}
 	if( attrs["drawmode"].compare("filled")==0 ) {
 	    tps.render_flags=RENDER_SIDE_OUTLINE|RENDER_SIDE_INLINE|RENDER_FILL;
 	} else if( attrs["drawmode"].compare("wireframe")==0 ) {
 	    tps.render_flags=RENDER_SIDE_OUTLINE|RENDER_SIDE_INLINE|RENDER_SIDE_RADIAL;
-	} else if( attrs["drawmode"].compare("outline1")==0 ) {
-	    tps.render_flags=RENDER_SIDE_OUTLINE|RENDER_SIDE_INLINE;
-	} else if( attrs["drawmode"].compare("outline2")==0 ) {
+	} else if( attrs["drawmode"].compare("outline")==0 ) {
 	    tps.render_flags=RENDER_SIDE_OUTLINE|RENDER_SIDE_RADIAL;
+    } else if( attrs["drawmode"].compare("crisscross")==0 ) {
+        tps.render_flags=RENDER_SIDE_OUTLINE|RENDER_SIDE_INNER|RENDER_SIDE_INLINE|RENDER_SIDE_RADIAL|RENDER_SIDE_DIAGONAL;
+    } else if( attrs["drawmode"].compare("hourglass")==0 ) {
+        tps.render_flags=RENDER_SIDE_OUTLINE|RENDER_SIDE_INNER|RENDER_SIDE_INLINE|RENDER_SIDE_DIAGONAL;
 	}
-
-
 	int last=0;
 	for(auto piter=mypoints.begin(); piter!=mypoints.end(); ++piter) {
 		t=*piter;
-		cout << "got " << t << "..." << endl;
 		omp=split(t,',');
 		if(omp.size()==2) {
 			plast[0]=plast[2];
@@ -82,9 +82,6 @@ void Irregular::construct(void) {
 			tps.points.push_back(plast[1]);
 			tps.points.push_back(plast[3]);
 			points.push_back(tps);
-			cout << "Rendering points: ";
-			for(int i=0;i<3;++i) cout << " - " << plast[i].x << ", " << plast[i].y;
-			cout << endl;
 		}
 	}
 	access.unlock();

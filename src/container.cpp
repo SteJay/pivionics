@@ -146,15 +146,29 @@ bool Rescale::post_compose(Origin origin) {
 		tps2 = *iter;
 		tps2.points.clear();
         for(auto magnumpi=tps.points.begin();magnumpi!=tps.points.end();++magnumpi) {
-            tp=*magnumpi;
-			tp.x=origin.position.x-tp.x;
-			tp.y=origin.position.y-tp.y;
-			tp.x*=origin.scale.x*-1;
-			tp.y*=origin.scale.y*-1;
-			tp.x+=origin.position.x;
-			tp.y+=origin.position.y;
-            tps2.points.push_back(tp);
-			
+           	tp=*magnumpi;
+			if((tps.render_flags&RENDER_SURFACE)>0) {
+				if( magnumpi - tps.points.begin() < 1 ) {
+					tp.x=origin.position.x-tp.x;
+					tp.y=origin.position.y-tp.y;
+					tp.x*=origin.scale.x*-1;
+					tp.y*=origin.scale.y*-1;
+					tp.x+=origin.position.x;
+					tp.y+=origin.position.y;
+				} else {
+					tp.x*=origin.scale.x*-1;
+					tp.y*=origin.scale.y*-1;
+				}
+		        tps2.points.push_back(tp);
+			} else {
+				tp.x=origin.position.x-tp.x;
+				tp.y=origin.position.y-tp.y;
+				tp.x*=origin.scale.x*-1;
+				tp.y*=origin.scale.y*-1;
+				tp.x+=origin.position.x;
+				tp.y+=origin.position.y;
+	            tps2.points.push_back(tp);
+			}		
         }
         tpsv.push_back(tps2);
     }

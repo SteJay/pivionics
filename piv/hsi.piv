@@ -4,8 +4,8 @@ add Container {
   set cy 0
   set width 1
   set height 1
-  set xscale 1
-  set yscale 1
+  set xscale 0.5
+  set yscale 0.5
   set angle 0
   set arc 6.283185307179586
   set thickness 1
@@ -23,7 +23,7 @@ add Container {
     set height 0
     set xscale 1
     set yscale 1
-    set angle 0
+    set angle 0.392699
     set arc 6.283185307179586
     set thickness 1
     set sections 1
@@ -318,11 +318,9 @@ add Container {
         set inherit position true
         set inherit angle true
         set inherit scale true
-        add Text {
-          name "0deg"
-          text "0"
+        add Rescale {
           set cx 0
-          set cy -270
+          set cy 0
           set width 1
           set height 1
           set xscale 1
@@ -336,71 +334,90 @@ add Container {
           set inherit position true
           set inherit angle true
           set inherit scale true
-          attr font "fonts/monofonto/MONOFONT.TTF"
-          attr fontsize "24"
-        }
-        add Text {
-          name "180deg"
-          text "180"
-          set cx 0
-          set cy 270
-          set width 1
-          set height 1
-          set xscale 1
-          set yscale 1
-          set angle 3.141593
-          set arc 6.283185307179586
-          set thickness 1
-          set sections 1
-          set subsections 1
-          set color 4294967295
-          set inherit position true
-          set inherit angle true
-          set inherit scale true
-          attr font "fonts/monofonto/MONOFONT.TTF"
-          attr fontsize "24"
-        }
-        add Text {
-          name "90deg"
-          text "90"
-          set cx 270
-          set cy 0
-          set width 1
-          set height 1
-          set xscale 1
-          set yscale 1
-          set angle 1.570796
-          set arc 6.283185307179586
-          set thickness 1
-          set sections 1
-          set subsections 1
-          set color 4294967295
-          set inherit position true
-          set inherit angle true
-          set inherit scale true
-          attr font "fonts/monofonto/MONOFONT.TTF"
-          attr fontsize "24"
-        }
-        add Text {
-          name "270deg"
-          text "270"
-          set cx -270
-          set cy 0
-          set width 1
-          set height 1
-          set xscale 1
-          set yscale 1
-          set angle -1.570796
-          set arc 6.283185307179586
-          set thickness 1
-          set sections 1
-          set subsections 1
-          set color 4294967295
-          set inherit position true
-          set inherit angle true
-          set inherit scale true
-          attr font "fonts/monofonto/MONOFONT.TTF"
-          attr fontsize "24"
+          add Text {
+            name "0deg"
+            text "N"
+            set cx 0
+            set cy -280
+            set width 1
+            set height 1
+            set xscale 1
+            set yscale 1
+            set angle 0
+            set arc 6.283185307179586
+            set thickness 1
+            set sections 1
+            set subsections 1
+            set color 4294967295
+            set inherit position true
+            set inherit angle true
+            set inherit scale true
+            attr font "fonts/monofonto/MONOFONT.TTF"
+            attr fontsize "48"
+          }
+          add Text {
+            name "180deg"
+            text "S"
+            set cx 0
+            set cy 280
+            set width 1
+            set height 1
+            set xscale 1
+            set yscale 1
+            set angle 3.141593
+            set arc 6.283185307179586
+            set thickness 1
+            set sections 1
+            set subsections 1
+            set color 4294967295
+            set inherit position true
+            set inherit angle true
+            set inherit scale true
+            attr font "fonts/monofonto/MONOFONT.TTF"
+            attr fontsize "48"
+          }
+          add Text {
+            name "90deg"
+            text "E"
+            set cx 280
+            set cy 0
+            set width 1
+            set height 1
+            set xscale 1
+            set yscale 1
+            set angle 1.570796
+            set arc 6.283185307179586
+            set thickness 1
+            set sections 1
+            set subsections 1
+            set color 4294967295
+            set inherit position true
+            set inherit angle true
+            set inherit scale true
+            attr font "fonts/monofonto/MONOFONT.TTF"
+            attr fontsize "48"
+          }
+          add Text {
+            name "270deg"
+            text "W"
+            set cx -280
+            set cy 0
+            set width 1
+            set height 1
+            set xscale 1
+            set yscale 1
+            set angle -1.570796
+            set arc 6.283185307179586
+            set thickness 1
+            set sections 1
+            set subsections 1
+            set color 4294967295
+            set inherit position true
+            set inherit angle true
+            set inherit scale true
+            attr font "fonts/monofonto/MONOFONT.TTF"
+            attr fontsize "48"
+          }
         }
       }
       add Rotation {
@@ -421,10 +438,10 @@ add Container {
         set inherit angle true
         set inherit scale true
         add Text {
-          name "0deg"
-          text "30"
+          name "30deg"
+          text "3"
           set cx 0
-          set cy -270
+          set cy -280
           set width 1
           set height 1
           set xscale 1
@@ -439,13 +456,13 @@ add Container {
           set inherit angle true
           set inherit scale true
           attr font "fonts/monofonto/MONOFONT.TTF"
-          attr fontsize "24"
+          attr fontsize "48"
         }
         add Text {
-          name "180deg"
-          text "210"
+          name "210deg"
+          text "21"
           set cx 0
-          set cy 270
+          set cy 280
           set width 1
           set height 1
           set xscale 1
@@ -460,12 +477,12 @@ add Container {
           set inherit angle true
           set inherit scale true
           attr font "fonts/monofonto/MONOFONT.TTF"
-          attr fontsize "24"
+          attr fontsize "48"
         }
         add Text {
           name "120deg"
-          text "120"
-          set cx 270
+          text "21"
+          set cx 280
           set cy 0
           set width 1
           set height 1
@@ -481,12 +498,12 @@ add Container {
           set inherit angle true
           set inherit scale true
           attr font "fonts/monofonto/MONOFONT.TTF"
-          attr fontsize "24"
+          attr fontsize "48"
         }
         add Text {
           name "300deg"
-          text "300"
-          set cx -270
+          text "30"
+          set cx -280
           set cy 0
           set width 1
           set height 1
@@ -502,7 +519,7 @@ add Container {
           set inherit angle true
           set inherit scale true
           attr font "fonts/monofonto/MONOFONT.TTF"
-          attr fontsize "24"
+          attr fontsize "48"
         }
       }
       add Rotation {
@@ -524,9 +541,9 @@ add Container {
         set inherit scale true
         add Text {
           name "60deg"
-          text "60"
+          text "6"
           set cx 0
-          set cy -270
+          set cy -280
           set width 1
           set height 1
           set xscale 1
@@ -541,13 +558,13 @@ add Container {
           set inherit angle true
           set inherit scale true
           attr font "fonts/monofonto/MONOFONT.TTF"
-          attr fontsize "24"
+          attr fontsize "48"
         }
         add Text {
           name "240deg"
-          text "240"
+          text "24"
           set cx 0
-          set cy 270
+          set cy 280
           set width 1
           set height 1
           set xscale 1
@@ -562,12 +579,12 @@ add Container {
           set inherit angle true
           set inherit scale true
           attr font "fonts/monofonto/MONOFONT.TTF"
-          attr fontsize "24"
+          attr fontsize "48"
         }
         add Text {
           name "150deg"
-          text "150"
-          set cx 270
+          text "15"
+          set cx 280
           set cy 0
           set width 1
           set height 1
@@ -583,12 +600,12 @@ add Container {
           set inherit angle true
           set inherit scale true
           attr font "fonts/monofonto/MONOFONT.TTF"
-          attr fontsize "24"
+          attr fontsize "48"
         }
         add Text {
           name "330deg"
-          text "330"
-          set cx -270
+          text "33"
+          set cx -280
           set cy 0
           set width 1
           set height 1
@@ -604,7 +621,322 @@ add Container {
           set inherit angle true
           set inherit scale true
           attr font "fonts/monofonto/MONOFONT.TTF"
-          attr fontsize "24"
+          attr fontsize "48"
+        }
+      }
+    }
+    add Container {
+      name "OBS"
+      set cx 0
+      set cy 0
+      set width 1
+      set height 1
+      set xscale 1
+      set yscale 1
+      set angle 0.785398
+      set arc 6.283185307179586
+      set thickness 1
+      set sections 1
+      set subsections 1
+      set color 4294967295
+      set inherit position true
+      set inherit angle true
+      set inherit scale true
+      add Rotation {
+        set cx 0
+        set cy 0
+        set width 1
+        set height 1
+        set xscale 1
+        set yscale 1
+        set angle 0
+        set arc 6.283185307179586
+        set thickness 1
+        set sections 1
+        set subsections 1
+        set color 4294967295
+        set inherit position true
+        set inherit angle true
+        set inherit scale true
+        add Rescale {
+          set cx 0
+          set cy 0
+          set width 1
+          set height 1
+          set xscale 1
+          set yscale 1
+          set angle 0
+          set arc 6.283185307179586
+          set thickness 1
+          set sections 1
+          set subsections 1
+          set color 4294967295
+          set inherit position true
+          set inherit angle true
+          set inherit scale true
+          add Circle {
+            name "lh_cdi_1"
+            set cx -25
+            set cy 0
+            set width 20
+            set height 0
+            set xscale 0.2
+            set yscale 1
+            set angle 0
+            set arc 6.283185307179586
+            set thickness 1
+            set sections 4
+            set subsections 1
+            set color 4294967295
+            set inherit position true
+            set inherit angle true
+            set inherit scale true
+            attr dirtyfix ""
+            attr drawmode "filled"
+          }
+          add Circle {
+            name "rh_cdi_1"
+            set cx 25
+            set cy 0
+            set width 20
+            set height 0
+            set xscale 0.2
+            set yscale 1
+            set angle 0
+            set arc 6.283185307179586
+            set thickness 1
+            set sections 4
+            set subsections 1
+            set color 4294967295
+            set inherit position true
+            set inherit angle true
+            set inherit scale true
+            attr dirtyfix ""
+            attr drawmode "filled"
+          }
+          add Circle {
+            name "rh_cdi_2"
+            set cx 50
+            set cy 0
+            set width 20
+            set height 0
+            set xscale 0.2
+            set yscale 1
+            set angle 0
+            set arc 6.283185307179586
+            set thickness 1
+            set sections 4
+            set subsections 1
+            set color 4294967295
+            set inherit position true
+            set inherit angle true
+            set inherit scale true
+            attr dirtyfix ""
+            attr drawmode "outline"
+          }
+          add Circle {
+            name "lh_cdi_2"
+            set cx -50
+            set cy 0
+            set width 20
+            set height 0
+            set xscale 0.2
+            set yscale 1
+            set angle 0
+            set arc 6.283185307179586
+            set thickness 1
+            set sections 4
+            set subsections 1
+            set color 4294967295
+            set inherit position true
+            set inherit angle true
+            set inherit scale true
+            attr dirtyfix ""
+            attr drawmode "outline"
+          }
+          add Circle {
+            name "lh_cdi_3"
+            set cx -75
+            set cy 0
+            set width 20
+            set height 0
+            set xscale 0.2
+            set yscale 1
+            set angle 0
+            set arc 6.283185307179586
+            set thickness 1
+            set sections 4
+            set subsections 1
+            set color 4294967295
+            set inherit position true
+            set inherit angle true
+            set inherit scale true
+            attr dirtyfix ""
+            attr drawmode "outline"
+          }
+          add Circle {
+            name "rh_cdi_3"
+            set cx 75
+            set cy 0
+            set width 20
+            set height 0
+            set xscale 0.2
+            set yscale 1
+            set angle 0
+            set arc 6.283185307179586
+            set thickness 1
+            set sections 4
+            set subsections 1
+            set color 4294967295
+            set inherit position true
+            set inherit angle true
+            set inherit scale true
+            attr dirtyfix ""
+            attr drawmode "outline"
+          }
+          add Circle {
+            name "rh_cdi_4"
+            set cx 100
+            set cy 0
+            set width 20
+            set height 0
+            set xscale 0.2
+            set yscale 1
+            set angle 0
+            set arc 6.283185307179586
+            set thickness 1
+            set sections 4
+            set subsections 1
+            set color 4294967295
+            set inherit position true
+            set inherit angle true
+            set inherit scale true
+            attr dirtyfix ""
+            attr drawmode "outline"
+          }
+          add Circle {
+            name "lh_cdi_4"
+            set cx -100
+            set cy 0
+            set width 20
+            set height 0
+            set xscale 0.2
+            set yscale 1
+            set angle 0
+            set arc 6.283185307179586
+            set thickness 1
+            set sections 4
+            set subsections 1
+            set color 4294967295
+            set inherit position true
+            set inherit angle true
+            set inherit scale true
+            attr dirtyfix ""
+            attr drawmode "outline"
+          }
+          add Circle {
+            name "lh_cdi_5"
+            set cx -125
+            set cy 0
+            set width 20
+            set height 0
+            set xscale 0.2
+            set yscale 1
+            set angle 0
+            set arc 6.283185307179586
+            set thickness 1
+            set sections 4
+            set subsections 1
+            set color 4294967295
+            set inherit position true
+            set inherit angle true
+            set inherit scale true
+            attr dirtyfix ""
+            attr drawmode "outline"
+          }
+          add Circle {
+            name "rh_cdi_5"
+            set cx 125
+            set cy 0
+            set width 20
+            set height 0
+            set xscale 0.2
+            set yscale 1
+            set angle 0
+            set arc 6.283185307179586
+            set thickness 1
+            set sections 4
+            set subsections 1
+            set color 4294967295
+            set inherit position true
+            set inherit angle true
+            set inherit scale true
+            attr dirtyfix ""
+            attr drawmode "outline"
+          }
+          add Irregular {
+            name "UpperCDI"
+            set cx 0
+            set cy -220
+            set width 1
+            set height 1
+            set xscale 1
+            set yscale 1
+            set angle 0
+            set arc 6.283185307179586
+            set thickness 1
+            set sections 1
+            set subsections 1
+            set color 4294902015
+            set inherit position true
+            set inherit angle true
+            set inherit scale true
+            attr drawmode "filled"
+            attr points "0,0~-7,20,7,20~-1,20,1,20~-1,100,1,100"
+            attr predef ""
+          }
+          add Irregular {
+            name "LowerCDI"
+            set cx 0
+            set cy 220
+            set width 1
+            set height 1
+            set xscale 1
+            set yscale 1
+            set angle 3.141593
+            set arc 6.283185307179586
+            set thickness 1
+            set sections 1
+            set subsections 1
+            set color 4294902015
+            set inherit position true
+            set inherit angle true
+            set inherit scale true
+            attr drawmode "filled"
+            attr points "0,0~-2,30,2,30~-1,50,1,50~-1,100,1,100"
+            attr predef ""
+          }
+          add Irregular {
+            name "CDIneedle"
+            set cx -55
+            set cy 0
+            set width 1
+            set height 1
+            set xscale 1
+            set yscale 1
+            set angle 0
+            set arc 6.283185307179586
+            set thickness 1
+            set sections 1
+            set subsections 1
+            set color 4294902015
+            set inherit position true
+            set inherit angle true
+            set inherit scale true
+            attr drawmode "filled"
+            attr points "-1,-120,1,-120~-1,120,1,120"
+            attr predef ""
+          }
         }
       }
     }
@@ -637,27 +969,6 @@ add Container {
       set angle 1.570796
       set arc 6.283185307179586
       set thickness 25
-      set sections 3
-      set subsections 1
-      set color 4294967295
-      set inherit position true
-      set inherit angle true
-      set inherit scale true
-      attr dirtyfix "attr"
-      attr drawmode "filled"
-      attr offset_inner "false"
-    }
-    add Circle {
-      name "LowerAbsMark"
-      set cx 0
-      set cy -210
-      set width 25
-      set height 0
-      set xscale 1
-      set yscale 1
-      set angle 0.523599
-      set arc 6.283185307179586
-      set thickness 10
       set sections 3
       set subsections 1
       set color 4294967295
