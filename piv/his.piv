@@ -343,6 +343,66 @@ add Container {
         attr fontsize "24"
       }
     }
+    add Rotation {
+      set cx 0
+      set cy 0
+      set width 1
+      set height 1
+      set xscale 1
+      set yscale 1
+      set angle 0
+      set arc 6.283185307179586
+      set thickness 1
+      set sections 1
+      set subsections 1
+      set color 4294967295
+      set inherit position true
+      set inherit angle true
+      set inherit scale true
+      add Text {
+        name "0deg"
+        text "0"
+        set cx 0
+        set cy -270
+        set width 1
+        set height 1
+        set xscale 1
+        set yscale 1
+        set angle 0
+        set arc 6.283185307179586
+        set thickness 1
+        set sections 1
+        set subsections 1
+        set color 4294967295
+        set inherit position true
+        set inherit angle true
+        set inherit scale true
+        attr font "fonts/monofonto/MONOFONT.TTF"
+        attr fontsize "24"
+      }
+      add Text {
+        name "180deg"
+        text "180"
+        set cx 0
+        set cy 270
+        set width 1
+        set height 1
+        set xscale 1
+        set yscale 1
+        set angle 3.141593
+        set arc 6.283185307179586
+        set thickness 1
+        set sections 1
+        set subsections 1
+        set color 4294967295
+        set inherit position true
+        set inherit angle true
+        set inherit scale true
+        attr font "fonts/monofonto/MONOFONT.TTF"
+        attr fontsize "24"
+      }
+    }
+  }
   }
   add Container {
     name "Overlay"

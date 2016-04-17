@@ -82,17 +82,6 @@ bool Container::pre_compose(Origin origin) {
         // Now we compose each child element...
         auto el2=*iter;
         el2->compose(origin);
-   /* }
-    // Now we compose this element as a whole
-    PointSet tps,tps2;
-    Point tp,tp2;
-    vector<PointSet> tpsv;
-    for(auto iter=contents.begin(); iter!=contents.end();++iter) {
-        // And add the composed_points of our children that we worked out earlier
-        auto el = *iter;
-        composed_points.insert(composed_points.end(),el->composed_points.cbegin(),el->composed_points.cend());
-        el->composed_points.clear();
-		*/
         composed_points.insert(composed_points.end(),el2->composed_points.cbegin(),el2->composed_points.cend());
         el2->composed_points.clear();
     }
@@ -102,7 +91,7 @@ bool Rotation::post_compose(Origin origin) {
 	PointSet tps,tps2; tps.owner=this; tps2.owner=this;
 	Point tp,tp2,tp3;
 	vector<PointSet> tpsv;
-	origin.angle = normalise_angle(PI+origin.angle);
+	origin.angle = normalise_angle(PI+origin.angle+angles[0]);
     // Now the extra rotation magic...  
     for( auto iter=composed_points.begin(); iter!=composed_points.end();++iter) {
         tps = *iter;
@@ -138,7 +127,7 @@ bool Rotation::post_compose(Origin origin) {
 		if((tps2.render_flags&RENDER_SURFACE)>0) {
 			Element* argh=static_cast<Element*>(tps2.owner);
 			if( argh->inherit_angle ) {
-				tps2.surface_angle += (normalise_angle(origin.angle-PI) * (180/PI));
+				tps2.surface_angle += (normalise_angle(origin.angle-PI-angles[0]) * (180/PI));
 			}
 			//cout << "Composed surface: " << tps2.points[0].x << ", " << tps2.points[0].y << ", " << tps2.points[1].x << ", " << tps2.points[1].y << ", @" << tps2.surface_angle << "(origin says " << origin.angle << ")" << endl;
 		}
