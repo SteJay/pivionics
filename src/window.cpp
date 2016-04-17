@@ -332,11 +332,10 @@ Element* Window::find_name(string n,int ignore, Element* base) {
 
 void Window::load(string fn,Element *el) {
 	ifstream file(fn,ios::in|ios::binary|ios::ate);
-	char* buf;
 	if(file.is_open()) {
 		streampos size=file.tellg(); // because we used ios::ate we start at the end of the file, thus we know the length
 		if(size>0) {
-			buf=new char[size];
+			char* buf=new char[size];
 			file.seekg(0,ios::beg); // seek back to the beginning of the file
 			file.read(buf,size);
 			command(buf,el);

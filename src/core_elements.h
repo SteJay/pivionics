@@ -90,8 +90,8 @@ struct Point {
 };
 
 struct IntPoint {
-	int x;
-	int y;
+	short x;
+	short y;
 };
 
 struct Scale {
@@ -137,8 +137,6 @@ class Element {
 		int id_store;
 		string namestr;
 		string typestr;
-		bool dirty;
-		void dirty_parent(void);
 	protected:
 		mutex access;
 		double geometry[4];
@@ -156,9 +154,6 @@ class Element {
 		int composed_surface;
 		bool dirty;
 	public:
-		bool is_dirty(void);
-		void make_dirty(void);
-		void make_clean(void);
 		bool inherit_position;
 		bool inherit_angle;
 		bool inherit_scale;
