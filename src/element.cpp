@@ -58,7 +58,8 @@ Element::Element() {
 	parent=NULL;
 	has_surface=false;
 	vpsurface=NULL;
-	vpcomposed_surface=NULL;
+	composed_surface=-1;
+	dirty=true;
 }
 Element* fn_create_element(void) { return new Element; }
 Element::~Element() {
@@ -182,6 +183,7 @@ string Element::get_attr(string key) {
 void Element::set_attr(string key, string value) {
 	access.lock();
 	attrs[key]=value;
+	dirty=true;
 	access.unlock();
 }
 

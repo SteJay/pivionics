@@ -153,7 +153,8 @@ class Element {
 		list<Element*> contents;
 		bool has_surface;
 		void* vpsurface;
-		void* vpcomposed_surface;
+		int composed_surface;
+		bool dirty;
 	public:
 		bool is_dirty(void);
 		void make_dirty(void);
@@ -188,19 +189,19 @@ class Element {
 		double scale_y(void) { return scale[1]; }
 		string text(void) {return txt;}
 		
-		void cx(double d) {geometry[0]=d;}
-		void cy(double d) {geometry[1]=d;}
-		void width(double d) {geometry[2]=d;}
-		void height(double d) {geometry[3]=d;}
-		void angle(long double d) {angles[0]=d;}
-		void arc(long double d) {angles[1]=d;}
-		void thickness(signed int d) {thick=d;}
-		void sections(unsigned int d) {sect=d;}
-		void subsections(unsigned int d) {subsect=d;}
-		void color(unsigned int d) {col=d;}
-		void scale_x(double d) { scale[0]=d; }
-		void scale_y(double d) { scale[1]=d; }
-		void text(string d) {txt=d;}
+		void cx(double d) {geometry[0]=d;dirty=true;}
+		void cy(double d) {geometry[1]=d;dirty=true;}
+		void width(double d) {geometry[2]=d;dirty=true;}
+		void height(double d) {geometry[3]=d;dirty=true;}
+		void angle(long double d) {angles[0]=d;dirty=true;}
+		void arc(long double d) {angles[1]=d;dirty=true;}
+		void thickness(signed int d) {thick=d;dirty=true;}
+		void sections(unsigned int d) {sect=d;dirty=true;}
+		void subsections(unsigned int d) {subsect=d;dirty=true;}
+		void color(unsigned int d) {col=d;dirty=true;}
+		void scale_x(double d) { scale[0]=d;dirty=true; }
+		void scale_y(double d) { scale[1]=d;dirty=true; }
+		void text(string d) {txt=d;dirty=true;}
 		
 
 		string type(void);// There's no direct type setting function; that's because it is set by the Window containing it

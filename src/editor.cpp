@@ -367,7 +367,11 @@ int main (int argc, char* argv[]) {
 	renderer.render_run();
 	compositor.link_window(&window);
 	compositor.link_renderer(&renderer);
+<<<<<<< HEAD
 	sleep(3); // TODO: Proper check that renderer is fully initialised
+=======
+	sleep(1); // TODO: Proper check that renderer is fully initialised
+>>>>>>> trouble
 	while( in_str.compare("quit") != 0) {
 		window.construct();
 		compositor.compose();
@@ -378,6 +382,7 @@ int main (int argc, char* argv[]) {
 		if(in_str.size()>0) {
 			command(&window,in_str);
 		}
+
 	}
 	renderer.render_stop();
 	renderer.shutdown();
