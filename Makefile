@@ -1,26 +1,53 @@
 # Our compiler. The default is g++, the gcc for c++
 CC := g++
-# The main options to set for our compiler
-CCFLAGS := -g -o0 -std=c++11 -fdiagnostics-color=always -L./lib
-# Compilation options
-#CCOPTS := -DENABLE_RENDER_AA_ALL -DREVERSE_COLOR_ORDER -DGPL_LICENSE
-CCOPTS := -DREVERSE_COLOR_ORDER
-# Our archiver (used to create libraries)
-AR := ar
 
+# Our archiver (used to create lib/libcore.a)
+AR := ar
 ARFLAGS := rcs
+
+# The following is used to link against the necessary SDL2 libraries:
 SDLFLAGS := -lSDL2 -lSDL2_gfx -lSDL2_ttf -lSDL2_image
+# And these are used to link against lib/libcore.a and posix threading:
+COREFLAGS := -lcore -pthread
+
+
+# The main options to set for our compiler
+# First the standard stuff - we're using C++11 and we need to include our lib 
+# directory...
+CCFLAGS := -std=c++11 -L./lib
+
+# Compiler optimisation - use -O2 for production, or -g -O0 for debugging
+CCFLAGS += -Ofast
+#CCFLAGS += -g -O0
+
+# I often find colourised debugging info useful; I also sometimes have more
+# than one screen of it to read at once. Using the following option I can pipe
+# the output of the build process through less and the colour won't be wiped:
+CCFLAGS += -fdiagnostics-color=always
+
+# Compile time options
+CCOPTS := 
+# My system has its byte order reversed as opposed to what SDL2 expects.
+# Setting the following will compile with the correct byte order in this case:
+CCOPTS += -DREVERSE_COLOR_ORDER
+
+# Remove this setting to save space; otherwise a copy of the GPL will be
+# physically included in the editor and the features to retrieve it will be
+# activated. This is so that binaries can be created which can be ditributed
+# without COPYING/LICENSE and still contain the license:
+CCOPTS+= -DGPL_LICENSE
+
+# The following are the directories we're reading from and writing to during
+# the build process; unlikely to change.
 BINDIR := bin
 SRCDIR := src
 OBJDIR := obj
 LIBDIR := lib
 
-COREFLAGS := -lcore -pthread
-
+# The Main Targets:
 all: $(BINDIR)/pivedit
 
-.optional: $(BINDIR)/simple_edit
-
+# The Object Files:
 $(OBJDIR)/stringsplit.o: $(SRCDIR)/stringsplit.cpp $(SRCDIR)/stringsplit.h
 	$(CC) $(CCFLAGS) $(CCOPTS) -c $< -o $@
 
@@ -54,18 +81,15 @@ $(OBJDIR)/text.o: $(SRCDIR)/text.cpp $(SRCDIR)/text.h $(SRCDIR)/core_elements.h
 $(OBJDIR)/sdlrenderer.o: $(SRCDIR)/sdlrenderer.cpp $(SRCDIR)/sdlrenderer.h $(SRCDIR)/core_elements.h
 	$(CC) $(CCFLAGS) $(CCOPTS) -c $< $(SDLFLAGS) -o $@
 
-$(OBJDIR)/sdlcompositor.o: $(SRCDIR)/sdlcompositor.cpp $(SRCDIR)/sdlcompositor.h $(SRCDIR)/core_elements.h
-	$(CC) $(CCFLAGS) $(CCOPTS) -c $< $(SDLFLAGS) -o $@
-
-$(LIBDIR)/libcore.a: $(OBJDIR)/stringsplit.o $(OBJDIR)/container.o $(OBJDIR)/circle.o $(OBJDIR)/box.o $(OBJDIR)/compositor.o $(OBJDIR)/renderer.o $(OBJDIR)/sdlcompositor.o $(OBJDIR)/sdlrenderer.o $(OBJDIR)/text.o $(OBJDIR)/window.o $(OBJDIR)/element.o $(OBJDIR)/irregular.o
+# Our Core Library:
+$(LIBDIR)/libcore.a: $(OBJDIR)/stringsplit.o $(OBJDIR)/container.o $(OBJDIR)/circle.o $(OBJDIR)/box.o $(OBJDIR)/compositor.o $(OBJDIR)/renderer.o $(OBJDIR)/sdlrenderer.o $(OBJDIR)/text.o $(OBJDIR)/window.o $(OBJDIR)/element.o $(OBJDIR)/irregular.o
 	$(AR) $(ARFLAGS) $@ $^
 
-#$(BINDIR)/simple_edit: $(SRCDIR)/simple_edit.cpp $(LIBDIR)/libcore.a
-#	$(CC) $(CCFLAGS) $(CCOPTS) $< $(COREFLAGS) -o $@
-
+# The Editor Binary:
 $(BINDIR)/pivedit: $(SRCDIR)/editor.cpp $(LIBDIR)/libcore.a
 	$(CC) $(CCFLAGS) $(CCOPTS) $< $(SDLFLAGS) $(COREFLAGS) -o $@
 
+# Remove a previous build:
 clean:
 	rm -f obj/*
 	rm -f lib/*

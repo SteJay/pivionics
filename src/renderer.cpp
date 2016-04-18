@@ -113,8 +113,8 @@ bool Renderer::render_frame(void) {
 }
 bool Renderer::render_loop(void) {
 	if(this->init()>=0) {
-		//using milliseconds = chrono::duration<int, milli>;
-		chrono::milliseconds ms(1);
+		//using milliseconds = std::chrono::duration<int, milli>;
+		std::chrono::milliseconds ms(1);
 		unsigned int fpstime=SDL_GetTicks();
 		unsigned int framecount;
 		bool renderedall=true;
@@ -142,7 +142,7 @@ void Renderer::render_run(void) {
 	access.lock();
 	run=true;
 	access.unlock();
-	runthread = new thread(&Renderer::render_loop,this);
+	runthread = new std::thread(&Renderer::render_loop,this);
 }
 
 void Renderer::render_stop(void) {
@@ -152,7 +152,7 @@ void Renderer::render_stop(void) {
 	runthread->join(); // Wait for the thread to quit
 }
 
-bool Renderer::set_rendergons(const vector<Rendergon>* rgv) {
+bool Renderer::set_rendergons(const std::vector<Rendergon>* rgv) {
 	access.lock();
 	points = *rgv;
 	// Unfortunately we now need to go through all of these rendergons to convert the surfaces to textures...

@@ -30,7 +30,7 @@ along with Pivionics.  If not, see <http://www.gnu.org/licenses/>.
 #include "core_elements.h"
 #include "stringsplit.h"
 
-using namespace std;
+
 double normalise_angle( double d ) { d=fmod(d,PI*2); if(d<0.0) d+=PI*2; return d; }
 long double normalise_angle( long double d ) { d=fmod(d,PI*2.0L); if(d<0.0) d+=PI*2; return d; }
 
@@ -75,9 +75,9 @@ bool Element::pre_compose(Origin o) { return true; }
 bool Element::post_compose(Origin o) { return true; }
 bool Element::pre_construct(void) { return true; }
 bool Element::post_construct(void) { return true; }
-vector<string> Element::get_attrs(void) {
+std::vector<std::string> Element::get_attrs(void) {
 	access.lock();
-	vector<string> v;
+	std::vector<std::string> v;
 	for(auto iter=attrs.begin(); iter!=attrs.end(); ++iter) {
 		v.push_back(iter->first);
 	}
@@ -106,7 +106,7 @@ void Element::compose(Origin origin) {
 	// Now we compose this element as a whole
 	PointSet tps,tps2;
 	Point tp,tp2;
-	vector<PointSet> tpsv;
+	std::vector<PointSet> tpsv;
 	for(auto iter=points.begin(); iter!=points.end(); ++iter) {
 		// Iterate through our pointsets
 		tps=*iter;
@@ -153,9 +153,9 @@ void Element::compose(Origin origin) {
   // Composition is good to go!
 }
 
-string Element::get_attr(string key) {
+std::string Element::get_attr(std::string key) {
 	access.lock();
-	string s=""; int n; char c[32];
+	std::string s=""; int n; char c[32];
 	if( attrs.find(key) != attrs.end() ) {
 		access.unlock();
 		return attrs[key];
@@ -165,19 +165,19 @@ string Element::get_attr(string key) {
 	}
 }
 
-void Element::set_attr(string key, string value) {
+void Element::set_attr(std::string key, std::string value) {
 	access.lock();
 	attrs[key]=value;
 	dirty=true;
 	access.unlock();
 }
 
-string Element::type(void) { return typestr; }
-string Element::name(void) { return namestr; }
+std::string Element::type(void) { return typestr; }
+std::string Element::name(void) { return namestr; }
 
-void Element::name(string n) { namestr=n; }
+void Element::name(std::string n) { namestr=n; }
 
-Element* Window::add(string s,Element* el) {
+Element* Window::add(std::string s,Element* el) {
 	access.lock();
 	if( creators.find(s)!=creators.end() ) {
 		Element* (*fn)();
@@ -232,10 +232,10 @@ Element* Window::move(Element* subject,Element* target) {
 	return subject->parent;
 }
 
-Element* Window::encap(string s,Element* el) {
+Element* Window::encap(std::string s,Element* el) {
 	if(el==NULL) el=this;
 	Element* e=add(s,el);
-	list<Element*> tc = el->contents;
+	std::list<Element*> tc = el->contents;
 	for(auto iter=tc.begin(); iter!=tc.end(); ++iter) {
 		if(*iter!=e) {
 			move( *iter,e );	
@@ -247,7 +247,7 @@ Element* Window::encap(string s,Element* el) {
 Element* Window::decap(Element* el) {
 	if(el!=NULL) {
 		if(el->parent!=NULL) {
-			list<Element*> tc = el->contents;
+			std::list<Element*> tc = el->contents;
 			for(auto iter=tc.begin(); iter!=tc.end(); ++iter) {
 				move( *iter, el->parent );
 			}
@@ -284,7 +284,7 @@ Element* Element::copy(Element* wnd) {
 		e->inherit_scale=this->inherit_scale;
 		e->compose_order=this->compose_order;
 
-		vector<string> a=get_attrs();
+		std::vector<std::string> a=get_attrs();
 		for(auto it=a.begin();it!=a.end();++it) {
 			e->set_attr(*it,this->get_attr(*it));
 		}

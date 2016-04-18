@@ -29,7 +29,7 @@ along with Pivionics.  If not, see <http://www.gnu.org/licenses/>.
 #include <unistd.h>
 #include "core_elements.h"
 
-using namespace std;
+
 Container::Container() { 
 	name(""); 
 	calc_rel_pos=true;
@@ -90,7 +90,7 @@ bool Container::pre_compose(Origin origin) {
 bool Rotation::post_compose(Origin origin) {
 	PointSet tps,tps2; tps.owner=this; tps2.owner=this;
 	Point tp,tp2,tp3;
-	vector<PointSet> tpsv;
+	std::vector<PointSet> tpsv;
 	origin.angle = normalise_angle(PI+origin.angle+angles[0]);
     // Now the extra rotation magic...  
     for( auto iter=composed_points.begin(); iter!=composed_points.end();++iter) {
@@ -140,7 +140,7 @@ bool Rotation::post_compose(Origin origin) {
 bool Rescale::post_compose(Origin origin) {
 	PointSet tps,tps2; tps.owner=this; tps2.owner=this;
 	Point tp;
-	vector<PointSet>tpsv;
+	std::vector<PointSet>tpsv;
     for( auto iter=composed_points.begin(); iter!=composed_points.end();++iter) {
         tps = *iter;
 		tps2 = *iter;

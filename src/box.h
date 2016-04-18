@@ -27,8 +27,6 @@ Element* fn_create_box(void);
 class Box: public Element {
     public:
         Box();
-        virtual void construct(void);
+        void construct(void);
 
 };
-
-

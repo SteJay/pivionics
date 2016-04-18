@@ -497,7 +497,7 @@ add Container {
           }
           add Text {
             name "120deg"
-            text "21"
+            text "12"
             set cx 280
             set cy 0
             set width 1
@@ -1032,7 +1032,7 @@ add Container {
       }
       add Text {
         name "CRStext"
-        text "000"
+        text "338"
         set cx 0
         set cy -290
         set width 1

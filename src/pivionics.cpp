@@ -26,15 +26,13 @@ along with Pivionics.  If not, see <http://www.gnu.org/licenses/>.
 #include <string>
 #include <vector>
 #include "core_elements.h"
-#include "stringsplit.h"
 #include "sdlrenderer.h"
+#include "sdlcompositor.h"
 #include "circle.h"
 #include "box.h"
 #include "text.h"
 #include "irregular.h"
 #include "license.h"
-
-using namespace std;
 
 inline bool file_exists(const string& name) { struct stat buffer; return (stat (name.c_str(), &buffer) == 0); }
 

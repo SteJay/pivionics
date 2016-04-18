@@ -70,7 +70,7 @@ void Text::construct(void) {
 	if(dirty) {
 	access.lock();
 	//cout << "Using font " << attrs["font"] << " at size " << attrs["fontsize"] << endl;
-	TTF_Font* font=TTF_OpenFont(attrs["font"].c_str(), stoi( attrs["fontsize"].c_str(),nullptr,0 ) );
+	TTF_Font* font=TTF_OpenFont(attrs["font"].c_str(), std::stoi( attrs["fontsize"].c_str(),nullptr,0 ) );
 	if(font==NULL) {
 		//cout << "FONT LOAD FAILED" << endl;
 		points.clear();

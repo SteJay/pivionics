@@ -32,7 +32,7 @@ along with Pivionics.  If not, see <http://www.gnu.org/licenses/>.
 #include "core_elements.h"
 #include "stringsplit.h"
 
-using namespace std;
+
 
 Window::Window(void) {
     id_store=0;
@@ -47,10 +47,10 @@ Window::Window(void) {
 
 
 
-string Window::command(string cmd, Element* base) {
-	string rs="";
-	list<string> args = get_arguments(cmd);
-	/////cout << "Got " << args.size() << " arguments, looking at " << args.front() << endl;
+std::string Window::command(std::string cmd, Element* base) {
+	std::string rs="";
+	std::list<std::string> args = get_arguments(cmd);
+	/////cout << "Got " << args.size() << " arguments, looking at " << args.front() << std::endl;
 	args = command(args,base);
 	rs="";
 	if(args.size()>0) {
@@ -61,17 +61,17 @@ string Window::command(string cmd, Element* base) {
 	return rs;
 }
 
-list<string> Window::command(list<string> args,Element* base){
-	string cmd;
+std::list<std::string> Window::command(std::list<std::string> args,Element* base){
+	std::string cmd;
 	// First we split the command apart to extract the different parts
 	if( base==NULL ) base=this;
 	Element* last_added=NULL;
-	/////cout << "We're starting out the command bit with " << args.size() << " arguments..." << endl;
+	/////cout << "We're starting out the command bit with " << args.size() << " arguments..." << std::endl;
 	while( args.size()>0 ) {
 		cmd=args.front();
 		args.pop_front();
 		// Here's the horrible if elseif elsif times inifinity bit:
-	/////cout << "Command is " << cmd << " and there are " << args.size() << " arguments remaining..." << endl;
+	/////cout << "Command is " << cmd << " and there are " << args.size() << " arguments remaining..." << std::endl;
 		if(cmd.compare("add")==0||cmd.compare("new")==0) {
 			if( args.size()>0 ) {
 				if(args.front().compare("Window")!=0){
@@ -105,7 +105,7 @@ list<string> Window::command(list<string> args,Element* base){
 			}
 			args.pop_front();
 		} else if(cmd.compare("move")==0||cmd.compare("mv")==0) {
-			string item="";
+			std::string item="";
 			if(args.size()>0) {
 				item=args.front(); args.pop_front();
 				if(item.compare("p")==0||item.compare("parent")==0) {
@@ -142,7 +142,7 @@ list<string> Window::command(list<string> args,Element* base){
 				last_added=decap(base);
 		} else if(cmd.compare("set")==0||(args.size()>0 && args.front().compare("=")==0)) {
 			if(args.size()>=2) {
-				string item,val;
+				std::string item,val;
 				if(args.front().compare("=")==0) { // Yes, I could have stored the value, but performance isn't of the essence here
 					item=cmd;
 				} else {
@@ -152,20 +152,20 @@ list<string> Window::command(list<string> args,Element* base){
 				if( args.front().compare("pi")==0 || args.front().compare("rad")==0 || args.front().compare("radian")==0 || args.front().compare("radians")==0) {
 					if( args.size()>1) {
 						args.pop_front();
-						val = to_string( stold(args.front(),nullptr) * PI );
+						val = std::to_string( stold(args.front(),nullptr) * PI );
 						args.pop_front();
 					}
 				} else if( args.front().compare("deg") ==0 || args.front().compare("degree")==0 || args.front().compare("degrees")==0) {
 					if( args.size()>1) {
 						args.pop_front();
-						val = to_string( stold(args.front(),nullptr) * ( PI / 180.0 ) );
+						val = std::to_string( stold(args.front(),nullptr) * ( PI / 180.0 ) );
 						args.pop_front();
 					}
 				} else {
 					val=args.front();
 					args.pop_front();
 				}
-				/////cout << "Setting " << item << " to " << val << "..." << endl;
+				/////cout << "Setting " << item << " to " << val << "..." << std::endl;
 				if(      item.compare("cx")         ==0 ) base->cx(stod(val,nullptr));
 				else if( item.compare("cy")         ==0 ) base->cy(stod(val,nullptr));
 				else if( item.compare("width")      ==0 ) base->width(stod(val,nullptr));
@@ -195,19 +195,19 @@ list<string> Window::command(list<string> args,Element* base){
 			}
 		} else if(cmd.compare("attr")==0||cmd.compare("attribute")==0) {
 			if(args.size()>1) {
-				string s,t;
+				std::string s,t;
 				s=args.front();
 				args.pop_front();
 				t=args.front();
 				args.pop_front();
 				base->set_attr(s,t);
-				//cout << "Attribute set " << s << " to " << t << endl;
+				//cout << "Attribute set " << s << " to " << t << std::endl;
 			}
 		} else if(cmd.compare("{")==0||cmd.compare("{")==0) {
 			// Go into the last added element and perform following commands on that
 			if( last_added!=NULL) {
 				args = command(args,last_added);
-				/////cout << "We returned successfully!" << endl;
+				/////cout << "We returned successfully!" << std::endl;
 				last_added=NULL;
 			}
 		} else if(cmd.compare("}")==0||cmd.compare("}")==0) {
@@ -231,7 +231,7 @@ list<string> Window::command(list<string> args,Element* base){
 			//return args;
 		}
 	}
-	/////cout << "Reached the end - lets try and return!" << endl;
+	/////cout << "Reached the end - lets try and return!" << std::endl;
 	return args;
 }
 /*
@@ -255,9 +255,9 @@ int Window::children(Element* el) {
 		return static_cast<int>(el->contents.size());
 	}
 }
-list<string> Window::list_creators(void) {
+std::list<std::string> Window::list_creators(void) {
 	access.lock();
-	list<string> l;
+	std::list<std::string> l;
 	for(auto iter=creators.begin();iter!=creators.end();++iter) {
 		l.push_back(iter->first);
 	}
@@ -265,9 +265,9 @@ list<string> Window::list_creators(void) {
 	return l;
 }
 
-list<Element*> Window::list_elements(Element* pel) {
+std::list<Element*> Window::list_elements(Element* pel) {
 	access.lock();
-	list<Element*> c;
+	std::list<Element*> c;
 	if( pel != NULL) {
 		c=pel->contents;
 	} else {
@@ -324,16 +324,16 @@ Element* Window::child(unsigned int i, Element* el) {
 	return NULL;
 }
 
-Element* Window::find_name(string n) { return find_name(n,0); }
-Element* Window::find_name(string n,int ignore) { return find_name(n,ignore,this); }
+Element* Window::find_name(std::string n) { return find_name(n,0); }
+Element* Window::find_name(std::string n,int ignore) { return find_name(n,ignore,this); }
 
-Element* Window::find_name(string n,int ignore, Element* base) {
-	string t;
+Element* Window::find_name(std::string n,int ignore, Element* base) {
+	std::string t;
 	Element* e;
 	for(auto iter=base->contents.begin(); iter!=base->contents.end(); ++iter) {
 		e= *iter;
 		t=e->name();
-		/////cout << "Comparing " << n << " with " << t << "..." << endl;
+		/////cout << "Comparing " << n << " with " << t << "..." << std::endl;
 		if(n.compare(t)==0) {
 		  if(ignore>0) {
 		    ignore--; 
@@ -364,13 +364,13 @@ Element* Window::find_name(string n,int ignore, Element* base) {
 
 
 
-void Window::load(string fn,Element *el) {
-	ifstream file(fn,ios::in|ios::binary|ios::ate);
+void Window::load(std::string fn,Element *el) {
+	std::ifstream file(fn,std::ios::in|std::ios::binary|std::ios::ate);
 	if(file.is_open()) {
-		streampos size=file.tellg(); // because we used ios::ate we start at the end of the file, thus we know the length
+		std::streampos size=file.tellg(); // because we used std::ios::ate we start at the end of the file, thus we know the length
 		if(size>0) {
 			char* buf=new char[size];
-			file.seekg(0,ios::beg); // seek back to the beginning of the file
+			file.seekg(0,std::ios::beg); // seek back to the beginning of the file
 			file.read(buf,size);
 			command(buf,el);
 			delete buf;
@@ -378,47 +378,47 @@ void Window::load(string fn,Element *el) {
 		file.close();
 	}
 }
-void Window::load(string fn) { load(fn,this); }
+void Window::load(std::string fn) { load(fn,this); }
 
-void Window::save(string fn,Element* el) {
-	ofstream file(fn,ios::out);
+void Window::save(std::string fn,Element* el) {
+	std::ofstream file(fn,std::ios::out);
 	save(&file,el);	
 	file.close();	
 }
 
-void Window::save(ofstream* file,Element* el) {
+void Window::save(std::ofstream* file,Element* el) {
 	save(file,el,"");
 }
-void Window::save(ofstream* file,Element* el,string lvl) {
-	string t = el->type();
+void Window::save(std::ofstream* file,Element* el,std::string lvl) {
+	std::string t = el->type();
 	bool isntwindow=true;
 	if(t.compare("Window") != 0) {
 		*file << lvl << "add " + t;
-		*file << " " << "{" << endl;
+		*file << " " << "{" << std::endl;
 		lvl+="  ";
 		t=el->name();
-		if(t.compare("") != 0) { *file << lvl << "name \"" + replace_all(t,"\"","\\\"") + "\"" << endl; }
+		if(t.compare("") != 0) { *file << lvl << "name \"" + replace_all(t,"\"","\\\"") + "\"" << std::endl; }
 		t=el->text();
-		if(t.compare("") != 0) { *file << lvl << "text \"" + replace_all(t,"\"","\\\"") + "\"" << endl; }
-		*file << lvl << "set cx " << el->cx() << endl;
-		*file << lvl << "set cy " << el->cy() << endl;
-		*file << lvl << "set width " << el->width() << endl;
-		*file << lvl << "set height " << el->height() << endl;
-		*file << lvl << "set xscale " << el->scale_x() << endl;
-		*file << lvl << "set yscale " << el->scale_y() << endl;
-		*file << lvl << "set angle " << setprecision(16) << el->angle() << endl;
-		*file << lvl << "set arc " << setprecision(16) << el->arc() << endl;
-		*file << lvl << "set thickness " << el->thickness() << endl;
-		*file << lvl << "set sections " << el->sections() << endl;
-		*file << lvl << "set subsections " << el->subsections() << endl;
-		*file << lvl << "set color " << el->color() << endl;
+		if(t.compare("") != 0) { *file << lvl << "text \"" + replace_all(t,"\"","\\\"") + "\"" << std::endl; }
+		*file << lvl << "set cx " << el->cx() << std::endl;
+		*file << lvl << "set cy " << el->cy() << std::endl;
+		*file << lvl << "set width " << el->width() << std::endl;
+		*file << lvl << "set height " << el->height() << std::endl;
+		*file << lvl << "set xscale " << el->scale_x() << std::endl;
+		*file << lvl << "set yscale " << el->scale_y() << std::endl;
+		*file << lvl << "set angle " << std::setprecision(16) << el->angle() << std::endl;
+		*file << lvl << "set arc " << std::setprecision(16) << el->arc() << std::endl;
+		*file << lvl << "set thickness " << el->thickness() << std::endl;
+		*file << lvl << "set sections " << el->sections() << std::endl;
+		*file << lvl << "set subsections " << el->subsections() << std::endl;
+		*file << lvl << "set color " << el->color() << std::endl;
 		
-		*file << lvl << "set inherit position "; if(el->inherit_position) *file << "true"; else *file << "false"; *file << endl;
-		*file << lvl << "set inherit angle "; if(el->inherit_angle) *file << "true"; else *file << "false"; *file << endl;
-		*file << lvl << "set inherit scale "; if(el->inherit_scale) *file << "true"; else *file << "false"; *file << endl;
+		*file << lvl << "set inherit position "; if(el->inherit_position) *file << "true"; else *file << "false"; *file << std::endl;
+		*file << lvl << "set inherit angle "; if(el->inherit_angle) *file << "true"; else *file << "false"; *file << std::endl;
+		*file << lvl << "set inherit scale "; if(el->inherit_scale) *file << "true"; else *file << "false"; *file << std::endl;
 
 		for(auto iter=el->attrs.begin(); iter != el->attrs.end();++iter) {
-			*file << lvl << "attr " << "" << iter->first << " \"" << replace_all(iter->second,"\"","\\\"") << "\"" << endl;
+			*file << lvl << "attr " << "" << iter->first << " \"" << replace_all(iter->second,"\"","\\\"") << "\"" << std::endl;
 		}
 	} else {
 	  isntwindow=false;
@@ -427,7 +427,7 @@ void Window::save(ofstream* file,Element* el,string lvl) {
 		save(file,*iter,lvl);
 	}
 	lvl.erase(0,2);
-	if(isntwindow) *file << lvl << "}" << endl;
+	if(isntwindow) *file << lvl << "}" << std::endl;
 }
 
-void Window::save(string fn) { save(fn,this); }
+void Window::save(std::string fn) { save(fn,this); }

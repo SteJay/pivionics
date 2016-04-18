@@ -9,15 +9,15 @@
 #include <vector>
 #include <list>
 
-using namespace std;
+
 
 #ifndef STRINGSPLIT_H
 #define STRINGSPLIT_H
 
-vector<string> &split(const string&, char, vector<string>&);
-vector<string> split(const string&, char);
-list<string> &split_to_list(const string&, char, list<string>&);
-list<string> split_to_list(const string&, char);
-list<string> get_arguments(const string);
-string replace_all(string,string,string);
+std::vector<std::string> &split(const std::string&, char, std::vector<std::string>&);
+std::vector<std::string> split(const std::string&, char);
+std::list<std::string> &split_to_list(const std::string&, char, std::list<std::string>&);
+std::list<std::string> split_to_list(const std::string&, char);
+std::list<std::string> get_arguments(const std::string);
+std::string replace_all(std::string,std::string,std::string);
 #endif

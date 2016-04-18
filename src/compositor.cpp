@@ -20,7 +20,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <iostream>
 #include <cmath>
 #include "core_elements.h"
-using namespace std;
+
 
 Compositor::~Compositor() {
 	rend=NULL;
@@ -100,7 +100,7 @@ int Compositor::compose(void) {
 			rg.color=0;
 			rg.is_surface=false;
 			rg.surface_index=-1;
-			vector<Rendergon> rgv;
+			std::vector<Rendergon> rgv;
 			int wp=0;
 			///cout << "Compositor now starting its work..." << endl;
 			int ino=0,iino=0;

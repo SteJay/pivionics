@@ -3,11 +3,11 @@
 #include <vector>
 #include <list>
 #include <iostream>
-using namespace std;
 
-vector<string> &split(const string &s, char delim, vector<string> &elems) {
-    stringstream ss(s);
-    string item;
+
+std::vector<std::string> &split(const std::string &s, char delim, std::vector<std::string> &elems) {
+    std::stringstream ss(s);
+    std::string item;
     while (getline(ss, item, delim)) {
         elems.push_back(item);
     }
@@ -15,16 +15,16 @@ vector<string> &split(const string &s, char delim, vector<string> &elems) {
 }
 
 
-vector<string> split(const string &s, char delim) {
-    vector<string> elems;
+std::vector<std::string> split(const std::string &s, char delim) {
+    std::vector<std::string> elems;
     split(s, delim, elems);
     return elems;
 }
 
 
-list<string> &split_to_list(const string &s, char delim, list<string> &elems) {
-    stringstream ss(s);
-    string item;
+std::list<std::string> &split_to_list(const std::string &s, char delim, std::list<std::string> &elems) {
+    std::stringstream ss(s);
+    std::string item;
     while (getline(ss, item, delim)) {
         elems.push_back(item);
     }
@@ -32,17 +32,17 @@ list<string> &split_to_list(const string &s, char delim, list<string> &elems) {
 }
 
 
-list<string> split_to_list(const string &s, char delim) {
-    list<string> elems;
+std::list<std::string> split_to_list(const std::string &s, char delim) {
+    std::list<std::string> elems;
     split_to_list(s, delim, elems);
     return elems;
 }
 
-list<string> get_arguments(string s) {
+std::list<std::string> get_arguments(std::string s) {
 	int len=s.size();
 	bool stringmode=false;
-	list<string> args;
-	string thisarg="";
+	std::list<std::string> args;
+	std::string thisarg="";
 	for(int i=0;i<len;++i) {
 		if(stringmode) {
 			if( (s[i]=='\\' && (i+1<len&&s[i+1]=='"')) || (s[i]==L'\\' && (i+1<len&&s[i+1]==L'"'))) {
@@ -72,10 +72,10 @@ list<string> get_arguments(string s) {
 	return args;
 }
 
-string replace_all( string instr, string find, string repl ) {
+std::string replace_all( std::string instr, std::string find, std::string repl ) {
 	int len=instr.size();
-	string t;
-	string rs="";
+	std::string t;
+	std::string rs="";
 	for(int i=0;i<len;++i) {
 		t="";
 		for(int j=0;j<find.size();j++) {

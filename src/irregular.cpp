@@ -33,10 +33,10 @@ Irregular::Irregular(void) {
 void Irregular::construct(void) {
 	access.lock();
 	points.clear();
-	string s = attrs["points"];
-	string t = "";
-	vector<string> mypoints=split(s,'~');
-	vector<string> omp;
+	std::string s = attrs["points"];
+	std::string t = "";
+	std::vector<std::string> mypoints=split(s,'~');
+	std::vector<std::string> omp;
 	Point plast[4];
 	PointSet tps;
 	tps.color = col;

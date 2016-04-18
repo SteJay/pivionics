@@ -28,7 +28,7 @@ along with Pivionics.  If not, see <http://www.gnu.org/licenses/>.
 #include <sys/stat.h>
 // I'm going to have to take this out at some stage :(
 // It won't do any harm for now.
-using namespace std;
+
 
 #ifndef PI
 #define PI 3.141592653589793238462643383279502884L
@@ -108,7 +108,7 @@ struct Origin {
 /* The following struct is used to pass points to the compositor */
 struct PointSet {
     unsigned int render_flags;				// This is a combination of the above RENDER_ flags
-    vector<Point> points; // A set of point pairs
+    std::vector<Point> points; // A set of point pairs
     unsigned int color;				// The colour of this polygon
 	void* surface;
 	void* owner;
@@ -135,10 +135,10 @@ struct Rendergon {
 class Element {
 	private:
 		int id_store;
-		string namestr;
-		string typestr;
+		std::string namestr;
+		std::string typestr;
 	protected:
-		mutex access;
+		std::mutex access;
 		double geometry[4];
 		long double angles[2];
 		double scale[2];
@@ -146,9 +146,9 @@ class Element {
 		unsigned int sect;
 		unsigned int subsect;
 		unsigned int col;
-		string txt;
-		map<string,string> attrs;
-		list<Element*> contents;
+		std::string txt;
+		std::map<std::string,std::string> attrs;
+		std::list<Element*> contents;
 		bool has_surface;
 		void* vpsurface;
 		int composed_surface;
@@ -158,16 +158,16 @@ class Element {
 		bool inherit_angle;
 		bool inherit_scale;
 		unsigned int compose_order;
-		vector<PointSet> points;
-		vector<PointSet> composed_points;
+		std::vector<PointSet> points;
+		std::vector<PointSet> composed_points;
 		Element* parent;
 		friend class Window; // The element store will need to set up the element with appropriate pointers
 		friend class Compositor;
 		Element(void);
 		~Element();
-		vector<string> get_attrs(void);
-		string get_attr(string);
-		void set_attr(string, string);
+		std::vector<std::string> get_attrs(void);
+		std::string get_attr(std::string);
+		void set_attr(std::string, std::string);
 		virtual Element* copy(Element*);// MUST PASS Window INSTANCE!
 		virtual Element* copy_all(Element*); // MUST PASS WINDOW INSTANCE!!
 	
@@ -184,7 +184,7 @@ class Element {
 		unsigned int color(void) {return col;}
 		double scale_x(void) { return scale[0]; }
 		double scale_y(void) { return scale[1]; }
-		string text(void) {return txt;}
+		std::string text(void) {return txt;}
 		
 		void cx(double d) {geometry[0]=d;dirty=true;}
 		void cy(double d) {geometry[1]=d;dirty=true;}
@@ -198,12 +198,12 @@ class Element {
 		void color(unsigned int d) {col=d;dirty=true;}
 		void scale_x(double d) { scale[0]=d;dirty=true; }
 		void scale_y(double d) { scale[1]=d;dirty=true; }
-		void text(string d) {txt=d;dirty=true;}
+		void text(std::string d) {txt=d;dirty=true;}
 		
 
-		string type(void);// There's no direct type setting function; that's because it is set by the Window containing it
-		string name(void);// You can get the name in the same way...
-		void name(string);// But you can also set it. No validation is done - this is just for human reference really
+		std::string type(void);// There's no direct type setting function; that's because it is set by the Window containing it
+		std::string name(void);// You can get the name in the same way...
+		void name(std::string);// But you can also set it. No validation is done - this is just for human reference really
 		
 		virtual void compose(Origin);
 		virtual bool pre_compose(Origin);
@@ -223,54 +223,54 @@ class Window: public Element {
 	visible window in the Compositor.
 */
 	private:
-		map<string,Element* (*)(void)> creators;
+		std::map<std::string,Element* (*)(void)> creators;
 	public:
 		Window(void);
 //		~Window();
 		friend class Compositor;
-		void register_creator(string n,Element* (*c)(void)) { creators[n]=c; }
-		list<string> list_creators(void);		// Used for user interface and debugging
-		list<Element*> list_elements(Element*); 	// Used for user interface and debugging
+		void register_creator(std::string n,Element* (*c)(void)) { creators[n]=c; }
+		std::list<std::string> list_creators(void);		// Used for user interface and debugging
+		std::list<Element*> list_elements(Element*); 	// Used for user interface and debugging
 		int children(Element*);
-		Element* add(string,Element*);	// Add an element as the given type
+		Element* add(std::string,Element*);	// Add an element as the given type
 		Element* del(Element*);
 		Element* del_children(Element*);
 		Element* move(Element*,Element*);
-		Element* encap(string,Element*);
+		Element* encap(std::string,Element*);
 		Element* decap(Element*);
 		Element* get_parent(Element*);
 		Element* sibling(unsigned int, Element*);
 		Element* child(unsigned int, Element*);
 		
-		Element* find_name(string);
-		Element* find_name(string,int);
-		Element* find_name(string,int,Element*);
+		Element* find_name(std::string);
+		Element* find_name(std::string,int);
+		Element* find_name(std::string,int,Element*);
 		void remove(int);			// Remove the nth child of the current element
 		void insert(Element*);		// Insert an element of the given type between the given element and its parent
 
 
-		virtual string command(string,Element*);
-		virtual list<string> command(list<string>,Element*);
-		void save(string);			// Save the window.
-		void save(string,Element*);			// Save the window.
-		void save(ofstream*,Element*);			// Save the window.
-		void save(ofstream*,Element*,string);			// Save the window.
-		void load(string);
-		void load(string,Element*);
+		virtual std::string command(std::string,Element*);
+		virtual std::list<std::string> command(std::list<std::string>,Element*);
+		void save(std::string);			// Save the window.
+		void save(std::string,Element*);			// Save the window.
+		void save(std::ofstream*,Element*);			// Save the window.
+		void save(std::ofstream*,Element*,std::string);			// Save the window.
+		void load(std::string);
+		void load(std::string,Element*);
 
 };
 
 class Renderer {
 	protected:
-		mutex access;
+		std::mutex access;
 		bool dirty;
 		unsigned int fps_cap;
-		vector<Rendergon> points;
-		vector<void*> surfaces;
+		std::vector<Rendergon> points;
+		std::vector<void*> surfaces;
 		bool run;
 		bool running;
 		unsigned int fps;
-		thread* runthread;
+		std::thread* runthread;
 	public:
 		int width;
 		int height;
@@ -279,7 +279,7 @@ class Renderer {
 		bool ready(void);	
 		virtual int init(void);
 		virtual int shutdown(void);
-		virtual bool set_rendergons(const vector<Rendergon>*); // Called by Compositor or Compositor
+		virtual bool set_rendergons(const std::vector<Rendergon>*); // Called by Compositor or Compositor
 		virtual bool render_frame(void); // Called by render_loop
 		virtual bool render_loop(void);	 // The main function, called into its own thread.
 		virtual void render_run(void);
@@ -305,12 +305,12 @@ class Compositor {
 	classes.
 	*/
 	private:
-		mutex access;
+		std::mutex access;
 	protected:
 		Window* wind;
 		Renderer* rend;
-		vector<PointSet> pointsets;
-		vector<Rendergon> rendergons;
+		std::vector<PointSet> pointsets;
+		std::vector<Rendergon> rendergons;
 		double width;
 		double height;
 	public:
