@@ -19,12 +19,25 @@ along with Pivionics.  If not, see <http://www.gnu.org/licenses/>.
 
 */
 
+#include <iostream>
+#include <unistd.h>
 #include "stringsplit.h"
+#include "core_elements.h"
 #include "command.h"
+#include "box.h"
+#include "circle.h"
+#include "command.h"
+#include "irregular.h"
+#include "sdlrenderer.h"
+#include "text.h"
 
 CommandInstance::CommandInstance() {
     current=NULL;
     out="";
+    windows.clear();
+    renderer=NULL;
+    compositor=NULL;
+    curwin=NULL;
 }
 
 void CommandInstance::ops(void) {
@@ -49,6 +62,7 @@ void CommandInstance::output(unsigned int i) {
     out+=std::to_string(i);
 }
 void CommandInstance::output(Element* e) {
+        output("ELEMENT: \n");
         output(e->type()); ops();
         output(e->name());ops();
         output(e->cx());ops();
@@ -66,12 +80,11 @@ void CommandInstance::output(Element* e) {
         if(e->inherit_position) output("true"); else output("false");ops();
         if(e->inherit_angle) output("true"); else output("false");ops();
         if(e->inherit_scale) output("true"); else output("false");ops();
+        std::string s=e->text();
+        if(s.compare("")!=0){output("TEXT: \n"); output(s);ops();}
         std::vector<std::string> a=e->get_attrs();
-        std::string s;
-        s=e->text();
-        if(s.compare("")!=0){output(s);ops();}
         if(a.size()>0) {
-            output("Attrs: \n");
+            output("ATTRS: \n");
             for(auto iter=a.begin(); iter!=a.end(); ++iter) {
                 s=*iter;
                 output(s+" = \""+e->get_attr(s)+"\"");
@@ -86,24 +99,21 @@ void CommandInstance::command(Window* window, std::string cmd) {
 
     if(c.compare("exit")==0||c.compare("cu")==0) {
         if(current == NULL||current==window) {
-            output("Can't exit any further; current element is Window.\n");
+            output("ERROR: Can't exit any further; current element is Window.\n");
         } else {
             current = current->parent;
-            output("Exited to parent element.\n");
         }
     } else if(c.compare("find")==0 || c.compare("search")==0) {
         if(args.size() == 2) {
             std::string s=args[1];
             current=window->find_name(s);
             if(current == window) current=NULL;
-            output("Current element changed by find/search\n");
         } else if(args.size() == 3) {
             std::string s=args[1];
             std::string s2=args[2];
             int i=stoi(s2);
             current=window->find_name(s,i);
             if(current == window) current=NULL;
-            output("Current element changed by find/search\n");
         } else {
             output("ERROR: Incorrect number of arguments for find/search\n");
         }
@@ -122,14 +132,14 @@ void CommandInstance::command(Window* window, std::string cmd) {
     } else if(c.compare("types")==0) {
         std::list<std::string> l=window->list_creators();
         while(!l.empty()){
-            output(l.back()); output("\n"); l.pop_back();
+            output(l.back()); ops(); l.pop_back();
         }
     } else if(c.compare("child")==0||c.compare("children")==0) {
         std::list<Element*> pell = window->list_elements(current);
         int i=0;
         while(!pell.empty()) {
             Element* pel=pell.front();
-            output(i++); output(":"); output(pel->type()); output("("); output(pel->name()); output(")\n");
+            output(i++); output(":"); output(pel->type()); output("("); output(pel->name()); output(")"); ops();
             pell.pop_front();
         }
     } else if(c.compare("siblings")==0||c.compare("sibl")==0) {
@@ -138,7 +148,7 @@ void CommandInstance::command(Window* window, std::string cmd) {
             int i=0;
             while(!pell.empty()) {
                 Element* pel=pell.front();
-                output(i++); output(":"); output(pel->type()); output("("); output(pel->name()); output(")\n");
+                output(i++); output(":"); output(pel->type()); output("("); output(pel->name()); output(")"); ops();
                 pell.pop_front();
             }
         }
@@ -150,33 +160,85 @@ void CommandInstance::command(Window* window, std::string cmd) {
             int i=0;
             while(!pell.empty()) {
                 Element* pel=pell.front();
-                output(i++); output(":"); output(pel->type()); output("("); output(pel->name()); output(")\n");
+                output(i++); output(":"); output(pel->type()); output("("); output(pel->name()); output(")"); ops();
                 pell.pop_front();
             }
         }
     } else if(c.compare("examine")==0||c.compare("ex")==0) {
+        output(current);
+    } else {
+        std::string cmdstr;
+        try {
+            Element* returnto=current;
+            if(c.compare("delete")==0 || c.compare("remove")==0 ) {
+                if(current!=NULL) returnto=current->parent;
+            }
+            cmdstr=window->command(cmd,current);
+            current=returnto;
+            std::cerr << "Command: " << c << "\n";
+
+        } catch(std::exception& e){
+        }
+        
     }
 
 }
 
+std::string CommandInstance::do_input(std::string s) {
+    std::string rs="";
+    if(s.size()>0) {
+        std::cerr << "Got \"" << s << "\":\n";
+        command(curwin,s);
+        if(out.size()>0) {
+            rs=out;
+        }
+    }
+    run();
+    return rs;
+}
 
+int CommandInstance::run(void) {
+    curwin->construct();
+    compositor->compose();
+}
 
-
-
+int CommandInstance::init(Renderer* r,Compositor* c) {
+    if((renderer=r)==NULL) return ERR_COMMAND_NO_RENDERER;
+    if((compositor=c)==NULL) return ERR_COMMAND_NO_COMPOSITOR;
+    if(windows.size()<1) {
+        // Create the default window
+        Window* wnd=new Window;
+        wnd->register_creator("Container",&fn_create_container);
+        wnd->register_creator("Rotation",&fn_create_rotation);
+        wnd->register_creator("Rescale",&fn_create_rescale);
+        wnd->register_creator("Circle",&fn_create_circle);
+        wnd->register_creator("Spiral",&fn_create_spiral);
+        wnd->register_creator("Box",&fn_create_box);
+        wnd->register_creator("Text",&fn_create_text);
+        wnd->register_creator("Irregular",&fn_create_irregular);
+        windows.push_back(wnd);
+        curwin=wnd;
+        curwin->load("piv/logo.piv");
+    }
+    if(windows.size()<1) return ERR_COMMAND_NO_WINDOWS;
+    if(curwin==NULL) return ERR_COMMAND_NO_WINDOWS;
+    compositor->link_window(curwin);
+    compositor->link_renderer(renderer);
+    return 0;
+}
 
 std::string treepos( Element* el, std::string sofar="" ) {
-	if( el != NULL ) {
-		std::string n = el->name();
-		if(n.compare("\0")!=0) {
-			sofar += "("+el->name() + ")";
-		} else {
-			sofar += el->type();
-			
-		}
-		if( el->parent != NULL) {
-			sofar=treepos( el->parent ) + sofar;
-		}
-	}
-	sofar += '/';
-	return sofar;
+    if( el != NULL ) {
+        std::string n = el->name();
+        if(n.compare("\0")!=0) {
+            sofar += "("+el->name() + ")";
+        } else {
+            sofar += el->type();
+        }
+        if( el->parent != NULL) {
+            sofar=treepos( el->parent ) + sofar;
+        }
+    }
+    sofar += '/';
+    return sofar;
 }

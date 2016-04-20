@@ -82,7 +82,9 @@ const int ERR_RENDERER_CANNOT_CREATE_WINDOW=-101; // Initialisation of display d
 const int ERR_RENDERER_CANNOT_CREATE_SCREEN=-102; // Initialisation of display driver failed
 const int ERR_RENDERER_CANNOT_CREATE_RENDER=-103; // Initialisation of display driver failed
 const int ERR_RENDERER_CANNOT_INIT_TTF=-104; // Initialisation of display driver failed
-
+const int ERR_COMMAND_NO_RENDERER=-200;
+const int ERR_COMMAND_NO_COMPOSITOR=-201;
+const int ERR_COMMAND_NO_WINDOWS=-202;
 /* X and Y points packed into one */
 struct Point {
 	double x;
@@ -271,6 +273,7 @@ class Renderer {
 		bool running;
 		unsigned int fps;
 		std::thread* runthread;
+		int last_error;
 	public:
 		int width;
 		int height;

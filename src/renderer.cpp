@@ -42,6 +42,7 @@ Renderer::Renderer() {
 	width=800;
 	height=600;
 	runthread=NULL;
+	last_error=0;
 }
 
 Renderer::~Renderer() {
@@ -59,15 +60,16 @@ int Renderer::shutdown(void) {
 bool Renderer::ready(void) {
 	if( access.try_lock() ) {
 		// Lock obtained...
-		access.unlock();// ...but we don't need it.
 		if(run) {
+		access.unlock();// ...but we don't need it.
 			return true;
 		} else {
+		access.unlock();// ...but we don't need it.
 			return false;
 		}
 	}
 	// No lock was obtained
-	return false;
+	return run;
 }
 unsigned int Renderer::get_fps(void) { 
 	access.lock();
@@ -112,7 +114,7 @@ bool Renderer::render_frame(void) {
 	return renderedall;
 }
 bool Renderer::render_loop(void) {
-	if(this->init()>=0) {
+	if(last_error=this->init()>=0) {
 		//using milliseconds = std::chrono::duration<int, milli>;
 		std::chrono::milliseconds ms(1);
 		unsigned int fpstime=SDL_GetTicks();

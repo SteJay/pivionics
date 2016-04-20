@@ -6,7 +6,7 @@ AR := ar
 ARFLAGS := rcs
 
 # The following is used to link against the necessary SDL2 libraries:
-SDLFLAGS := -lSDL2 -lSDL2_gfx -lSDL2_ttf -lSDL2_image
+SDLFLAGS := -lSDL2 -lSDL2_gfx -lSDL2_ttf -lSDL2_image -lSDL2_net
 # And these are used to link against lib/libcore.a and posix threading:
 CURSESFLAGS := -lncurses
 COREFLAGS := -lcore -pthread
@@ -46,7 +46,11 @@ OBJDIR := obj
 LIBDIR := lib
 
 # The Main Targets:
-all: $(BINDIR)/pivedit $(BINDIR)/pivcon
+all: $(BINDIR)/pivedit $(BINDIR)/pivcon $(BINDIR)/pivrend
+
+# My lil' socket wrapper...
+$(OBJDIR)/sjsock.o: $(SRCDIR)/sjsock.cpp $(SRCDIR)/sjsock.h
+	$(CC) $(CCFLAGS) $(CCOPTS) -c $< -lpthread -o $@
 
 # The Object Files:
 $(OBJDIR)/stringsplit.o: $(SRCDIR)/stringsplit.cpp $(SRCDIR)/stringsplit.h
@@ -89,16 +93,20 @@ $(OBJDIR)/sdlrenderer.o: $(SRCDIR)/sdlrenderer.cpp $(SRCDIR)/sdlrenderer.h $(SRC
 	$(CC) $(CCFLAGS) $(CCOPTS) -c $< $(SDLFLAGS) -o $@
 
 # Our Core Library:
-$(LIBDIR)/libcore.a: $(OBJDIR)/command.o $(OBJDIR)/compositor.o $(OBJDIR)/renderer.o $(OBJDIR)/sdlrenderer.o $(OBJDIR)/element.o $(OBJDIR)/window.o $(OBJDIR)/container.o $(OBJDIR)/circle.o $(OBJDIR)/box.o $(OBJDIR)/irregular.o $(OBJDIR)/text.o $(OBJDIR)/stringsplit.o 
+$(LIBDIR)/libcore.a: $(OBJDIR)/command.o $(OBJDIR)/compositor.o $(OBJDIR)/renderer.o $(OBJDIR)/sdlrenderer.o $(OBJDIR)/element.o $(OBJDIR)/window.o $(OBJDIR)/container.o $(OBJDIR)/circle.o $(OBJDIR)/box.o $(OBJDIR)/irregular.o $(OBJDIR)/text.o $(OBJDIR)/stringsplit.o $(OBJDIR)/sjsock.o 
 	$(AR) $(ARFLAGS) $@ $^
 
 # The Editor Binary:
 $(BINDIR)/pivedit: $(SRCDIR)/editor.cpp $(LIBDIR)/libcore.a
 	$(CC) $(CCFLAGS) $(CCOPTS) $< $(SDLFLAGS) $(COREFLAGS) -o $@
 
-# The Newer Editor Binary:
+# The Console Binary:
 $(BINDIR)/pivcon: $(SRCDIR)/pivcon.cpp $(OBJDIR)/console.o $(LIBDIR)/libcore.a
 	$(CC) $(CCFLAGS) $(CCOPTS) $< $(OBJDIR)/console.o $(CURSESFLAGS) $(SDLFLAGS) $(COREFLAGS) -o $@
+
+# Here we are....
+$(BINDIR)/pivrend: $(SRCDIR)/pivrend.cpp $(LIBDIR)/libcore.a
+	$(CC) $(CCFLAGS) $(CCOPTS) $< $(SDLFLAGS) $(COREFLAGS) -o $@
 
 
 # Remove a previous build:

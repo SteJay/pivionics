@@ -21,6 +21,7 @@ along with Pivionics.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "curses.h"
 #include "core_elements.h"
+#include "command.h"
 
 #ifndef PIV_CONSOLE_H
 #define PIV_CONSOLE_H
@@ -85,4 +86,5 @@ class PivConsole {
         
 };
 void main_fn(void);
+
 #endif

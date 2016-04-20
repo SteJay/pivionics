@@ -42,6 +42,9 @@ PivConsole::PivConsole(){
     cur_type="Window";
     cur_name="Default Window";
     hist.clear();
+    
+
+    
     screen = newterm(NULL,stdout,stdin);
     status="Pivionics Console:";
     linebuffer.push_back("Welcome to the Pivionics Console.");

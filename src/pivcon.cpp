@@ -30,6 +30,7 @@ void signal_catcher( int signum ) {
 }
 
 int main(int argc,char* argv[]) {
+    // Uncomment the following to prevent ctrl+c from quitting -- NOT ADVISIBLE AT THIS TIME
     //signal(SIGINT,signal_catcher);
     main_fn();
     return 0;

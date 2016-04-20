@@ -19,13 +19,20 @@ along with Pivionics.  If not, see <http://www.gnu.org/licenses/>.
 
 */
 
+#ifndef PIV_COMMAND_H
+#define PIV_COMMAND_H
+
 #include "core_elements.h"
 
 class CommandInstance {
 private:
     Element* current;
+    Window* curwin;
     std::string out;
 protected:
+    std::list<Window*> windows;
+    Renderer* renderer;
+    Compositor* compositor;
     void output(std::string);
     void output(long double);
     void output(double);
@@ -36,8 +43,10 @@ protected:
     std::string get_output(void);
 public:
     CommandInstance();
+    virtual int init(Renderer*,Compositor*);
+    virtual std::string do_input(std::string);
     void command(Window*,std::string);
     std::string treepos (void);
-    
-    
+    int run(void);
 };
+#endif
