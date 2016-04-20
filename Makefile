@@ -8,6 +8,7 @@ ARFLAGS := rcs
 # The following is used to link against the necessary SDL2 libraries:
 SDLFLAGS := -lSDL2 -lSDL2_gfx -lSDL2_ttf -lSDL2_image
 # And these are used to link against lib/libcore.a and posix threading:
+CURSESFLAGS := -lncurses
 COREFLAGS := -lcore -pthread
 
 
@@ -45,7 +46,7 @@ OBJDIR := obj
 LIBDIR := lib
 
 # The Main Targets:
-all: $(BINDIR)/pivedit
+all: $(BINDIR)/pivedit $(BINDIR)/pivcon
 
 # The Object Files:
 $(OBJDIR)/stringsplit.o: $(SRCDIR)/stringsplit.cpp $(SRCDIR)/stringsplit.h
@@ -75,6 +76,12 @@ $(OBJDIR)/compositor.o: $(SRCDIR)/compositor.cpp $(SRCDIR)/core_elements.h
 $(OBJDIR)/renderer.o: $(SRCDIR)/renderer.cpp $(SRCDIR)/core_elements.h
 	$(CC) $(CCFLAGS) $(CCOPTS) -c $< -o $@
 
+$(OBJDIR)/command.o: $(SRCDIR)/command.cpp $(SRCDIR)/command.h $(SRCDIR)/core_elements.h
+	$(CC) $(CCFLAGS) $(CCOPTS) -c $< -o $@
+
+$(OBJDIR)/console.o: $(SRCDIR)/console.cpp $(SRCDIR)/console.h $(SRCDIR)/core_elements.h
+	$(CC) $(CCFLAGS) $(CCOPTS) -c $< -o $@
+
 $(OBJDIR)/text.o: $(SRCDIR)/text.cpp $(SRCDIR)/text.h $(SRCDIR)/core_elements.h
 	$(CC) $(CCFLAGS) $(CCOPTS) -c $< $(SDLFLAGS) -o $@
 
@@ -82,12 +89,17 @@ $(OBJDIR)/sdlrenderer.o: $(SRCDIR)/sdlrenderer.cpp $(SRCDIR)/sdlrenderer.h $(SRC
 	$(CC) $(CCFLAGS) $(CCOPTS) -c $< $(SDLFLAGS) -o $@
 
 # Our Core Library:
-$(LIBDIR)/libcore.a: $(OBJDIR)/stringsplit.o $(OBJDIR)/container.o $(OBJDIR)/circle.o $(OBJDIR)/box.o $(OBJDIR)/compositor.o $(OBJDIR)/renderer.o $(OBJDIR)/sdlrenderer.o $(OBJDIR)/text.o $(OBJDIR)/window.o $(OBJDIR)/element.o $(OBJDIR)/irregular.o
+$(LIBDIR)/libcore.a: $(OBJDIR)/command.o $(OBJDIR)/compositor.o $(OBJDIR)/renderer.o $(OBJDIR)/sdlrenderer.o $(OBJDIR)/element.o $(OBJDIR)/window.o $(OBJDIR)/container.o $(OBJDIR)/circle.o $(OBJDIR)/box.o $(OBJDIR)/irregular.o $(OBJDIR)/text.o $(OBJDIR)/stringsplit.o 
 	$(AR) $(ARFLAGS) $@ $^
 
 # The Editor Binary:
 $(BINDIR)/pivedit: $(SRCDIR)/editor.cpp $(LIBDIR)/libcore.a
 	$(CC) $(CCFLAGS) $(CCOPTS) $< $(SDLFLAGS) $(COREFLAGS) -o $@
+
+# The Newer Editor Binary:
+$(BINDIR)/pivcon: $(SRCDIR)/pivcon.cpp $(OBJDIR)/console.o $(LIBDIR)/libcore.a
+	$(CC) $(CCFLAGS) $(CCOPTS) $< $(OBJDIR)/console.o $(CURSESFLAGS) $(SDLFLAGS) $(COREFLAGS) -o $@
+
 
 # Remove a previous build:
 clean:
