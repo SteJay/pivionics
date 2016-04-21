@@ -64,7 +64,64 @@ namespace sjs {
         i = *static_cast<int*>(static_cast<void*>(&buf));
         return i;
     }
-    
+    unsigned int IP_Message::get_uint(void) {
+        int i=0;
+        char buf[8]="\0\0\0\0\0\0\0";
+        for(int j=0;j<sizeof(unsigned int);++j) {
+            buf[j] = raw->front();
+            raw->pop();
+        }
+        i = *static_cast<unsigned int*>(static_cast<void*>(&buf));
+        return i;
+    }
+    long IP_Message::get_long(void) {
+        int i=0;
+        char buf[8]="\0\0\0\0\0\0\0";
+        for(int j=0;j<sizeof(long);++j) {
+            buf[j] = raw->front();
+            raw->pop();
+        }
+        i = *static_cast<long*>(static_cast<void*>(&buf));
+        return i;
+    }
+    unsigned long IP_Message::get_ulong(void) {
+        int i=0;
+        char buf[8]="\0\0\0\0\0\0\0";
+        for(int j=0;j<sizeof(unsigned long);++j) {
+            buf[j] = raw->front();
+            raw->pop();
+        }
+        i = *static_cast<unsigned long*>(static_cast<void*>(&buf));
+        return i;
+    }
+    float IP_Message::get_float(void) {
+        int i=0;
+        char buf[8]="\0\0\0\0\0\0\0";
+        for(int j=0;j<sizeof(float);++j) {
+            buf[j] = raw->front();
+            raw->pop();
+        }
+        i = *static_cast<float*>(static_cast<void*>(&buf));
+        return i;
+    }
+    double IP_Message::get_double(void) {
+        int i=0;
+        char buf[8]="\0\0\0\0\0\0\0";
+        for(int j=0;j<sizeof(double);++j) {
+            buf[j] = raw->front();
+            raw->pop();
+        }
+        i = *static_cast<double*>(static_cast<void*>(&buf));
+        return i;
+    }
+    void IP_Message::get_chararr(char* ca, int cl) {
+        int i;
+        for(i=0;i<cl&&raw->size()>0;++i) {
+            ca[i]=raw->front();
+            raw->pop();
+        }
+        if(i<cl) ca[i]='\0';
+    }
     IP_TcpServerClient::IP_TcpServerClient (int i) {
         pfd.fd=i;
         pfd.events=POLLIN|POLLOUT|POLLERR;

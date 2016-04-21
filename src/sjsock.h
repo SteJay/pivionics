@@ -48,12 +48,12 @@ class IP_Message {
         virtual std::string get_string(void);
         virtual char get_char(void);
         virtual int get_int(void);
-/*        virtual unsigned int get_uint(void);
+        virtual unsigned int get_uint(void);
         virtual long get_long(void);
         virtual unsigned long get_ulong(void);
         virtual float get_float(void);
         virtual double get_double(void);
-        virtual void get_chararr(char*,int);*/
+        virtual void get_chararr(char*,int);
 };
 
 
