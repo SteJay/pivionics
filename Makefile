@@ -11,7 +11,6 @@ SDLFLAGS := -lSDL2 -lSDL2_gfx -lSDL2_ttf -lSDL2_image -lSDL2_net
 CURSESFLAGS := -lncurses
 COREFLAGS := -lcore -pthread
 
-
 # The main options to set for our compiler
 # First the standard stuff - we're using C++11 and we need to include our lib 
 # directory...
@@ -45,14 +44,21 @@ SRCDIR := src
 OBJDIR := obj
 LIBDIR := lib
 
+# Make EVERYTHING!
+everything: all tests
+
 # The Main Targets:
 all: $(BINDIR)/pivedit $(BINDIR)/pivcon $(BINDIR)/pivrend
+
+# Testing targets
+tests: $(BINDIR)/sjsock
 
 # My lil' socket wrapper...
 $(OBJDIR)/sjsock.o: $(SRCDIR)/sjsock.cpp $(SRCDIR)/sjsock.h
 	$(CC) $(CCFLAGS) $(CCOPTS) -c $< -lpthread -o $@
 
 # The Object Files:
+###############################################################################
 $(OBJDIR)/stringsplit.o: $(SRCDIR)/stringsplit.cpp $(SRCDIR)/stringsplit.h
 	$(CC) $(CCFLAGS) $(CCOPTS) -c $< -o $@
 
@@ -93,23 +99,35 @@ $(OBJDIR)/sdlrenderer.o: $(SRCDIR)/sdlrenderer.cpp $(SRCDIR)/sdlrenderer.h $(SRC
 	$(CC) $(CCFLAGS) $(CCOPTS) -c $< $(SDLFLAGS) -o $@
 
 # Our Core Library:
+##############################################################################
 $(LIBDIR)/libcore.a: $(OBJDIR)/command.o $(OBJDIR)/compositor.o $(OBJDIR)/renderer.o $(OBJDIR)/sdlrenderer.o $(OBJDIR)/element.o $(OBJDIR)/window.o $(OBJDIR)/container.o $(OBJDIR)/circle.o $(OBJDIR)/box.o $(OBJDIR)/irregular.o $(OBJDIR)/text.o $(OBJDIR)/stringsplit.o $(OBJDIR)/sjsock.o 
 	$(AR) $(ARFLAGS) $@ $^
 
+# Binaries
+##############################################################################
+
 # The Editor Binary:
+##############################################################################
 $(BINDIR)/pivedit: $(SRCDIR)/editor.cpp $(LIBDIR)/libcore.a
 	$(CC) $(CCFLAGS) $(CCOPTS) $< $(SDLFLAGS) $(COREFLAGS) -o $@
 
 # The Console Binary:
+##############################################################################
 $(BINDIR)/pivcon: $(SRCDIR)/pivcon.cpp $(OBJDIR)/console.o $(LIBDIR)/libcore.a
 	$(CC) $(CCFLAGS) $(CCOPTS) $< $(OBJDIR)/console.o $(CURSESFLAGS) $(SDLFLAGS) $(COREFLAGS) -o $@
 
-# Here we are....
+# The PivRend Binary:
+##############################################################################
 $(BINDIR)/pivrend: $(SRCDIR)/pivrend.cpp $(LIBDIR)/libcore.a
 	$(CC) $(CCFLAGS) $(CCOPTS) $< $(SDLFLAGS) $(COREFLAGS) -o $@
 
+# Tests (not compiled with all)
+##############################################################################
+$(BINDIR)/sjsock: $(SRCDIR)/sjsock_test.cpp $(OBJDIR)/sjsock.o
+	$(CC) $(CCFLAGS) $(CCOPTS) $^ -pthread -o $@
 
-# Remove a previous build:
+# Remove a previous build, useful when the Makefile changes:
+##############################################################################
 clean:
 	rm -f obj/*
 	rm -f lib/*

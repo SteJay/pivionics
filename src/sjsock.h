@@ -46,6 +46,7 @@ class IP_Message {
         ~IP_Message();
         virtual void set_string(std::string);
         virtual std::string get_string(void);
+        virtual std::string get_string(int);
         virtual char get_char(void);
         virtual int get_int(void);
         virtual unsigned int get_uint(void);
@@ -55,7 +56,6 @@ class IP_Message {
         virtual double get_double(void);
         virtual void get_chararr(char*,int);
 };
-
 
 class IP_TcpServerClient {
     private:
@@ -81,8 +81,10 @@ class IP_TcpClient {
         void run_thread(void);
         std::queue<IP_Message*> in;
         std::queue<IP_Message*> out;
+        void* responder;
     public:
-        int con(char*,unsigned short);
+        int start(std::string,unsigned short);
+        void register_responder(void* v) { responder=v; }
         void dis(void);
         IP_Message* receive(void);
         void send(IP_Message*);
@@ -106,7 +108,7 @@ class IP_TcpServer {
     public:
         IP_TcpServer();
         void register_responder(void* v) { responder=v; }
-        int start(void);
+        int start(std::string,unsigned short);
         void stop(void);
         void receive(void);
         void send(IP_TcpServerClient*,IP_Message*);

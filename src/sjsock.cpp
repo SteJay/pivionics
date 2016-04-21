@@ -44,6 +44,16 @@ namespace sjs {
         }
         return s;
     }
+    std::string IP_Message::get_string(int len){
+        std::string s="";
+        while(raw->size()>0&&s.size()<len) {
+            char c[2]={raw->front()};
+            c[1]='\0';
+            s.append(c);
+            raw->pop();
+        }
+        return s;
+    }
     
     char IP_Message::get_char(void){
         char c='\0';
@@ -229,14 +239,17 @@ namespace sjs {
         pausetime=100;
         
     }
-    int IP_TcpServer::start(void) {
+    int IP_TcpServer::start(std::string address, unsigned short port) {
         access.lock();
         sockfd=socket(PF_INET,SOCK_STREAM,0);
         if(sockfd>=0) {
             setsockopt(sockfd,SOL_SOCKET,0,&sockopts, sizeof(sockopts));
             memset(&srv,0,sizeof(srv));
             srv.sin_family=AF_INET;
-            srv.sin_port=htons(6789);
+            srv.sin_port=htons(port);
+            if(!inet_aton(address.c_str(),&srv.sin_addr)) {
+                return -3;
+            }
             socklen=sizeof(srv);
             // Bind the socket...
             if( (bind(sockfd, (struct sockaddr*)&srv, socklen)) < 0) {
@@ -291,16 +304,17 @@ namespace sjs {
         
     }
     
-    int IP_TcpClient::con(char* ipaddr,unsigned short port) {
+    int IP_TcpClient::start(std::string ipaddr,unsigned short port) {
         pfd.fd=socket(PF_INET,SOCK_STREAM,0);
         if(pfd.fd<0) return -3;
         pfd.events=POLLIN|POLLOUT|POLLERR;
         memset(&cli,0,sizeof(cli));
         cli.sin_family=AF_INET;
-        cli.sin_port=port;
-        if(!(inet_aton(ipaddr,&cli.sin_addr))) return -1;
+        cli.sin_port=htons(port);
+        if(!(inet_aton(ipaddr.c_str(),&cli.sin_addr))) return -1;
         socklen=sizeof(cli);
-        if(connect(pfd.fd,(struct sockaddr *)&cli,socklen)) return -2;
+        int wang;
+        if(wang=connect(pfd.fd,(struct sockaddr *)&cli,socklen)) return wang-1000;
         mythread=new std::thread(&IP_TcpClient::run_thread,this);
         return 0;
     }
