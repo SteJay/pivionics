@@ -64,7 +64,7 @@ int main(int argc,char* argv[] ) {
         // Set up the TCPness...
         Server srv;
         
-        int sret=srv.start();
+        int sret=srv.start("0.0.0.0",6890);
         srv.register_responder(&rsp);
         if(sret>=0) {
             while(rendur.ready()) {

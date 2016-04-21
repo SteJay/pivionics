@@ -22,6 +22,8 @@ along with Pivionics.  If not, see <http://www.gnu.org/licenses/>.
 #include "curses.h"
 #include "core_elements.h"
 #include "command.h"
+#include "sjsock.h"
+#include <iostream>
 
 #ifndef PIV_CONSOLE_H
 #define PIV_CONSOLE_H
@@ -42,6 +44,17 @@ along with Pivionics.  If not, see <http://www.gnu.org/licenses/>.
 #define W_ON_B 12
 #define C_ON_B 13
 #define Y_ON_B 14
+
+class PivClient:public sjs::IP_TcpClient {
+    public:
+        // Implement TCP client to get messages as a queue of strings
+        void got_message(sjs::IP_Message* msg,void* vpoint) {
+            std::queue<std::string>* q=static_cast<std::queue<std::string>*>(vpoint);
+            q->push(msg->get_string());
+            std::cerr << "Received message: \n";
+            delete msg;
+        }
+};
 
 class PivConsole {
     private:
@@ -66,11 +79,30 @@ class PivConsole {
         std::list<std::string> siblingbuffer;
         std::list<std::string> propbuffer;
         std::list<std::string> attrbuffer;
+        PivClient tcp;
+        std::queue<std::string> inputbuffer;
         std::string cur_type;
         std::string cur_name;
-        
+        std::string cur_cx;
+        std::string cur_cy;
+        std::string cur_width;
+        std::string cur_height;
+        std::string cur_xscale;
+        std::string cur_yscale;
+        std::string cur_angle;
+        std::string cur_arc;
+        std::string cur_thickness;
+        std::string cur_sections;
+        std::string cur_subsections;
+        std::string cur_color;
+        std::string cur_inherit_position;
+        std::string cur_inherit_angle;
+        std::string cur_inherit_scale;
+        std::string cur_text;
         int cursor;
         int focus;
+        
+        
         
     protected:
         void get_input(void);

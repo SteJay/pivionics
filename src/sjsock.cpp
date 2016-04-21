@@ -26,7 +26,11 @@ namespace sjs {
         raw=new std::queue<char>;
     }
     IP_Message::IP_Message(std::queue<char>* q) {
-        raw=q;
+        raw=new std::queue<char>;
+        while(q->size()>0) {
+            raw->push(q->front());
+            q->pop();
+        }
     }
     IP_Message::~IP_Message(){ delete raw; }
     void IP_Message::set_string(std::string str) {
@@ -141,7 +145,7 @@ namespace sjs {
     void IP_TcpServerClient::run(void) {
         int runme=true;
         int pollval;
-        char buf[2];
+        char buf[256];
         std::queue<char> instr;
         while(runme){
             pollval=poll(&pfd,1,0);
@@ -159,13 +163,17 @@ namespace sjs {
                 if(out.size()>0) {
                     IP_Message* msg=out.front();
                     out.pop();
-                    std::string msgs = msg->get_string();
-                    delete msg;
-                    for(int i=0;i<msgs.size();++i) {
-                        buf[0]=msgs[i];
-                        buf[1]='\0';
-                        write(pfd.fd,&buf,1);
+                    char ch=' '; int i=0;
+                    while((ch=msg->get_char())!='\0') {
+                        if(i<256) buf[i]=ch;
+                        else {
+                            write(pfd.fd,&buf,256);
+                            i=-1;
+                        }
+                        i++;
                     }
+                    if(i>0) write(pfd.fd,&buf,i);
+                    delete msg;
                 }
             }
             if(pfd.revents&POLLERR) {
@@ -197,13 +205,17 @@ namespace sjs {
                 if(out.size()>0) {
                     IP_Message* msg=out.front();
                     out.pop();
-                    std::string msgs = msg->get_string();
-                    delete msg;
-                    for(int i=0;i<msgs.size();++i) {
-                        buf[0]=msgs[i];
-                        buf[1]='\0';
-                        write(pfd.fd,&buf,1);
+                    char ch=' '; int i=0;
+                    while((ch=msg->get_char())!='\0') {
+                        if(i<256) buf[i]=ch;
+                        else {
+                            write(pfd.fd,&buf,256);
+                            i=-1;
+                        }
+                        i++;
                     }
+                    if(i>0) write(pfd.fd,&buf,i);
+                    delete msg;
                 }
             }
             if(pfd.revents&POLLERR) {
@@ -311,23 +323,23 @@ namespace sjs {
         memset(&cli,0,sizeof(cli));
         cli.sin_family=AF_INET;
         cli.sin_port=htons(port);
-        if(!(inet_aton(ipaddr.c_str(),&cli.sin_addr))) return -1;
+        if(!(inet_aton(ipaddr.c_str(),&cli.sin_addr))) return -2;
         socklen=sizeof(cli);
         int wang;
-        if(wang=connect(pfd.fd,(struct sockaddr *)&cli,socklen)) return wang-1000;
+        if(wang=connect(pfd.fd,(struct sockaddr *)&cli,socklen)) return wang;
         mythread=new std::thread(&IP_TcpClient::run_thread,this);
         return 0;
     }
     
-    IP_Message* IP_TcpClient::receive(void) {
+    void IP_TcpClient::receive(void) {
         IP_Message* msg=NULL;
         access.lock();
         if(in.size()>0) {
             msg=in.front();
+            if(msg!=NULL) this->got_message(msg,responder);
             in.pop();
         }
         access.unlock();
-        return msg;
     }
     void IP_TcpClient::send(IP_Message* msg) {
         access.lock();

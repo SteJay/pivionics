@@ -25,6 +25,7 @@ along with Pivionics.  If not, see <http://www.gnu.org/licenses/>.
 #include <curses.h>
 #include "core_elements.h"
 #include "console.h"
+#include "stringsplit.h"
 
 PivConsole::PivConsole(){
     ok=false;
@@ -42,9 +43,6 @@ PivConsole::PivConsole(){
     cur_type="Window";
     cur_name="Default Window";
     hist.clear();
-    
-
-    
     screen = newterm(NULL,stdout,stdin);
     status="Pivionics Console:";
     linebuffer.push_back("Welcome to the Pivionics Console.");
@@ -164,6 +162,10 @@ void PivConsole::display(void) {
     for(int i=0;i<width-cur_type.size()-cur_name.size()-20;++i) addstr(" ");
     attroff(COLOR_PAIR(W_ON_B)|A_NORMAL);
     lines_left-=1;
+    // Now draw the current element details
+    
+    
+    
     // Finally draw the line buffer - start at the bottom and work up to fill remaining space
     std::string thisline="";
     for(auto it=linebuffer.rbegin();it!=linebuffer.rend();++it) {
@@ -217,7 +219,12 @@ void PivConsole::entered(void) {
     
     if(commandline.compare("quit")==0) { running=false; }
     // TODO: Process the commandline
-    
+    sjs::IP_Message* msg=new sjs::IP_Message;
+    msg->set_string(commandline);
+    tcp.send(msg);
+    msg=new sjs::IP_Message;
+    msg->set_string("ex fps ");
+    tcp.send(msg);
     // Clear the commandline:
     commandline="";
     cursor=0;
@@ -225,6 +232,53 @@ void PivConsole::entered(void) {
 }
 
 void PivConsole::get_input(void) {
+    // Before we process terminal input, lets see what the network has had to say
+    while( inputbuffer.size()>0) {
+        std::list<std::string> args=get_arguments(inputbuffer.front());
+        std::string thisline="";
+        while(args.size()>0) {
+            std::string s=args.front();
+            args.pop_front();
+            if(s.compare("ELEMENT:")==0) {
+                propbuffer.clear();
+                int i=0; while( i<18 && args.size()>0 ) {
+                    ++i;
+                    if(i==1) { cur_type = args.front(); }
+                    else if(i==2) { cur_name = args.front(); }
+                    else if(i==3) { cur_cx = args.front(); }
+                    else if(i==4) { cur_cy = args.front(); }
+                    else if(i==5) { cur_width = args.front(); }
+                    else if(i==6) { cur_height = args.front(); }
+                    else if(i==7) { cur_xscale = args.front(); }
+                    else if(i==8) { cur_yscale = args.front(); }
+                    else if(i==9) { cur_angle = args.front(); }
+                    else if(i==10) { cur_arc = args.front(); }
+                    else if(i==11) { cur_thickness = args.front(); }
+                    else if(i==12) { cur_sections = args.front(); }
+                    else if(i==13) { cur_subsections = args.front(); }
+                    else if(i==14) { cur_color = args.front(); }
+                    else if(i==15) { cur_inherit_position = args.front(); }
+                    else if(i==16) { cur_inherit_angle = args.front(); }
+                    else if(i==17) { cur_inherit_scale = args.front(); }
+                    args.pop_front();
+                }
+            } else if(s.compare("ATTRS:")==0) {
+                std::string a;
+                while(args.size()>0) {
+                    a=args.front(); args.pop_front();
+                    a.append(args.front()); args.pop_front();
+                    a.append(args.front()); args.pop_front();
+                }
+            } else {
+                thisline.append(s+" ");
+            }
+            if(thisline.size()>0) linebuffer.push_back(thisline);
+            
+        }
+        inputbuffer.pop();
+//        linebuffer.push_back(inputbuffer.front());
+//        inputbuffer.pop();
+    }
     int chin = getch();
     if(chin!=ERR) {
         if(chin>=' '&&chin<='~'){ 
@@ -278,12 +332,16 @@ void PivConsole::get_input(void) {
 }
 
 void PivConsole::run(void) {
+    tcp.register_responder(&inputbuffer);
+    if((tcp.start("127.0.0.1",6890))<0) { return; }
+    
     running=true;
     timespec sleep_time;
     timespec rem_time;
     sleep_time.tv_sec=0;
     sleep_time.tv_nsec=10000000;
     while(running) {
+        tcp.receive();
         get_input();
         display();
         // do something else...

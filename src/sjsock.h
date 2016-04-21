@@ -86,7 +86,7 @@ class IP_TcpClient {
         int start(std::string,unsigned short);
         void register_responder(void* v) { responder=v; }
         void dis(void);
-        IP_Message* receive(void);
+        void receive(void);
         void send(IP_Message*);
         virtual void got_message(IP_Message*,void*)=0;
         

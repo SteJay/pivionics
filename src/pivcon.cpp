@@ -23,8 +23,6 @@ along with Pivionics.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "console.h"
 
-
-
 void signal_catcher( int signum ) {
     //do something
 }
