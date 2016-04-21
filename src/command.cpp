@@ -62,9 +62,15 @@ void CommandInstance::output(unsigned int i) {
     out+=std::to_string(i);
 }
 void CommandInstance::output(Element* e) {
-        output("ELEMENT: \n");
-        output(e->type()); ops();
-        output(e->name());ops();
+    if(e==NULL) {
+        e=curwin;
+    }
+    if(e!=NULL) {
+        std::string ts="";
+        output("ELEMENT: ");
+        ts=e->type();
+        output(ts); ops();
+        output("\"");output(e->name());output("\"");ops();
         output(e->cx());ops();
         output(e->cy()); ops();
         output(e->width()); ops();
@@ -81,18 +87,20 @@ void CommandInstance::output(Element* e) {
         if(e->inherit_angle) output("true"); else output("false");ops();
         if(e->inherit_scale) output("true"); else output("false");ops();
         std::string s=e->text();
-        if(s.compare("")!=0){output("TEXT: \n"); output(s);ops();}
+        if(s.compare("")!=0){output("\nTEXT: \""); output(s);output("\"");ops();}
         std::vector<std::string> a=e->get_attrs();
         if(a.size()>0) {
-            output("ATTRS: \n");
+            output("\nATTRS: \n");
             for(auto iter=a.begin(); iter!=a.end(); ++iter) {
                 s=*iter;
-                output(s+" = \""+e->get_attr(s)+"\"");
+                output(s+" = \""+e->get_attr(s)+"\"");ops();
             }
         }
+    }
 }
 
 void CommandInstance::command(Window* window, std::string cmd) {
+    
     out.clear();
     std::vector<std::string> args = split(cmd,' ');
     std::string c=args[0];
@@ -181,10 +189,11 @@ void CommandInstance::command(Window* window, std::string cmd) {
         }
         
     }
-
+    
 }
 
 std::string CommandInstance::do_input(std::string s) {
+    access.lock();
     std::string rs="";
     if(s.size()>0) {
         std::cerr << "Got \"" << s << "\":\n";
@@ -193,13 +202,15 @@ std::string CommandInstance::do_input(std::string s) {
             rs=out;
         }
     }
-    run();
+    access.unlock();
     return rs;
 }
 
 int CommandInstance::run(void) {
+    access.lock();
     curwin->construct();
     compositor->compose();
+    access.unlock();
 }
 
 int CommandInstance::init(Renderer* r,Compositor* c) {

@@ -29,7 +29,11 @@ namespace sjs {
         raw=q;
     }
     IP_Message::~IP_Message(){ delete raw; }
-    
+    void IP_Message::set_string(std::string str) {
+        for(int i=0;i<str.size();++i) {
+            raw->push(str[i]);
+        }
+    }
     std::string IP_Message::get_string(void){
         std::string s="";
         while(raw->size()>0) {
@@ -84,16 +88,81 @@ namespace sjs {
                     in.push( new IP_Message(&instr) );
                 }
             }
+            if(pfd.revents&POLLOUT) {
+                if(out.size()>0) {
+                    IP_Message* msg=out.front();
+                    out.pop();
+                    std::string msgs = msg->get_string();
+                    delete msg;
+                    for(int i=0;i<msgs.size();++i) {
+                        buf[0]=msgs[i];
+                        buf[1]='\0';
+                        write(pfd.fd,&buf,1);
+                    }
+                }
+            }
             if(pfd.revents&POLLERR) {
                 access.unlock();
                 return;
             }
             access.unlock();
-            std::this_thread::sleep_for(std::chrono::milliseconds(50));
+            std::this_thread::sleep_for(std::chrono::milliseconds(5));
         }
     }
-
-
+    void IP_TcpClient::run_thread(void) {
+        int runme=true;
+        int pollval;
+        char buf[2];
+        std::queue<char> instr;
+        while(runme){
+            pollval=poll(&pfd,1,0);
+            access.lock();
+            if(pfd.revents&POLLIN) {
+                while(read(pfd.fd,buf,1)>0&&buf[0]!='\0'&&buf[0]!='\n') {
+                    buf[1]='\0';
+                    instr.push(buf[0]);
+                }
+                if(instr.size()>0) {
+                    in.push( new IP_Message(&instr) );
+                }
+            }
+            if(pfd.revents&POLLOUT) {
+                if(out.size()>0) {
+                    IP_Message* msg=out.front();
+                    out.pop();
+                    std::string msgs = msg->get_string();
+                    delete msg;
+                    for(int i=0;i<msgs.size();++i) {
+                        buf[0]=msgs[i];
+                        buf[1]='\0';
+                        write(pfd.fd,&buf,1);
+                    }
+                }
+            }
+            if(pfd.revents&POLLERR) {
+                access.unlock();
+                return;
+            }
+            access.unlock();
+            std::this_thread::sleep_for(std::chrono::milliseconds(5));
+        }
+        
+    }
+    void IP_TcpServerClient::push(IP_Message* msg) {
+        access.lock();
+        out.push(msg);
+        access.unlock();
+    }
+    IP_Message* IP_TcpServerClient::pull(void) {
+        access.lock();
+        IP_Message* t=NULL;
+        if(in.size()>0) {
+            t=in.front();
+            in.pop();
+        }
+        return t;
+        access.unlock();
+    }
     IP_TcpServer::IP_TcpServer() {
         sockfd=-1;
         //memset(&srv,0,sizeof(srv));
@@ -162,7 +231,36 @@ namespace sjs {
                 cli->access.unlock();
             }
         }
-            
+        
     }
-
+    
+    int IP_TcpClient::con(char* ipaddr,unsigned short port) {
+        pfd.fd=socket(PF_INET,SOCK_STREAM,0);
+        if(pfd.fd<0) return -3;
+        pfd.events=POLLIN|POLLOUT|POLLERR;
+        memset(&cli,0,sizeof(cli));
+        cli.sin_family=AF_INET;
+        cli.sin_port=port;
+        if(!(inet_aton(ipaddr,&cli.sin_addr))) return -1;
+        socklen=sizeof(cli);
+        if(connect(pfd.fd,(struct sockaddr *)&cli,socklen)) return -2;
+        mythread=new std::thread(&IP_TcpClient::run_thread,this);
+        return 0;
+    }
+    
+    IP_Message* IP_TcpClient::receive(void) {
+        IP_Message* msg=NULL;
+        access.lock();
+        if(in.size()>0) {
+            msg=in.front();
+            in.pop();
+        }
+        access.unlock();
+        return msg;
+    }
+    void IP_TcpClient::send(IP_Message* msg) {
+        access.lock();
+        out.push(msg);
+        access.unlock();
+    }
 }

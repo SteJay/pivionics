@@ -18,8 +18,8 @@ COREFLAGS := -lcore -pthread
 CCFLAGS := -std=c++11 -L./lib
 
 # Compiler optimisation - use -O2 for production, or -g -O0 for debugging
-CCFLAGS += -Ofast
-#CCFLAGS += -g -O0
+#CCFLAGS += -O2
+CCFLAGS += -g -O0
 
 # I often find colourised debugging info useful; I also sometimes have more
 # than one screen of it to read at once. Using the following option I can pipe

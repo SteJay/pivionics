@@ -23,12 +23,14 @@ along with Pivionics.  If not, see <http://www.gnu.org/licenses/>.
 #define PIV_COMMAND_H
 
 #include "core_elements.h"
+#include <mutex>
 
 class CommandInstance {
 private:
     Element* current;
     Window* curwin;
     std::string out;
+    std::mutex access;
 protected:
     std::list<Window*> windows;
     Renderer* renderer;

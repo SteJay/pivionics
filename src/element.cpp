@@ -172,10 +172,10 @@ void Element::set_attr(std::string key, std::string value) {
 	access.unlock();
 }
 
-std::string Element::type(void) { return typestr; }
-std::string Element::name(void) { return namestr; }
+std::string Element::type(void) { std::string t; access.lock();t=typestr;access.unlock(); return t; }
+std::string Element::name(void) { std::string t; access.lock();t=namestr;access.unlock(); return t; }
 
-void Element::name(std::string n) { namestr=n; }
+void Element::name(std::string n) { access.lock();namestr=n;access.unlock(); }
 
 Element* Window::add(std::string s,Element* el) {
 	access.lock();

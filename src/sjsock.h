@@ -44,6 +44,7 @@ class IP_Message {
         IP_Message();
         IP_Message(std::queue<char>*);
         ~IP_Message();
+        virtual void set_string(std::string);
         virtual std::string get_string(void);
         virtual char get_char(void);
         virtual int get_int(void);
@@ -59,14 +60,34 @@ class IP_Message {
 class IP_TcpServerClient {
     private:
         pollfd pfd;
-        
     public:
         std::thread* thread;
         IP_TcpServerClient(int);
         std::mutex access;
         std::queue<IP_Message*> out;
         std::queue<IP_Message*> in;
+        void push(IP_Message*);
+        IP_Message* pull(void);
         void run(void);
+};
+
+class IP_TcpClient {
+    private: 
+        pollfd pfd;
+        struct sockaddr_in cli;
+        socklen_t socklen;
+        std::mutex access;
+        std::thread* mythread;
+        void run_thread(void);
+        std::queue<IP_Message*> in;
+        std::queue<IP_Message*> out;
+    public:
+        int con(char*,unsigned short);
+        void dis(void);
+        IP_Message* receive(void);
+        void send(IP_Message*);
+        virtual void got_message(IP_Message*,void*)=0;
+        
 };
 
 class IP_TcpServer {
@@ -93,14 +114,6 @@ class IP_TcpServer {
         
 };
 
-class IP_TcpClient {
-    private: 
-        struct sockaddr_in srv;
-        socklen_t socklen;
-        int sockopts;
-    public:
-        
-};
 
 }
 
