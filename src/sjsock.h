@@ -39,7 +39,8 @@ class IP_Address {
 
 class IP_Message {
     protected:
-        std::queue<char>* raw;
+        std::queue<char> raw;
+        std::mutex access;
     public:
         IP_Message();
         IP_Message(std::queue<char>*);

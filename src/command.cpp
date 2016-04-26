@@ -90,9 +90,9 @@ void CommandInstance::output(Element* e) {
         if(s.compare("")!=0){output("\nTEXT: \""); output(s);output("\"");ops();}
         std::vector<std::string> a=e->get_attrs();
         if(a.size()>0) {
-            output("\nATTRS: \n");
             for(auto iter=a.begin(); iter!=a.end(); ++iter) {
                 s=*iter;
+                output("ATTR: ");
                 output(s+" = \""+e->get_attr(s)+"\"");ops();
             }
         }

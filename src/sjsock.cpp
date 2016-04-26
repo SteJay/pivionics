@@ -23,48 +23,58 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 namespace sjs {
 
     IP_Message::IP_Message() {
-        raw=new std::queue<char>;
     }
     IP_Message::IP_Message(std::queue<char>* q) {
-        raw=new std::queue<char>;
+        access.lock();
         while(q->size()>0) {
-            raw->push(q->front());
+            raw.push(q->front());
             q->pop();
         }
+        access.unlock();
     }
-    IP_Message::~IP_Message(){ delete raw; }
+    IP_Message::~IP_Message(){ 
+        
+    }
     void IP_Message::set_string(std::string str) {
+        access.lock();
         for(int i=0;i<str.size();++i) {
-            raw->push(str[i]);
+            raw.push(str[i]);
         }
+        access.unlock();
     }
     std::string IP_Message::get_string(void){
+        access.lock();
         std::string s="";
-        while(raw->size()>0) {
-            char c[2]={raw->front()};
+        while(raw.size()>0) {
+            char c[2]={raw.front()};
             c[1]='\0';
             s.append(c);
-            raw->pop();
+            raw.pop();
         }
+        access.unlock();
         return s;
     }
     std::string IP_Message::get_string(int len){
+        access.lock();
         std::string s="";
-        while(raw->size()>0&&s.size()<len) {
-            char c[2]={raw->front()};
+        while(raw.size()>0&&s.size()<len) {
+            char c[2]={raw.front()};
             c[1]='\0';
             s.append(c);
-            raw->pop();
+            raw.pop();
         }
+        access.unlock();
         return s;
     }
     
     char IP_Message::get_char(void){
+        access.lock();
         char c='\0';
-        if(raw->size()>0) {
-            c=raw->front();
-            raw->pop();
+        if(raw.size()>0) {
+            c=raw.front();
+            raw.pop();
         }
+        access.unlock();
         return c;
     }
     
@@ -72,8 +82,8 @@ namespace sjs {
         int i=0;
         char buf[8]="\0\0\0\0\0\0\0";
         for(int j=0;j<sizeof(int);++j) {
-            buf[j] = raw->front();
-            raw->pop();
+            buf[j] = raw.front();
+            raw.pop();
         }
         i = *static_cast<int*>(static_cast<void*>(&buf));
         return i;
@@ -82,8 +92,8 @@ namespace sjs {
         int i=0;
         char buf[8]="\0\0\0\0\0\0\0";
         for(int j=0;j<sizeof(unsigned int);++j) {
-            buf[j] = raw->front();
-            raw->pop();
+            buf[j] = raw.front();
+            raw.pop();
         }
         i = *static_cast<unsigned int*>(static_cast<void*>(&buf));
         return i;
@@ -92,8 +102,8 @@ namespace sjs {
         int i=0;
         char buf[8]="\0\0\0\0\0\0\0";
         for(int j=0;j<sizeof(long);++j) {
-            buf[j] = raw->front();
-            raw->pop();
+            buf[j] = raw.front();
+            raw.pop();
         }
         i = *static_cast<long*>(static_cast<void*>(&buf));
         return i;
@@ -102,8 +112,8 @@ namespace sjs {
         int i=0;
         char buf[8]="\0\0\0\0\0\0\0";
         for(int j=0;j<sizeof(unsigned long);++j) {
-            buf[j] = raw->front();
-            raw->pop();
+            buf[j] = raw.front();
+            raw.pop();
         }
         i = *static_cast<unsigned long*>(static_cast<void*>(&buf));
         return i;
@@ -112,8 +122,8 @@ namespace sjs {
         int i=0;
         char buf[8]="\0\0\0\0\0\0\0";
         for(int j=0;j<sizeof(float);++j) {
-            buf[j] = raw->front();
-            raw->pop();
+            buf[j] = raw.front();
+            raw.pop();
         }
         i = *static_cast<float*>(static_cast<void*>(&buf));
         return i;
@@ -122,17 +132,17 @@ namespace sjs {
         int i=0;
         char buf[8]="\0\0\0\0\0\0\0";
         for(int j=0;j<sizeof(double);++j) {
-            buf[j] = raw->front();
-            raw->pop();
+            buf[j] = raw.front();
+            raw.pop();
         }
         i = *static_cast<double*>(static_cast<void*>(&buf));
         return i;
     }
     void IP_Message::get_chararr(char* ca, int cl) {
         int i;
-        for(i=0;i<cl&&raw->size()>0;++i) {
-            ca[i]=raw->front();
-            raw->pop();
+        for(i=0;i<cl&&raw.size()>0;++i) {
+            ca[i]=raw.front();
+            raw.pop();
         }
         if(i<cl) ca[i]='\0';
     }
@@ -187,7 +197,7 @@ namespace sjs {
     void IP_TcpClient::run_thread(void) {
         int runme=true;
         int pollval;
-        char buf[2];
+        char buf[256];
         std::queue<char> instr;
         while(runme){
             pollval=poll(&pfd,1,0);
@@ -201,20 +211,25 @@ namespace sjs {
                     in.push( new IP_Message(&instr) );
                 }
             }
-            if(pfd.revents&POLLOUT) {
-                if(out.size()>0) {
-                    IP_Message* msg=out.front();
-                    out.pop();
-                    char ch=' '; int i=0;
-                    while((ch=msg->get_char())!='\0') {
-                        if(i<256) buf[i]=ch;
+            if(pfd.revents&POLLOUT) { // Using poll here, this checks the file is ready for writing
+                if(out.size()>0) { // out is an STL queue
+                    IP_Message* msg=out.front(); // IP_Message is a class containing a queue of characters...
+                    out.pop(); // As we've retrieved the message we can delete it from the queue...
+                    char ch=' '; int i=0; 
+                    while(ch!='\0') {
+                        ch=msg->get_char();
+                        if(i<255) buf[i]=ch;
                         else {
+                            buf[255]='\0';
                             write(pfd.fd,&buf,256);
                             i=-1;
                         }
                         i++;
                     }
-                    if(i>0) write(pfd.fd,&buf,i);
+                    if(i>0) {
+                        buf[i]='\0';
+                        write(pfd.fd,&buf,i+1);
+                    }
                     delete msg;
                 }
             }

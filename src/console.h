@@ -24,10 +24,10 @@ along with Pivionics.  If not, see <http://www.gnu.org/licenses/>.
 #include "command.h"
 #include "sjsock.h"
 #include <iostream>
+#include <map>
 
 #ifndef PIV_CONSOLE_H
 #define PIV_CONSOLE_H
-
 
 #define W_ON_K 0
 #define R_ON_K 1
@@ -48,12 +48,7 @@ along with Pivionics.  If not, see <http://www.gnu.org/licenses/>.
 class PivClient:public sjs::IP_TcpClient {
     public:
         // Implement TCP client to get messages as a queue of strings
-        void got_message(sjs::IP_Message* msg,void* vpoint) {
-            std::queue<std::string>* q=static_cast<std::queue<std::string>*>(vpoint);
-            q->push(msg->get_string());
-            std::cerr << "Received message: \n";
-            delete msg;
-        }
+        void got_message(sjs::IP_Message*,void* );
 };
 
 class PivConsole {
@@ -77,8 +72,7 @@ class PivConsole {
         std::list<std::string> linebuffer;
         std::list<std::string> childbuffer;
         std::list<std::string> siblingbuffer;
-        std::list<std::string> propbuffer;
-        std::list<std::string> attrbuffer;
+        std::map<std::string,std::string> attrbuffer;
         PivClient tcp;
         std::queue<std::string> inputbuffer;
         std::string cur_type;
@@ -107,9 +101,10 @@ class PivConsole {
     protected:
         void get_input(void);
         void entered(void);
-        int draw_commandline(void); // Colours and draws the commandline and returns the number of lines used
-        int draw_status(void); // Draws the status and summary and returns the number of lines used
-        
+        int draw_commandline(int); // Colours and draws the commandline and returns the number of lines used
+        int draw_status(int); // Draws the status and summary and returns the number of lines used
+        int draw_current(int);
+        int draw_attrs(int);
     public:
         void display(void);
         PivConsole();

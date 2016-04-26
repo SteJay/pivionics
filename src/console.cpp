@@ -85,7 +85,7 @@ PivConsole::PivConsole(){
         cbreak();
 
         keypad(stdscr,TRUE);
-        //curs_set(0);
+        curs_set(0);
         // We may have resized the window...
         getmaxyx(stdscr,height,width);
     }
@@ -98,12 +98,10 @@ PivConsole::~PivConsole(){
     }
 }
 
-void PivConsole::display(void) {
-    int lines_left=height;
-    int topline=0;
+int PivConsole::draw_status(int line) {
     // Draw the status bar at the top, yellow on black
     attron(COLOR_PAIR(Y_ON_K)|A_BOLD);
-    mvaddstr(0,0,status.c_str());
+    mvaddstr(line,0,status.c_str());
     attroff(COLOR_PAIR(Y_ON_K)|A_BOLD);
     attron(COLOR_PAIR(B_ON_K));
     for(int i=0;i<width-status.size()-fpsdisp.size();++i) addstr("#");
@@ -114,7 +112,178 @@ void PivConsole::display(void) {
         addstr(fpsdisp.c_str());
     }
     attroff(COLOR_PAIR(Y_ON_K));
+        return 1;
+}
+
+int PivConsole::draw_current(int line) {
+    int topline=line;
+    // Draw the current element details:
+    attron(COLOR_PAIR(W_ON_B));
+    mvaddstr(topline,0,"CURRENT ELEMENT: ");
+    attroff(COLOR_PAIR(W_ON_B));
+    attron(COLOR_PAIR(C_ON_B)|A_BOLD);
+    addstr(cur_type.c_str());
+    attroff(COLOR_PAIR(C_ON_B)|A_BOLD);
+    attron(COLOR_PAIR(W_ON_B)|A_NORMAL);
+    addstr(" (");
+    attroff(COLOR_PAIR(W_ON_B)|A_NORMAL);
+    attron(COLOR_PAIR(C_ON_B)|A_BOLD);
+    addstr(cur_name.c_str());
+    attroff(COLOR_PAIR(C_ON_B)|A_BOLD);
+    attron(COLOR_PAIR(W_ON_B)|A_NORMAL);
+    addstr(")");
+    for(int i=0;i<width-cur_type.size()-cur_name.size()-20;++i) addstr(" ");
+    attroff(COLOR_PAIR(W_ON_B)|A_NORMAL);
+    // Now draw the current element details
+    // Yes, really really long winded. Sorry about that.
+    std::string propstr="";std::string valstr=""; int xi=0;
     topline++;
+    for(int i=3;i<18;++i) {
+        if(i==3) { propstr="cx: ";valstr=cur_cx; }
+        else if(i==4) { propstr="cy: ";valstr=cur_cy; }
+        else if(i==5) { propstr="width: ";valstr=cur_width; }
+        else if(i==6) { propstr="height: ";valstr=cur_height; }
+        else if(i==7) { propstr="xscale: ";valstr=cur_xscale; }
+        else if(i==8) { propstr="yscale: ";valstr=cur_yscale; }
+        else if(i==9) { propstr="angle: ";valstr=cur_angle; }
+        else if(i==10) { propstr="arc: ";valstr=cur_arc; }
+        else if(i==11) { propstr="thickness: ";valstr=cur_thickness; }
+        else if(i==12) { propstr="sections: ";valstr=cur_sections; }
+        else if(i==13) { propstr="subsections: ";valstr=cur_subsections; }
+        else if(i==14) { propstr="color: ";valstr=cur_color; }
+        else if(i==15) { propstr="inherit position: ";valstr=cur_inherit_position; }
+        else if(i==16) { propstr="inherit angle: ";valstr=cur_inherit_angle; }
+        else if(i==17) { propstr="inherit scale: ";valstr=cur_inherit_scale; }
+        valstr+=" ";
+        if(xi+propstr.size()+valstr.size()>width) {
+            topline++; 
+            attron(COLOR_PAIR(W_ON_B)|A_NORMAL);
+            while(xi<width) { addstr(" ");xi++;}
+            attroff(COLOR_PAIR(W_ON_B)|A_NORMAL);
+            xi=0;
+        }
+        attron(COLOR_PAIR(W_ON_B)|A_NORMAL);
+        mvaddstr(topline,xi,propstr.c_str());
+        attroff(COLOR_PAIR(W_ON_B)|A_NORMAL);
+        attron(COLOR_PAIR(C_ON_B)|A_BOLD);
+        addstr(valstr.c_str());
+        attroff(COLOR_PAIR(C_ON_B)|A_BOLD);
+        
+        xi+=propstr.size()+valstr.size();
+    }
+    attron(COLOR_PAIR(W_ON_B)|A_NORMAL);
+    while(xi<width) { addstr(" ");xi++;}
+    attroff(COLOR_PAIR(W_ON_B)|A_NORMAL);
+    topline ++;
+    return topline;
+    
+}
+
+int PivConsole::draw_attrs(int line) {
+    int topline=line; int xi=0;
+    // We want to draw the smallest size first...
+    std::list<std::string> v;
+    for(auto iter=attrbuffer.begin(); iter!=attrbuffer.end(); ++iter) {
+        v.push_back(iter->first);
+    }
+    int sizenow;
+    std::string attrnow="";
+    std::string attrthen="";
+    while(v.size()>0) {
+        sizenow=4096;
+        attrthen="";attrnow="";
+        for(auto it=v.begin();it!=v.end();++it) {
+            attrthen=*it;
+            if(attrthen.size()+attrbuffer[attrthen].size()<sizenow) {
+                attrnow=*it;
+                sizenow=attrnow.size()+attrbuffer[attrnow].size();
+            }
+        }
+        // Now we know the smallest index, lets remove it from our list
+        v.remove(attrnow);
+        // Now we draw it.
+        if((sizenow+xi+6)<width) {
+            // There's space right here...
+            attron(COLOR_PAIR(W_ON_B)|A_NORMAL);
+            mvaddstr(topline,xi,attrnow.c_str());
+            addstr(" = \"");
+            attroff(COLOR_PAIR(W_ON_B)|A_NORMAL);
+            attron(COLOR_PAIR(Y_ON_B)|A_BOLD);
+            addstr(attrbuffer[attrnow].c_str());
+            attroff(COLOR_PAIR(Y_ON_B)|A_BOLD);
+            attron(COLOR_PAIR(W_ON_B)|A_NORMAL);
+            addstr("\" ");
+            attroff(COLOR_PAIR(W_ON_B)|A_NORMAL);
+            xi+=sizenow+6;
+        } else {
+            // Too big to fit here. Is it too big for the width?
+            if(sizenow+6>=width) {
+                // Too big for screen, we'll have to split the line
+                if(attrnow.size()+7+xi>=width) {
+                    attron(COLOR_PAIR(W_ON_B)|A_NORMAL);
+                    while(xi<width) {
+                        addstr(" ");
+                        ++xi;
+                    }
+                    attroff(COLOR_PAIR(W_ON_B)|A_NORMAL);
+                    topline++; xi=0;
+                }
+                attron(COLOR_PAIR(W_ON_B)|A_NORMAL);
+                mvaddstr(topline,xi,attrnow.c_str());
+                addstr(" = \"");
+                attroff(COLOR_PAIR(W_ON_B)|A_NORMAL);
+                std::string mystr=attrbuffer[attrnow];
+                attron(COLOR_PAIR(Y_ON_B)|A_BOLD);
+                while( mystr.size()>0 ) {
+                    addch(mystr.front());
+                    xi++;
+                    mystr.erase(0,1);
+                    if(xi>=width) {
+                        xi=0;
+                        topline++;
+                    }
+                    
+                }
+                attroff(COLOR_PAIR(Y_ON_B)|A_BOLD);
+                attron(COLOR_PAIR(W_ON_B)|A_NORMAL);
+                addstr("\" ");
+                attroff(COLOR_PAIR(W_ON_B)|A_NORMAL);
+            } else {
+                // It'll fit on the next line.
+                attron(COLOR_PAIR(W_ON_B)|A_NORMAL);
+                while(xi<width) {
+                    addstr(" ");
+                    ++xi;
+                }
+                xi=0; topline++;
+                mvaddstr(topline,xi,attrnow.c_str());
+                addstr(" = \"");
+                attroff(COLOR_PAIR(W_ON_B)|A_NORMAL);
+                attron(COLOR_PAIR(Y_ON_B)|A_BOLD);
+                addstr(attrbuffer[attrnow].c_str());
+                addstr("\" ");
+                attroff(COLOR_PAIR(Y_ON_B)|A_BOLD);
+                xi+=sizenow+6;
+            }
+        }
+    
+    }
+    attron(COLOR_PAIR(W_ON_B)|A_NORMAL);
+    if(xi>0) {
+        while(xi<width) {
+            addch(' ');
+            xi++;
+        }
+        topline++;
+    }
+    attroff(COLOR_PAIR(W_ON_B)|A_NORMAL);
+    return topline-line;
+}
+
+void PivConsole::display(void) {
+    int lines_left=height;
+    int topline=draw_status(0);
+    
     // Draw the commandline at the bottom
     int nlines=(commandline.size()+3)/width;
     int rchar=(commandline.size()+3)%width;
@@ -122,7 +291,6 @@ void PivConsole::display(void) {
     attron(COLOR_PAIR(K_ON_W)|A_NORMAL);
     mvaddstr(height-nlines,0,"@> ");
     attroff(COLOR_PAIR(K_ON_W)|A_NORMAL);
-    //addstr(commandline.c_str());
     int spos=0; int x=3;
     attron(COLOR_PAIR(K_ON_W)|A_BOLD);
     for(int y=0;y<nlines;y++) {
@@ -144,28 +312,11 @@ void PivConsole::display(void) {
     }
     attroff(COLOR_PAIR(K_ON_W)|A_BOLD);
     lines_left-=nlines;
-    // Draw the current element details:
-    attron(COLOR_PAIR(W_ON_B));
-    mvaddstr(topline,0,"CURRENT ELEMENT: ");
-    attroff(COLOR_PAIR(W_ON_B));
-    attron(COLOR_PAIR(C_ON_B)|A_BOLD);
-    addstr(cur_type.c_str());
-    attroff(COLOR_PAIR(C_ON_B)|A_BOLD);
-    attron(COLOR_PAIR(W_ON_B)|A_NORMAL);
-    addstr(" (");
-    attroff(COLOR_PAIR(W_ON_B)|A_NORMAL);
-    attron(COLOR_PAIR(C_ON_B)|A_BOLD);
-    addstr(cur_name.c_str());
-    attroff(COLOR_PAIR(C_ON_B)|A_BOLD);
-    attron(COLOR_PAIR(W_ON_B)|A_NORMAL);
-    addstr(")");
-    for(int i=0;i<width-cur_type.size()-cur_name.size()-20;++i) addstr(" ");
-    attroff(COLOR_PAIR(W_ON_B)|A_NORMAL);
-    lines_left-=1;
-    // Now draw the current element details
-    
-    
-    
+    topline = draw_current(topline);
+    lines_left-=topline;
+    int ttopline = draw_attrs(topline);
+    lines_left-=ttopline;
+    topline+=ttopline;
     // Finally draw the line buffer - start at the bottom and work up to fill remaining space
     std::string thisline="";
     for(auto it=linebuffer.rbegin();it!=linebuffer.rend();++it) {
@@ -204,7 +355,14 @@ void PivConsole::display(void) {
             }
         }
     }
-    
+    attron(COLOR_PAIR(W_ON_K)|A_BOLD);
+    while(lines_left>=0) {
+        for(x=0;x<width;x++) {
+            mvaddch(topline+lines_left,x,' ');
+        }
+        lines_left--;
+    }
+    attroff(COLOR_PAIR(W_ON_K)|A_BOLD);
     refresh();
     
 }
@@ -222,9 +380,9 @@ void PivConsole::entered(void) {
     sjs::IP_Message* msg=new sjs::IP_Message;
     msg->set_string(commandline);
     tcp.send(msg);
-    msg=new sjs::IP_Message;
-    msg->set_string("ex fps ");
-    tcp.send(msg);
+    sjs::IP_Message* msg2=new sjs::IP_Message;
+    msg2->set_string("ex fps ");
+    tcp.send(msg2);
     // Clear the commandline:
     commandline="";
     cursor=0;
@@ -240,9 +398,8 @@ void PivConsole::get_input(void) {
             std::string s=args.front();
             args.pop_front();
             if(s.compare("ELEMENT:")==0) {
-                propbuffer.clear();
+                attrbuffer.clear();
                 int i=0; while( i<18 && args.size()>0 ) {
-                    ++i;
                     if(i==1) { cur_type = args.front(); }
                     else if(i==2) { cur_name = args.front(); }
                     else if(i==3) { cur_cx = args.front(); }
@@ -261,16 +418,20 @@ void PivConsole::get_input(void) {
                     else if(i==16) { cur_inherit_angle = args.front(); }
                     else if(i==17) { cur_inherit_scale = args.front(); }
                     args.pop_front();
+                    ++i;
                 }
-            } else if(s.compare("ATTRS:")==0) {
-                std::string a;
-                while(args.size()>0) {
+            } else if(s.compare("ATTR:")==0) {
+                std::string a,b;
+                if(args.size()>=3) {
                     a=args.front(); args.pop_front();
-                    a.append(args.front()); args.pop_front();
-                    a.append(args.front()); args.pop_front();
+                    args.pop_front();
+                    b=args.front(); args.pop_front();
+                    attrbuffer[a]=b;
                 }
             } else {
-                thisline.append(s+" ");
+                if(s.size()>0&&s.compare(" ")!=0) {
+                    thisline.append(s+" ");
+                }
             }
             if(thisline.size()>0) linebuffer.push_back(thisline);
             
@@ -355,3 +516,8 @@ void main_fn (void) {
     delete console;
 }
 
+void PivClient::got_message(sjs::IP_Message* msg,void* vpoint) {
+    std::queue<std::string>* q=static_cast<std::queue<std::string>*>(vpoint);
+    q->push(msg->get_string());
+    delete msg;
+}
